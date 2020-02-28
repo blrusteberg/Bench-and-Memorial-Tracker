@@ -22,19 +22,19 @@
     ],
     "benches": [
         {
-            "id":1,
+            "id":4,
             "donator":"Carl Marx",
             "x-coordinate":38.810389,
             "y-coordinate":-89.975152
         },
         {
-            "id":2,
+            "id":5,
             "donator":"Steve Wozniak",
             "x-coordinate":38.810422, 
             "y-coordinate": -89.966913
         },
         {
-            "id":3,
+            "id":6,
             "donator":"Tim Teabags",
             "x-coordinate": 38.813762,
             "y-coordinate":-89.955567
