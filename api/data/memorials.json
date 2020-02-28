@@ -1,0 +1,44 @@
+{ 
+    "trees": [
+        {
+            "id":1,
+            "donator":"John Doe",
+            "x-coordinate":38.806649, 
+            "y-coordinate":-89.938928
+        },
+        {
+            "id":2,
+            "donator":"Tim Johnson",
+            "x-coordinate":38.800341, 
+            "y-coordinate": -90.009141
+        },
+        {
+            "id":3,
+            "donator":"Chuck Schumer",
+            "x-coordinate": 38.812362, 
+            "y-coordinate":-89.962793
+        }
+            
+    ],
+    "benches": [
+        {
+            "id":1,
+            "donator":"Carl Marx",
+            "x-coordinate":38.810389,
+            "y-coordinate":-89.975152
+        },
+        {
+            "id":2,
+            "donator":"Steve Wozniak",
+            "x-coordinate":38.810422, 
+            "y-coordinate": -89.966913
+        },
+        {
+            "id":3,
+            "donator":"Tim Teabags",
+            "x-coordinate": 38.813762,
+            "y-coordinate":-89.955567
+        }
+            
+    ]
+}
