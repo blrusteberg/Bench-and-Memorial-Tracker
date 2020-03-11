@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+    title: Edwardsville Memorial Tracker API
+    description: REST API for Edwardsville Memorial Tracker
+    version: 0.1.0
+    license:
+        name: MIT
+
+servers:
+    - url: http:localhost:3000/api
+ 
+paths:
+    /memorials/trees:
+        get:
+            summary: Get all trees
+            tags:
+                - trees
+            responses:
+                '200': 
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items: 
+                                    $ref: '#/components/schemas/Tree'
+
+
+    /memorials/trees/{id}:
+        get:
+            summary: Get a tree by ID
+            tags:
+                - trees
+            parameters:
+                  - in: path
+                    name: id
+                    schema:
+                        type: integer
+                    required: true
+                    description: Numeric ID of the tree to get
+            responses:
+                '200': 
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Tree'
+                                        
+    /memorials/benches:
+        get:
+            summary: Get all benches
+            tags:
+                - benches
+            responses:
+                '200': 
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Bench'
+                                    
+    /memorials/benches/{id}:
+        get:
+            summary: Get bench by ID
+            tags:
+                - benches
+            parameters:
+                  - in: path
+                    name: id
+                    schema:
+                        type: integer
+                    required: true
+                    description: Numeric ID of the bench to get
+            responses:
+                '200': 
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Bench'
+
+components:
+    schemas:
+        Tree:
+            type: object
+            properties:
+                id:
+                    type: integer
+                title:
+                    type: string
+                x-coordinate:
+                    type: number
+                y-coordinate:
+                    type: number
+        Bench:
+            type: object
+            properties:
+                id:
+                    type: integer
+                title:
+                    type: string
+                x-coordinate:
+                    type: number
+                y-coordinate:
+                    type: number
+
