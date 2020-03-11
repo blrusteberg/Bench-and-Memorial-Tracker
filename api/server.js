@@ -4,6 +4,7 @@ const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./swagger.yaml')
 const memorials = require('./data/memorials.json')
+const port = process.env.PORT || 1337;
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
@@ -32,7 +33,7 @@ app.get('/api/memorials/benches/{id}', (req, res) => {
     res.send(getBenchById(req.params.id))
 })
 
-app.listen(3000, () => console.log('Listening on port 3000...'));
+app.listen(port, () => console.log('Listening on port 3000...'));
 
 function getTreeById(id){
     memorials.trees.forEach(tree => {
