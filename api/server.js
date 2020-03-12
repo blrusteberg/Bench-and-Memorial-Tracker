@@ -13,40 +13,37 @@ app.get('/', (req, res) => {
     res.redirect('/api/docs')
 })
 
-app.get('/api/memorials/trees', (req, res) => {
+app.get('/api/memorials', (req, res) => {
     res.status(200)
-    res.send(memorials.trees)
+    res.send(memorials)
 })
 
-app.get('/api/memorials/trees/{id}', (req, res) => {
+app.get('/api/memorials/{id}', (req, res) => {
     res.status(200)
-    res.send(getTreeById(req.params.id))
+    res.send(getMemorialById(req.params.id))
 })
 
-app.get('/api/memorials/benches', (req, res) => {
+app.get('/api/memorials/{type}', (req, res) => {
     res.status(200)
-    res.send(memorials.benches)
+    res.send(getMemorialByType(req.params.type))
 })
 
-app.get('/api/memorials/benches/{id}', (req, res) => {
-    res.status(200)
-    res.send(getBenchById(req.params.id))
-})
+app.listen(port, () => console.log(`Listening on port ${port}...`));
 
-app.listen(port, () => console.log('Listening on port 3000...'));
-
-function getTreeById(id){
-    memorials.trees.forEach(tree => {
-        if(tree.id == id){
-            return tree
+function getMemorialById(id){
+    memorials.memorials.forEach(memorial => {
+        if(memorial.id == id){
+            return bench
         }
     })
 }
 
-function getBenchById(id){
-    memorials.benches.forEach(bench => {
-        if(bench.id == id){
-            return bench
+function getMemorialByType(type){
+    memorials = []
+    memorials.memorials.forEach(memorial => {
+        if(memorial.type == type){
+            memorials.push(memorial)
         }
     })
+    return memorials
 }
