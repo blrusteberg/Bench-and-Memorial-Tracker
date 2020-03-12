@@ -18,12 +18,12 @@ app.get('/api/memorials', (req, res) => {
     res.send(memorials)
 })
 
-app.get('/api/memorials/{id}', (req, res) => {
+app.get('/api/memorials/:id', (req, res) => {
     res.status(200)
     res.send(getMemorialById(req.params.id))
 })
 
-app.get('/api/memorials/{type}', (req, res) => {
+app.get('/api/memorials/:type', (req, res) => {
     res.status(200)
     res.send(getMemorialByType(req.params.type))
 })
@@ -33,7 +33,7 @@ app.listen(port, () => console.log(`Listening on port ${port}...`));
 function getMemorialById(id){
     memorials.memorials.forEach(memorial => {
         if(memorial.id == id){
-            return bench
+            return memorial
         }
     })
 }

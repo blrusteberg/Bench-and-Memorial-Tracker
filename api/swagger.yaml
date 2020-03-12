@@ -10,47 +10,11 @@ servers:
     - url: http:localhost:3000/api
  
 paths:
-    /memorials/trees:
+    /memorials:
         get:
-            summary: Get all trees
+            summary: Get all memorials
             tags:
-                - trees
-            responses:
-                '200': 
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items: 
-                                    $ref: '#/components/schemas/Tree'
-
-
-    /memorials/trees/{id}:
-        get:
-            summary: Get a tree by ID
-            tags:
-                - trees
-            parameters:
-                  - in: path
-                    name: id
-                    schema:
-                        type: integer
-                    required: true
-                    description: Numeric ID of the tree to get
-            responses:
-                '200': 
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Tree'
-                                        
-    /memorials/benches:
-        get:
-            summary: Get all benches
-            tags:
-                - benches
+                - memorials
             responses:
                 '200': 
                     description: OK
@@ -59,47 +23,38 @@ paths:
                             schema:
                                 type: array
                                 items:
-                                    $ref: '#/components/schemas/Bench'
+                                    $ref: '#/components/schemas/Memorial'
                                     
-    /memorials/benches/{id}:
+    /memorials/{id}:
         get:
-            summary: Get bench by ID
+            summary: Get memorial by ID
             tags:
-                - benches
+                - memorials
             parameters:
                   - in: path
                     name: id
                     schema:
                         type: integer
                     required: true
-                    description: Numeric ID of the bench to get
+                    description: Numeric ID of the memorial to get
             responses:
                 '200': 
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Bench'
+                                $ref: '#/components/schemas/Memorial'
 
 components:
     schemas:
-        Tree:
+        Memorial:
             type: object
             properties:
                 id:
                     type: integer
-                title:
+                type:
                     type: string
-                x-coordinate:
-                    type: number
-                y-coordinate:
-                    type: number
-        Bench:
-            type: object
-            properties:
-                id:
-                    type: integer
-                title:
+                donator:
                     type: string
                 x-coordinate:
                     type: number
