@@ -1,44 +1,46 @@
 { 
-    "trees": [
+    "memorials": [
         {
             "id":1,
+            "type" : "tree",
             "donator":"John Doe",
             "x-coordinate":38.806649, 
             "y-coordinate":-89.938928
         },
         {
             "id":2,
+            "type" : "tree",
             "donator":"Tim Johnson",
             "x-coordinate":38.800341, 
             "y-coordinate": -90.009141
         },
         {
             "id":3,
+            "type" : "tree",
             "donator":"Chuck Schumer",
             "x-coordinate": 38.812362, 
             "y-coordinate":-89.962793
-        }
-            
-    ],
-    "benches": [
+        },
         {
             "id":4,
+            "type" : "bench",
             "donator":"Carl Marx",
             "x-coordinate":38.810389,
             "y-coordinate":-89.975152
         },
         {
             "id":5,
+            "type" : "bench",
             "donator":"Steve Wozniak",
             "x-coordinate":38.810422, 
             "y-coordinate": -89.966913
         },
         {
             "id":6,
+            "type" : "bench",
             "donator":"Tim Teabags",
             "x-coordinate": 38.813762,
             "y-coordinate":-89.955567
         }
-            
     ]
 }
