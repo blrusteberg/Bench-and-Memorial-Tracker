@@ -20,30 +20,29 @@ app.get('/api/memorials', (req, res) => {
 
 app.get('/api/memorials/:id', (req, res) => {
     res.status(200)
-    res.send(getMemorialById(req.params.id))
-})
-
-app.get('/api/memorials/:type', (req, res) => {
-    res.status(200)
-    res.send(getMemorialByType(req.params.type))
+    let mem = getMemorialById(req.params.id)
+    console.log(mem)
+    res.send(mem)
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 function getMemorialById(id){
+    let m
     memorials.memorials.forEach(memorial => {
         if(memorial.id == id){
-            return memorial
+            m = memorial
         }
     })
+    return typeof m == 'undefined' ? "Memorial not found" : m 
 }
 
 function getMemorialByType(type){
-    memorials = []
+    let m = []
     memorials.memorials.forEach(memorial => {
         if(memorial.type == type){
-            memorials.push(memorial)
+            m.push(memorial)
         }
     })
-    return memorials
+    return m
 }
