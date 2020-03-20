@@ -7,19 +7,11 @@
   flex-direction: row;
 }
 
-<<<<<<< HEAD
-.searchField {
-  display: flex;
-  flex-direction: row;
-}
-
 .icon {
   text-align: center;
   margin: 0 auto;
 }
-=======
-.searchField{
+.searchField {
   display: flex;
   flex-direction: row;
 }
->>>>>>> 45b81145150996f351a79acf21b81140249a6b3b

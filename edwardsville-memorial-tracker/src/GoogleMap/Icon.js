@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-<<<<<<< HEAD
 const Icon = ({ type, id }) => {
   const [hovering, setHovering] = useState(false);
 
@@ -20,15 +19,6 @@ const Icon = ({ type, id }) => {
       <h1>{id}</h1>
     </div>
   );
-=======
-const Icon = ({ type }) => {
-  const [hovered, setHovered] = useState(false);
-
-  const Icon = styled.img`
-    width: ${hovered ? 50 : 40}px;
-  `;
-  return <Icon src="./img/poi.png" />;
->>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
 };
 
 export default Icon;
