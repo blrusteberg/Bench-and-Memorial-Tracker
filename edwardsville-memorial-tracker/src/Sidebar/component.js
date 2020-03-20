@@ -1,7 +1,6 @@
 import React from "react";
 
 import Memorial from "./Memorial";
-import Icon from "../GoogleMap/Icon";
 import styled from "@emotion/styled";
 
 const Button = styled.button`
@@ -21,7 +20,6 @@ const Sidebar = ({ memorialData }) => {
       <div className="searchField">
         <input type="text" placeholder="Search for a memorial" />
         <Button>Search</Button>
-        <Icon type="bench"></Icon>
       </div>
       <Memorial data={memorialData[0]} />
     </div>

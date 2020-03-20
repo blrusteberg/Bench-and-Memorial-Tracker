@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import GoogleMapReact from "google-map-react";
 
-import IconList from "./IconList";
 import Icon from "./Icon";
 
 const GoogleMap = ({ memorialData, currentLocation }) => {
-  const [center, setCenter] = useState(currentLocation);
-  const [zoom, setZoom] = useState(15);
+  // const [center, setCenter] = useState(currentLocation);
+  // const [zoom, setZoom] = useState(15);
+
+  const zoom = 15;
+  const center = currentLocation;
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
