@@ -4,43 +4,73 @@
       "id": 1,
       "type": "tree",
       "donator": "John Doe",
+<<<<<<< HEAD
       "latitude": 38.806649,
       "longitude": -89.938928
+=======
+      "x-coordinate": 38.806649,
+      "y-coordinate": -89.938928
+>>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
     },
     {
       "id": 2,
       "type": "tree",
       "donator": "Tim Johnson",
+<<<<<<< HEAD
       "latitude": 38.800341,
       "longitude": -90.009141
+=======
+      "x-coordinate": 38.800341,
+      "y-coordinate": -90.009141
+>>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
     },
     {
       "id": 3,
       "type": "tree",
       "donator": "Chuck Schumer",
+<<<<<<< HEAD
       "latitude": 38.812362,
       "longitude": -89.962793
+=======
+      "x-coordinate": 38.812362,
+      "y-coordinate": -89.962793
+>>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
     },
     {
       "id": 4,
       "type": "bench",
       "donator": "Carl Marx",
+<<<<<<< HEAD
       "latitude": 38.810389,
       "longitude": -89.975152
+=======
+      "x-coordinate": 38.810389,
+      "y-coordinate": -89.975152
+>>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
     },
     {
       "id": 5,
       "type": "bench",
       "donator": "Steve Wozniak",
+<<<<<<< HEAD
       "latitude": 38.810422,
       "longitude": -89.966913
+=======
+      "x-coordinate": 38.810422,
+      "y-coordinate": -89.966913
+>>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
     },
     {
       "id": 6,
       "type": "bench",
       "donator": "Tim Teabags",
+<<<<<<< HEAD
       "latitude": 38.813762,
       "longitude": -89.955567
+=======
+      "x-coordinate": 38.813762,
+      "y-coordinate": -89.955567
+>>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
     }
   ]
 }

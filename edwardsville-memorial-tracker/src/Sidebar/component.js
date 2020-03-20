@@ -1,6 +1,10 @@
 import React from "react";
 
 import Memorial from "./Memorial";
+<<<<<<< HEAD
+=======
+import Icon from "../GoogleMap/Icon";
+>>>>>>> 45b81145150996f351a79acf21b81140249a6b3b
 import styled from "@emotion/styled";
 
 const Button = styled.button`
