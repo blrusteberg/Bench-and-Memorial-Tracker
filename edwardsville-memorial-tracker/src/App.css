@@ -7,7 +7,12 @@
   flex-direction: row;
 }
 
-.searchField{
+.searchField {
   display: flex;
   flex-direction: row;
+}
+
+.icon {
+  text-align: center;
+  margin: 0 auto;
 }

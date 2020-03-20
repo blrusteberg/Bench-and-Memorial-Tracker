@@ -21,6 +21,7 @@ const Sidebar = ({ memorialData }) => {
       <div className="searchField">
         <input type="text" placeholder="Search for a memorial" />
         <Button>Search</Button>
+        <Icon type="bench"></Icon>
       </div>
       <Memorial data={memorialData[0]} />
     </div>

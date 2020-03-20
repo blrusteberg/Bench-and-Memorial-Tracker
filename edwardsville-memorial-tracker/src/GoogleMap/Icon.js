@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 
-const Icon = ({ type }) => {
-  const [hovered, setHovered] = useState(false);
+const Icon = ({ type, id }) => {
+  const [hovering, setHovering] = useState(false);
 
   const Icon = styled.img`
-    width: ${hovered ? 50 : 40}px;
+    width: 30px;
   `;
-  return <Icon src="./img/poi.png" />;
+
+  function handleHover(e) {
+    e.target.style.width = hovering ? "50px" : "40px";
+    setHovering(!hovering);
+  }
+
+  return (
+    <div className="icon">
+      <Icon onMouseOver={handleHover} src={`./img/${type}.png`} />
+      <h1>{id}</h1>
+    </div>
+  );
 };
 
 export default Icon;
