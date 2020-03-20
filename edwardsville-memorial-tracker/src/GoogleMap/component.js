@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import GoogleMapReact from "google-map-react";
 
-const GoogleMap = props => {
-  const [center, setCenter] = useState({ lat: 11.0168, lng: 76.9558 });
-  const [zoom, setZoom] = useState(11);
+import Icon from "./Icon";
+
+const GoogleMap = ({ memorialData, currentLocation }) => {
+  const [center, setCenter] = useState(currentLocation);
+  const [zoom, setZoom] = useState(15);
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "add your api key" }}
+        bootstrapURLKeys={{ key: "" }}
         defaultCenter={center}
         defaultZoom={zoom}
-      ></GoogleMapReact>
+      >
+        <Icon
+          lat={memorialData[0].latitude}
+          lng={memorialData[0].longitude}
+        />
+        <Icon
+          lat={memorialData[1].latitude}
+          lng={memorialData[1].longitude}
+        />
+      </GoogleMapReact>
     </div>
   );
 };
