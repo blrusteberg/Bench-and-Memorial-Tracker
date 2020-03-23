@@ -1,0 +1,17 @@
+.App {
+  text-align: center;
+  width: 100%;
+  height: "400px";
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.icon {
+  text-align: center;
+  margin: 0 auto;
+}
+.searchField {
+  display: flex;
+  flex-direction: row;
+}
