@@ -1,0 +1,31 @@
+/*instead of App.css for CSS modules, you use App.module.css. No need to eject!
+ */
+
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  height: 75%;
+}
+.MapView {
+  width: 85%;
+}
+.Memorial {
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid lightslategray;
+  text-align: center;
+}
+
+.Sidebar {
+  border: 1px solid black;
+  width: 15%;
+  height: 100%;
+  float: right;
+  overflow-y: scroll;
+}
+
+.SearchInput {
+  width: 100%;
+  padding: 10px 10px;
+}
