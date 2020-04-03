@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
-import Map from "./Map/Map";
-import Sidebar from "./SideBar/Sidebar";
+import Map from "../components/Map/Map";
+import Sidebar from "../components/SideBar/Sidebar";
 
 class App extends React.Component {
   state = {
