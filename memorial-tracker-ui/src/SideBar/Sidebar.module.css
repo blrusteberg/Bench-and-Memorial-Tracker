@@ -1,0 +1,14 @@
+.Sidebar {
+  border: 1px solid black;
+  width: 15%;
+}
+
+.SearchInput {
+  width: 100%;
+  padding: 10px 10px;
+}
+
+.ScrollMenu {
+  overflow-y: scroll;
+  height: 100%;
+}
