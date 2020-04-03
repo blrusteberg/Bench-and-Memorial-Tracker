@@ -1,7 +1,7 @@
 import React from "react";
-import "./Icon.css";
+import styles from "./Icon.module.css";
 
-const Icon = props => {
+const icon = (props) => {
   let type = "";
   switch (props.type) {
     case "tree":
@@ -18,14 +18,12 @@ const Icon = props => {
   }
 
   return (
-    <div>
       <img
-        className="IconImage"
+        className={styles.IconImage}
         src={`./icons/${type}.png`}
         alt="memorial icon"
       />
-    </div>
   );
 };
 
-export default Icon;
+export default icon;

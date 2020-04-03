@@ -1,7 +1,7 @@
 import React from "react";
-import "./Memorial.css";
+import styles from "./Memorial.module.css";
 
-const Memorial = props => {
+const memorial = (props) => {
   let type = "";
   switch (props.type) {
     case "tree":
@@ -17,16 +17,17 @@ const Memorial = props => {
       type = "memorial";
   }
   return (
-    <div className="Memorial">
+    <div className={styles.Memorial}>
       <img
-        className="icon"
+        className={styles.Icon}
         src={`./icons/${type}.png`}
         alt="memorial type icon"
       />
-      <p>{props.donator}</p>
-      <p>{props.type}</p>
+      <div className={styles.MemorialInfo}>
+        <p>{props.donator}</p>
+      </div>
     </div>
   );
 };
 
-export default Memorial;
+export default memorial;
