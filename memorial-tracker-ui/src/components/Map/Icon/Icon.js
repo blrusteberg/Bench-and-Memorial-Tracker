@@ -2,6 +2,12 @@ import React from "react";
 import styles from "./Icon.module.css";
 
 const icon = (props) => {
+  const assignedStyles = [];
+  if (props.hide) {
+    assignedStyles.push(styles.hidden);
+  } else {
+    assignedStyles.push(styles.IconImage);
+  }
   let type = "";
   switch (props.type) {
     case "tree":
@@ -18,11 +24,11 @@ const icon = (props) => {
   }
 
   return (
-      <img
-        className={styles.IconImage}
-        src={`./icons/${type}.png`}
-        alt="memorial icon"
-      />
+    <img
+      className={assignedStyles.join(" ")}
+      src={`./icons/${type}.png`}
+      alt="memorial icon"
+    />
   );
 };
 
