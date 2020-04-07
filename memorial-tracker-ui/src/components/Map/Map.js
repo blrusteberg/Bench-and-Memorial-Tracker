@@ -18,6 +18,7 @@ const map = (props) => {
             type={m.type}
             key={m.id}
             hide={m.hide}
+            clicked={() => props.iconClicked(m.latitude, m.longitude)}
           />
         ))}
       </GoogleMapReact>

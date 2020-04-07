@@ -51,6 +51,14 @@ class App extends React.Component {
     this.setState({ memorials: memorials });
   };
 
+  iconClickHandler = (latitude, longitude) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    const win = window.open(url, "_blank");
+    if (win != null) {
+      win.focus();
+    }
+  };
+
   render() {
     const content = this.state.error ? (
       <div className="error">
@@ -64,8 +72,8 @@ class App extends React.Component {
       <div className="App">
         <Map
           memorials={this.state.memorials}
-          searchText={this.state.searchText}
           currentLocation={this.state.currentLocation}
+          iconClicked={this.iconClickHandler}
         />
         <Sidebar
           memorials={this.state.memorials}

@@ -28,6 +28,7 @@ const icon = (props) => {
       className={assignedStyles.join(" ")}
       src={`./icons/${type}.png`}
       alt="memorial icon"
+      onClick={props.clicked}
     />
   );
 };
