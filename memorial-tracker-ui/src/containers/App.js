@@ -52,7 +52,7 @@ class App extends React.Component {
   };
 
   iconClickHandler = (latitude, longitude) => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    const url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${latitude},${longitude}&travelmode=walking`;
     const win = window.open(url, "_blank");
     if (win != null) {
       win.focus();
