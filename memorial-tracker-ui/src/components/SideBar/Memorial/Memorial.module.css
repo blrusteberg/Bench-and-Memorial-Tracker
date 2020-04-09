@@ -7,6 +7,10 @@
   flex-direction: row;
 }
 
+.hidden {
+  display: none;
+}
+
 .Icon {
   margin: auto 0;
   display: block;

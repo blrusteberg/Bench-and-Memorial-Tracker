@@ -12,7 +12,14 @@ const map = (props) => {
         defaultZoom={14}
       >
         {props.memorials.map((m) => (
-          <Icon lat={m.latitude} lng={m.longitude} type={m.type} key={m.id} />
+          <Icon
+            lat={m.latitude}
+            lng={m.longitude}
+            type={m.type}
+            key={m.id}
+            hide={m.hide}
+            clicked={() => props.iconClicked(m.latitude, m.longitude)}
+          />
         ))}
       </GoogleMapReact>
     </div>

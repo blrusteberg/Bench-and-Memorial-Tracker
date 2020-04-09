@@ -11,37 +11,52 @@ class App extends React.Component {
         type: "tree",
         donator: "Jane Doe",
         latitude: 38.806649,
-        longitude: -89.938928
-      }
+        longitude: -89.938928,
+      },
     ],
     error: null,
     isLoaded: false,
-    currentLocation: { lat: 38.812203, lng: -89.957655 }
+    currentLocation: { lat: 38.812203, lng: -89.957655 },
   };
 
   componentDidMount() {
     console.log("[App.js] componentDidMount");
     fetch("http://localhost:1337/api/memorials")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(
-        result => {
-          result.memorials.map((m => m.show = true));
+        (result) => {
+          result.memorials.map((m) => (m.hide = false));
           this.setState({
             memorials: result.memorials,
-            isLoaded: true
+            isLoaded: true,
           });
         },
-        error => {
+        (error) => {
           this.setState({
             isLoaded: true,
-            error: error
+            error: error,
           });
         }
       );
   }
 
-  searchHandler = searchText => {
-    this.setState({ searchText: searchText });
+  searchHandler = (searchText) => {
+    let memorials = this.state.memorials;
+    memorials.forEach((m) => {
+      m.hide = !(
+        m.type.toLowerCase().includes(searchText.toLowerCase()) ||
+        m.donator.toLowerCase().includes(searchText.toLowerCase())
+      );
+    });
+    this.setState({ memorials: memorials });
+  };
+
+  iconClickHandler = (latitude, longitude) => {
+    const url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${latitude},${longitude}&travelmode=walking`;
+    const win = window.open(url, "_blank");
+    if (win != null) {
+      win.focus();
+    }
   };
 
   render() {
@@ -57,10 +72,13 @@ class App extends React.Component {
       <div className="App">
         <Map
           memorials={this.state.memorials}
-          searchText={this.state.searchText}
           currentLocation={this.state.currentLocation}
+          iconClicked={this.iconClickHandler}
         />
-        <Sidebar memorials={this.state.memorials} />
+        <Sidebar
+          memorials={this.state.memorials}
+          searchHandler={this.searchHandler}
+        />
       </div>
     );
     return content;

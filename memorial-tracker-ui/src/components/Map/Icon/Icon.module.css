@@ -1,3 +1,7 @@
 .IconImage {
   width: 30px;
 }
+
+.hidden {
+  display: none;
+}
