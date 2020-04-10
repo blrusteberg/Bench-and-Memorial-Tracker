@@ -2,7 +2,7 @@ import React from "react";
 
 import Item from "./Item/Item";
 
-const sidepanel = (props) => {
+const navigationPanel = () => {
   return (
     <div>
       <Item label="Memorials" />
@@ -13,4 +13,4 @@ const sidepanel = (props) => {
   );
 };
 
-export default sidepanel;
+export default navigationPanel;
