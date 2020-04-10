@@ -1,24 +1,14 @@
 import React from "react";
 
-import styles from "./NavigationPanel.module.css";
+import Item from "./Item/Item";
 
-const navigationPanel = (props) => {
+const navigationPanel = () => {
   return (
-    <div className={styles.NavigationPanel}>
-      <ul onClick={props.handleNavigationClick}>
-        <li>
-          <div id="Accounts">Accounts</div>
-        </li>
-        <li>
-          <div id="Memorials">Memorials</div>
-        </li>
-        <li>
-          <div id="Memorial Types">Memorial Types</div>
-        </li>
-        <li>
-          <div id="Settings">Settings</div>
-        </li>
-      </ul>
+    <div>
+      <Item label="Memorials" />
+      <Item label="Memorial Types" />
+      <Item label="Accounts" />
+      <Item label="Settings" />
     </div>
   );
 };
