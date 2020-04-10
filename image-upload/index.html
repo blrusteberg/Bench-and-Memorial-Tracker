@@ -6,6 +6,7 @@
         <!-- action is where the picture file will be handled -->
         <form action="/upload", method="post", enctype="multipart/form-data">
             <input type="file", name="displayImage">
+            <input type="file" accept="image/*" capture>
             <input type="submit", value="Submit">
         </form>
         <script>
