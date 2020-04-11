@@ -4,9 +4,9 @@ class InputForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        selected: props.selected.attributes,
-        number: 0
+        selected: props.selected.attributes
     };
+
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,7 +28,7 @@ class InputForm extends React.Component {
 
     addAttribute(e) {
       e.preventDefault();
-      let newAttribute = {};
+      let newAttribute = {' ' : null};
       this.setState({
         selected: this.state.selected.concat(newAttribute)
       });
@@ -36,14 +36,23 @@ class InputForm extends React.Component {
 
     deleteAttribute(attribute, e) {
       e.preventDefault();
-      delete this.state.selected[attribute];
-      let filtered = this.state.selected.filter(function (el) {
-        return el != null;
+      const newSelected = this.state.selected.filter(item => {
+        return item !== this.state.selected[attribute];
       });
-      this.setState({ selected : filtered });
+      // delete this.state.selected[attribute];
+      // let filtered = this.state.selected.filter(function (el) {
+      //   return el != null;
+      // });
+      // this.state.selected = filtered;
+      // this.setState(this.state.selected);
+      this.setState({
+        selected: [...newSelected]
+      })
     }
+
   
     render() {
+      console.log(this.state.selected);
       return (
         <div>
           <button onClick={this.addAttribute}>Add Attribute</button>
