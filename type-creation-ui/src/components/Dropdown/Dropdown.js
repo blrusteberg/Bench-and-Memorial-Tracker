@@ -18,10 +18,6 @@ class Dropdown extends React.Component {
     }
   
     handleChange(event) {
-      // console.log(this.state.types);
-      // console.log(event.target.value);
-      // console.log((this.state.types[event.target.value]));
-      console.log(this.state.types.building);
       this.inputformElement.current.handleSelected(this.state.types[event.target.value]);
     }
   
@@ -63,7 +59,6 @@ class Dropdown extends React.Component {
                         {list}
                     </option>
                 ))}
-                <option key={'TEST'} value={'New Type'}>Add New Type</option>
               </select>
             </label>
           </form>
