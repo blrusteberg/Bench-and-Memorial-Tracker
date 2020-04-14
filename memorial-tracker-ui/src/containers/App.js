@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import "./App.css";
 import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
