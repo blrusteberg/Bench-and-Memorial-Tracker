@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import "./App.css";
 import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
@@ -25,7 +25,11 @@ class App extends React.Component {
       .then((res) => res.json())
       .then(
         (result) => {
-          result.memorials.map((m) => (m.hide = false));
+          result.memorials.map((m) => {
+            m.hide = false;
+            m.hideBubble = true;
+           });
+    
           this.setState({
             memorials: result.memorials,
             isLoaded: true,
@@ -47,17 +51,30 @@ class App extends React.Component {
         m.type.toLowerCase().includes(searchText.toLowerCase()) ||
         m.donator.toLowerCase().includes(searchText.toLowerCase())
       );
+      if(m.hide === true) {m.hideBubble = true;}
     });
     this.setState({ memorials: memorials });
   };
 
-  iconClickHandler = (latitude, longitude) => {
-    const url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${latitude},${longitude}&travelmode=walking`;
-    const win = window.open(url, "_blank");
-    if (win != null) {
-      win.focus();
-    }
+  iconClickHandler = (latitude, longitude, hideBubble) => {
+    let memorials = this.state.memorials;
+    memorials.map((m) => {
+      m.hideBubble = true
+      if (latitude === m.latitude){
+         m.hideBubble = false
+      }
+    });
+    this.setState({ memorials: memorials});
   };
+
+  bubbleCloseClickHandler = (hideBubble) => {
+    let memorials = this.state.memorials;
+    memorials.map((m) => {
+      m.hideBubble = true
+    });
+    this.setState({ memorials: memorials});
+  }
+
 
   render() {
     const content = this.state.error ? (
@@ -74,6 +91,7 @@ class App extends React.Component {
           memorials={this.state.memorials}
           currentLocation={this.state.currentLocation}
           iconClicked={this.iconClickHandler}
+          bubbleCloseClick = {this.bubbleCloseClickHandler}
         />
         <Sidebar
           memorials={this.state.memorials}
