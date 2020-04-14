@@ -45,7 +45,7 @@ class App extends React.Component {
   }
 
   searchHandler = (searchText) => {
-    let memorials = this.state.memorials;
+    const memorials =  [...this.state.memorials]
     memorials.forEach((m) => {
       m.hide = !(
         m.type.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -56,19 +56,18 @@ class App extends React.Component {
     this.setState({ memorials: memorials });
   };
 
-  iconClickHandler = (latitude, longitude, hideBubble) => {
-    let memorials = this.state.memorials;
-    memorials.map((m) => {
+  iconClickHandler = (latitude) => {
+    const memorials = this.state.memorials.map((m) => {
       m.hideBubble = true
-      if (latitude === m.latitude){
+      if (latitude === m.latitude){   // Replace with GUID
          m.hideBubble = false
       }
     });
     this.setState({ memorials: memorials});
   };
 
-  bubbleCloseClickHandler = (hideBubble) => {
-    let memorials = this.state.memorials;
+  bubbleCloseClickHandler = () => {
+    const memorials = this.state.memorials.map()
     memorials.map((m) => {
       m.hideBubble = true
     });

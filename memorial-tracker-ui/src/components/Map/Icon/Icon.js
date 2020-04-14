@@ -1,9 +1,8 @@
 import React from "react";
 import styles from "./Icon.module.css";
 
-
 const icon = (props) => {
-  var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${props.lat},${props.lng}&travelmode=walking`
+  var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${props.lat},${props.lng}&travelmode=walking`;
   const assignedStyles = [];
   const bubbleStyle = [];
   if (props.hide) {
@@ -41,18 +40,25 @@ const icon = (props) => {
         alt="memorial icon"
         onClick={props.clicked}
       />
-      <div
-         className={bubbleStyle.join("")}>
-         <div className={styles.type}> {type} 
-          <button className={styles.closeButton} onClick={props.closeBubbleClick}>X</button>
-         </div>
-         <div className={styles.popUpText}>
-         Donor: {props.donator} <br/>
-         Longitude: {props.lng} <br/>
-         Latitude: {props.lat} <br/>
-         Directions: <a href={url} target="_blank">Google Maps</a>
-         </div >
-
+      <div className={bubbleStyle.join("")}>
+        <div className={styles.type}>
+          {type}
+          <button
+            className={styles.closeButton}
+            onClick={props.closeBubbleClick}
+          >
+            X
+          </button>
+        </div>
+        <div className={styles.popUpText}>
+          Donor: {props.donator} <br />
+          Longitude: {props.lng} <br />
+          Latitude: {props.lat} <br />
+          Directions:
+          <a href={url} target="_blank">
+            Google Maps
+          </a>
+        </div>
       </div>
     </div>
   );

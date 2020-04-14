@@ -20,8 +20,8 @@ const map = (props) => {
             key={m.id}
             hide={m.hide}
             hideBubble = {m.hideBubble}
-            clicked={() => props.iconClicked(m.latitude, m.longitude, m.hideBubble)}
-            closeBubbleClick = {() => props.bubbleCloseClick(m.latitude, m.longitude, m.hideBubble)}
+            clicked={() => props.iconClicked(m.latitude)}
+            closeBubbleClick = {() => props.bubbleCloseClick()}
           />
         ))}
       </GoogleMapReact>
