@@ -28,8 +28,8 @@ class App extends React.Component {
           result.memorials.map((m) => {
             m.hide = false;
             m.hideBubble = true;
-           });
-    
+          });
+
           this.setState({
             memorials: result.memorials,
             isLoaded: true,
@@ -45,35 +45,38 @@ class App extends React.Component {
   }
 
   searchHandler = (searchText) => {
-    const memorials =  [...this.state.memorials]
+    const memorials = [...this.state.memorials];
     memorials.forEach((m) => {
       m.hide = !(
         m.type.toLowerCase().includes(searchText.toLowerCase()) ||
         m.donator.toLowerCase().includes(searchText.toLowerCase())
       );
-      if(m.hide === true) {m.hideBubble = true;}
+      if (m.hide === true) {
+        m.hideBubble = true;
+      }
     });
     this.setState({ memorials: memorials });
   };
 
   iconClickHandler = (latitude) => {
-    const memorials = this.state.memorials.map((m) => {
-      m.hideBubble = true
-      if (latitude === m.latitude){   // Replace with GUID
-         m.hideBubble = false
+    const memorials = [...this.state.memorials];
+    memorials.map((m) => {
+      m.hideBubble = true;
+      if (latitude === m.latitude) {
+        // Replace with GUID
+        m.hideBubble = false;
       }
     });
-    this.setState({ memorials: memorials});
+    this.setState({ memorials: memorials });
   };
 
   bubbleCloseClickHandler = () => {
-    const memorials = this.state.memorials.map()
+    const memorials = [...this.state.memorials];
     memorials.map((m) => {
-      m.hideBubble = true
+      m.hideBubble = true;
     });
-    this.setState({ memorials: memorials});
-  }
-
+    this.setState({ memorials: memorials });
+  };
 
   render() {
     const content = this.state.error ? (
@@ -90,7 +93,7 @@ class App extends React.Component {
           memorials={this.state.memorials}
           currentLocation={this.state.currentLocation}
           iconClicked={this.iconClickHandler}
-          bubbleCloseClick = {this.bubbleCloseClickHandler}
+          bubbleCloseClick={this.bubbleCloseClickHandler}
         />
         <Sidebar
           memorials={this.state.memorials}
