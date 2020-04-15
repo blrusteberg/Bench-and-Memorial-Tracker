@@ -15,10 +15,13 @@ const map = (props) => {
           <Icon
             lat={m.latitude}
             lng={m.longitude}
+            donator = {m.donator}
             type={m.type}
             key={m.id}
             hide={m.hide}
-            clicked={() => props.iconClicked(m.latitude, m.longitude)}
+            hideBubble = {m.hideBubble}
+            clicked={() => props.iconClicked(m.latitude)}
+            closeBubbleClick = {() => props.bubbleCloseClick()}
           />
         ))}
       </GoogleMapReact>
