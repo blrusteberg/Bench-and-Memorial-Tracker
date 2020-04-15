@@ -8,6 +8,7 @@ import Settings from "./Settings/Settings";
 import styles from "./Dash.module.css";
 
 const dash = (props) => {
+<<<<<<< HEAD
   let dashView = null;
   switch (props.page) {
     case "Accounts":
@@ -24,6 +25,9 @@ const dash = (props) => {
       break;
   }
   return <div className={styles.Dash}>{dashView}</div>;
+=======
+  return <h1>Display Dashes here</h1>;
+>>>>>>> started nav bar
 };
 
 export default dash;

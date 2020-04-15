@@ -4,6 +4,7 @@ import styles from "./App.module.css";
 import SideBar from "../components/SideBar/SideBar";
 import Dash from "../components/Dash/Dash";
 
+<<<<<<< HEAD
 class App extends React.Component {
   state = {
     page: "Accounts",
@@ -34,6 +35,21 @@ class App extends React.Component {
       </div>
     );
   }
+=======
+function App() {
+  handleNavigationClick = (e) => {
+    const page = e.target.id;
+    if (page) {
+      this.props.onClick(page);
+    }
+  };
+  return (
+    <div className={styles.App}>
+      <SideBar handleNavigationClick={handleNavigationClick} />
+      <Dash />
+    </div>
+  );
+>>>>>>> started nav bar
 }
 
 export default App;
