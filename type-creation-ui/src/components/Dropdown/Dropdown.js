@@ -20,7 +20,7 @@ class Dropdown extends React.Component {
     }
   
     handleChange(event) {
-      console.log(this.state.types);
+      console.log('types',this.state.types);
       this.setState({
         value : event.target.value
       });
