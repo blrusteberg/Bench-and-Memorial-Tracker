@@ -1,0 +1,10 @@
+.NavigationPanel li {
+  width: 100%;
+  border: 1px solid #eee;
+  font-size: 1em;
+  list-style-type: none;
+}
+
+.NavigationPanel ul {
+  width: 100%;
+}

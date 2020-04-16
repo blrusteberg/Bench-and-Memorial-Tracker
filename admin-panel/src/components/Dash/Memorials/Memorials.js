@@ -1,7 +1,9 @@
 import React from "react";
 
-const Memorials = (props) => {
+import styles from "./Memorials.module.css";
+
+const memorials = (props) => {
   return <h1>I am the dash for Memorials</h1>;
 };
 
-export default Memorials;
+export default memorials;
