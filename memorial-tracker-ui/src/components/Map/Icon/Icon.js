@@ -5,12 +5,11 @@ import InfoBubble from "./InfoBubble/InfoBubble";
 const icon = (props) => {
   const assignedStyles = [];
 
-  if (props.hide) {
+  if (props.hideIcon) {
     assignedStyles.push(styles.hidden);
   } else {
     assignedStyles.push(styles.IconImage);
   }
-
 
   let type = "";
   switch (props.type) {
@@ -35,12 +34,12 @@ const icon = (props) => {
         alt="memorial icon"
         onClick={props.clicked}
       />
-      <InfoBubble 
+      <InfoBubble
         attributes={props.attributes}
         closeBubbleClick={props.closeBubbleClick}
         hideBubble={props.hideBubble}
-        type = {props.type} 
-        />
+        type={props.type}
+      />
     </div>
   );
 };

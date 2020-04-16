@@ -18,7 +18,7 @@ const map = (props) => {
             type={m.type}
             guid={m.guid}
             attributes ={m.attributes}
-            hide={m.hide}
+            hideIcon={m.hideIcon}
             hideBubble={m.hideBubble}
             clicked={() => props.iconClicked(m.guid)}
             closeBubbleClick = {() => props.bubbleCloseClick()}

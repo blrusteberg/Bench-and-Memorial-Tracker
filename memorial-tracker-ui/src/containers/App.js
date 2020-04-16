@@ -43,11 +43,17 @@ class App extends React.Component {
   searchHandler = (searchText) => {
     const memorials = [...this.state.memorials];
     memorials.forEach((m) => {
-      m.hide = !(
-        m.type.toLowerCase().includes(searchText.toLowerCase()) ||
-        m.donator.toLowerCase().includes(searchText.toLowerCase())
-      );
-      if (m.hide === true) {
+      let hideIcon = true;
+      m.attributes.forEach((a) => {
+        console.log(a);
+        if (
+          a.value.toString().toLowerCase().includes(searchText.toLowerCase())
+        ) {
+          hideIcon = false;
+        }
+        m.hideIcon = hideIcon;
+      });
+      if (m.hideIcon === true) {
         m.hideBubble = true;
       }
     });

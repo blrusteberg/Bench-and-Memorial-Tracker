@@ -18,7 +18,7 @@ const sidebar = (props) => {
               key={m.guid}
               attributes={m.attributes}
               type={m.type}
-              hide={m.hide}
+              hide={m.hideIcon}
             />
           );
         })}

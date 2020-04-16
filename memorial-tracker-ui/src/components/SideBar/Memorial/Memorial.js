@@ -32,7 +32,16 @@ const memorial = (props) => {
       />
       <div className={styles.MemorialInfo}>
         {props.attributes.slice(2).map((a) => {
-          return <p>{a.value}</p>;
+          return (
+            <p>
+              {a.name}:{" "}
+              {typeof a.value === "boolean"
+                ? a.value
+                  ? "Yes"
+                  : "No"
+                : a.value}
+            </p>
+          );
         })}
       </div>
     </div>
