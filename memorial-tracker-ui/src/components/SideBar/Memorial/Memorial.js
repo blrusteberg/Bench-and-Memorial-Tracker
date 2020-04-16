@@ -10,7 +10,7 @@ const memorial = (props) => {
   }
 
   let type = "";
-  switch (props.type) {
+  switch (props.type.toLowerCase()) {
     case "tree":
       type = "tree";
       break;
@@ -31,7 +31,9 @@ const memorial = (props) => {
         alt="memorial type icon"
       />
       <div className={styles.MemorialInfo}>
-        <p>{props.donor}</p>
+        {props.attributes.slice(2).map((a) => {
+          return <p>{a.value}</p>;
+        })}
       </div>
     </div>
   );
