@@ -1,0 +1,55 @@
+.hidden {
+    display: none;
+  }
+
+.popUp {
+    visibility: visible;
+    width: 250px;
+    border:2px solid black;
+    background-color: white;
+    border-radius: 10px;
+    padding: 8px;
+    position: absolute;
+    bottom: 125%;
+    margin-left: -95px;
+    margin-bottom: 10px;
+    padding-top: 5px;
+    text-shadow:0 -1px #000000;
+    box-shadow: black;
+    -webkit-box-shadow: 0 0  8px #000;
+    animation: fadein 2s;
+  }
+  .popUp::after {
+    height:20px;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+  ;}
+  
+  @keyframes fadein {
+    from {opacity: 0;}
+    to   {opacity: 1;}
+  }
+  
+  .type {
+    text-align: left;
+    padding: 5px;
+    font-size: 20px;
+    
+  }
+  
+  .popUpText {
+    text-align: left;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding: 5px;
+    font-size: 15px;
+  }
+  
+  .closeButton {
+    border-radius: 3px;
+    border: 1px solid black;
+    padding: 2px;
+    float: right;
+    font-size: 12px;
+    
+  }

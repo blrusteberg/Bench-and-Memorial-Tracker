@@ -13,14 +13,14 @@ const map = (props) => {
       >
         {props.memorials.map((m) => (
           <Icon
-            lat={m.latitude}
-            lng={m.longitude}
-            donator = {m.donator}
+            lat={m.attributes[0].value}
+            lng={m.attributes[1].value}
             type={m.type}
-            key={m.id}
+            guid={m.guid}
+            attributes ={m.attributes}
             hide={m.hide}
-            hideBubble = {m.hideBubble}
-            clicked={() => props.iconClicked(m.latitude)}
+            hideBubble={m.hideBubble}
+            clicked={() => props.iconClicked(m.guid)}
             closeBubbleClick = {() => props.bubbleCloseClick()}
           />
         ))}

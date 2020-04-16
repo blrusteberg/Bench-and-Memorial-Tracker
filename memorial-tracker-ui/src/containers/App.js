@@ -54,11 +54,11 @@ class App extends React.Component {
     this.setState({ memorials: memorials });
   };
 
-  iconClickHandler = (latitude) => {
+  iconClickHandler = (guid) => {
     const memorials = [...this.state.memorials];
     memorials.map((m) => {
       m.hideBubble = true;
-      if (latitude === m.latitude) {
+      if (guid === m.guid) {
         // Replace with GUID
         m.hideBubble = false;
       }
