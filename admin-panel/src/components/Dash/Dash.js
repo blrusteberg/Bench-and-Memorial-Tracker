@@ -24,16 +24,5 @@ const dash = (props) => {
       break;
   }
   return <div className={styles.Dash}>{dashView}</div>;
-=======
-    case "Memorials":
-      dashView = <Memorials />;
-    case "Memorial Types":
-      dashView = <MemorialTypes />;
-    case "Settings":
-      dashView = <Settings />;
-  }
-  return <div className={styles.Dash}>{dashView}</div>;
->>>>>>> Added some nav functionality
 };
-
 export default dash;

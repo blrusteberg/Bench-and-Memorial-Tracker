@@ -1,10 +1,14 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> added functionality and some styling
 .NavigationPanel {
   background-color: 30b7f5;
   height: 100%;
   outline:
 }
 
+<<<<<<< HEAD
 .NavigationPanel li {
   width: 100%;
   font-size: 1em;
@@ -16,14 +20,21 @@
   padding: 0;
   list-style-type: none;
 =======
+=======
+>>>>>>> added functionality and some styling
 .NavigationPanel li {
   width: 100%;
-  border: 1px solid #eee;
   font-size: 1em;
   list-style-type: none;
+  padding: 20px 10px;
 }
 
 .NavigationPanel ul {
+<<<<<<< HEAD
   width: 100%;
 >>>>>>> Added some nav functionality
+=======
+  padding: 0;
+  list-style-type: none;
+>>>>>>> added functionality and some styling
 }
