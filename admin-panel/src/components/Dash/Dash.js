@@ -12,12 +12,16 @@ const dash = (props) => {
   switch (props.page) {
     case "Accounts":
       dashView = <Accounts />;
+      break;
     case "Memorials":
       dashView = <Memorials />;
+      break;
     case "Memorial Types":
       dashView = <MemorialTypes />;
+      break;
     case "Settings":
       dashView = <Settings />;
+      break;
   }
   return <div className={styles.Dash}>{dashView}</div>;
 };
