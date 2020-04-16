@@ -7,7 +7,8 @@ class Dropdown extends React.Component {
       super(props);
       this.inputformElement = React.createRef();
       this.state = {
-        types: memtypes.memorialTypes[0],
+        types: memtypes.memorialTypes,
+        value: 0,
         newType: ''
     };
   
@@ -15,9 +16,14 @@ class Dropdown extends React.Component {
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleInputChange = this.handleInputChange.bind(this);
       this.addType = this.addType.bind(this);
+      this.updateAttributes = this.updateAttributes.bind(this);
     }
   
     handleChange(event) {
+      console.log(this.state.types);
+      this.setState({
+        value : event.target.value
+      });
       this.inputformElement.current.handleSelected(this.state.types[event.target.value]);
     }
   
@@ -33,9 +39,10 @@ class Dropdown extends React.Component {
 
     addType(event) {
       event.preventDefault();
+      let addType = { 'name': this.state.newType, 'attributes': [] };
 
       this.setState({
-        types: Object.assign(this.state.types, {[this.state.newType]: {'attributes': []}})
+        types: this.state.types.concat(addType)
       });
 
       this.setState({
@@ -43,9 +50,17 @@ class Dropdown extends React.Component {
       });
       document.getElementById("new-type").value = "";
     }
+
+    updateAttributes(newState) {
+      this.setState(prevState => {
+        let types = Object.assign({}, prevState.types); 
+        types[this.state.value].attributes = newState;                     
+        return types;                          
+      })
+    }
   
     render() {
-      const firstType = Object.keys(this.state.types)[0]
+      const firstType = Object.values(this.state.types)[0];
       return (
         <div>
           <input id="new-type" type="text" defaultValue='' name={this.state.newType} onChange={this.handleInputChange}/> 
@@ -53,16 +68,16 @@ class Dropdown extends React.Component {
           <form onChange={this.handleChange}>
             <label>
               Pick a type:
-              <select value={this.state.types[0]}>
-                {Object.keys(this.state.types).map(list => (
-                    <option key={list} value={list}>
-                        {list}
+              <select>
+                {(Object.values(this.state.types)).map((list, n) => (
+                    <option key={list.name} value={n}>
+                        {list.name}
                     </option>
                 ))}
               </select>
             </label>
-          </form>
-          <InputForm ref={this.inputformElement} selected={this.state.types[firstType]}/>
+          </form> 
+          <InputForm ref={this.inputformElement} selected={firstType} updateAttributes={this.updateAttributes}/>
         </div>
       );
     }

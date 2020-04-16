@@ -4,12 +4,10 @@ class InputForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        change: props.selected.attributes,
-        selected: props.selected.attributes,
-        testObj: []
+        selected: props.selected.attributes
     };
 
-  
+      this.handleChange = this.handleChange.bind(this);
       this.addAttribute = this.addAttribute.bind(this);
       this.deleteAttribute = this.deleteAttribute.bind(this);
       this.saveAttributes = this.saveAttributes.bind(this);
@@ -19,13 +17,29 @@ class InputForm extends React.Component {
       
     }
 
+    handleChange(event){
+      // console.log(this.state.selected);
+      // this.setState({
+      //   selected: this.state.selected.concat(newAttribute)
+      // });
+      this.state.selected[event.target.id].name = event.target.value
+      // let newState = {'name' : event.target.value, "value": null, "required": false};
+      // this.setState(prevState => {
+      //   let selected = Object.assign({}, prevState.selected); 
+      //   console.log(selected);
+      //   selected[event.target.id] = newState;                     
+      //   return selected;                          
+      // })
+      // document.getElementById(event.target.id).value = event.target.value;
+    }
+
     handleSelected(type) {
       this.setState({selected: type.attributes});
     }
 
     addAttribute(event) {
       event.preventDefault();
-      let newAttribute = {'' : null};
+      let newAttribute = {'name' : '', "value": null, "required": false};
       this.setState({
         selected: this.state.selected.concat(newAttribute)
       });
@@ -45,6 +59,7 @@ class InputForm extends React.Component {
       this.setState({
         selected: newSelected
       })
+      this.props.updateAttributes(newSelected);
     }
 
   
@@ -53,13 +68,10 @@ class InputForm extends React.Component {
         <div>
           <button onClick={this.addAttribute}>Add Attribute</button>
           <button onClick={this.saveAttributes}>Save</button>
-          <form>
+          <form onChange={this.handleChange}>
             <label>
-              {this.state.selected.map((items, n) => (Object.keys(items)[0] === 'coordinates') ?
-                <div><input type="text" defaultValue='latitude' readOnly = {true} /> 
-                <br />
-                <input type="text" defaultValue='longitude' readOnly = {true} /></div> :
-                <div><input type="text" key={Object.keys(items)[0]} defaultValue={Object.keys(items)[0]}  id={n} />
+              {this.state.selected.map((item, n) => 
+                <div><input type="text" key={item.name} defaultValue={item.name}  id={n} />
                 <button onClick={this.deleteAttribute.bind(this, n)}>DELETE</button></div>
               )}
             </label>
