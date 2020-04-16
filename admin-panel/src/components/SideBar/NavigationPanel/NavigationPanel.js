@@ -1,8 +1,10 @@
 import React from "react";
 
+import styles from "./NavigationPanel.module.css";
+
 const navigationPanel = (props) => {
   return (
-    <div>
+    <div className={styles.NavigationPanel}>
       <ul onClick={props.handleNavigationClick}>
         <li>
           <div id="Accounts">Accounts</div>
@@ -14,7 +16,7 @@ const navigationPanel = (props) => {
           <div id="Memorial Types">Memorial Types</div>
         </li>
         <li>
-          <div id="Settings">Settings </div>
+          <div id="Settings">Settings</div>
         </li>
       </ul>
     </div>
