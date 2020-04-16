@@ -1,0 +1,17 @@
+.NavigationPanel {
+  background-color: #30b7f5;
+  height: 100%;
+  outline: none;
+}
+
+.NavigationPanel li {
+  width: 100%;
+  font-size: 1em;
+  list-style-type: none;
+  padding: 20px 10px;
+}
+
+.NavigationPanel ul {
+  padding: 0;
+  list-style-type: none;
+}

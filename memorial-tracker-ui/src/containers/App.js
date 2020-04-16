@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
+import axios from "axios";
 
 class App extends React.Component {
   state = {
@@ -21,27 +22,22 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log("[App.js] componentDidMount");
-    fetch("http://localhost:1337/api/memorials")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          result.memorials.map((m) => {
-            m.hide = false;
-            m.hideBubble = true;
-          });
-
-          this.setState({
-            memorials: result.memorials,
-            isLoaded: true,
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error: error,
-          });
-        }
-      );
+    axios.get("http://localhost:1337/api/memorials").then(
+      (result) => {
+        console.log(result.data.memorials);
+        result.data.memorials.map((m) => (m.hide = false));
+        this.setState({
+          memorials: result.data.memorials,
+          isLoaded: true,
+        });
+      },
+      (error) => {
+        this.setState({
+          isLoaded: true,
+          error: error,
+        });
+      }
+    );
   }
 
   searchHandler = (searchText) => {

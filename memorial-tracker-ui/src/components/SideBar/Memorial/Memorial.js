@@ -31,7 +31,7 @@ const memorial = (props) => {
         alt="memorial type icon"
       />
       <div className={styles.MemorialInfo}>
-        <p>{props.donator}</p>
+        <p>{props.donor}</p>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 function getMemorialById(id) {
   let m;
-  memorials.memorials.forEach(memorial => {
+  memorials.memorials.forEach((memorial) => {
     if (memorial.id == id) {
       m = memorial;
     }
@@ -41,7 +41,7 @@ function getMemorialById(id) {
 
 function getMemorialByType(type) {
   let m = [];
-  memorials.memorials.forEach(memorial => {
+  memorials.memorials.forEach((memorial) => {
     if (memorial.type == type) {
       m.push(memorial);
     }
