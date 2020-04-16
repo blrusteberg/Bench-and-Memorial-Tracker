@@ -56,15 +56,15 @@ class InputForm extends React.Component {
     addAttribute(event) {
       event.preventDefault();
       let blankAttribute = {'name' : '', "value": null, "required": false};
-      let newAttribute = this.state.selected.concat(blankAttribute)
+      let attrArray = [...this.state.selected];
+      let newAttribute = attrArray.concat(blankAttribute);
       this.setState({
         selected: newAttribute
       });
       this.props.updateAttributes(newAttribute);
     }
 
-    deleteAttribute(attribute, event) {
-      event.preventDefault();
+    deleteAttribute(attribute) {
       const newSelected = this.state.selected.filter(item => {
         return item !== this.state.selected[attribute];
       });
@@ -89,8 +89,8 @@ class InputForm extends React.Component {
           <form>
             <label>
               {this.state.selected.map((item, n) => 
-                <div><input type="text" key={item.name} defaultValue={item.name}  id={n} onChange={event => this.handleChange(event.target.value, n)}/>
-                <button onClick={this.deleteAttribute.bind(this, n)}>DELETE</button></div>
+                <div><input type="text" key={n} defaultValue={item.name}  id={n} onChange={event => this.handleChange(event.target.value, n)}/>
+                <button onClick={() => this.deleteAttribute(n)}>DELETE</button></div>
               )}
             </label>
           </form>
