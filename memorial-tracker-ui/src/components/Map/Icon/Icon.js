@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./Icon.module.css";
 import InfoBubble from "./InfoBubble/InfoBubble";
-import infoBubble from "./InfoBubble/InfoBubble";
 
 const icon = (props) => {
   const assignedStyles = [];
@@ -38,7 +37,10 @@ const icon = (props) => {
       />
       <InfoBubble 
         attributes={props.attributes}
-        closeBubbleClick={props.closeBubbleClick} />
+        closeBubbleClick={props.closeBubbleClick}
+        hideBubble={props.hideBubble}
+        type = {props.type} 
+        />
     </div>
   );
 };
