@@ -61,9 +61,6 @@ class memorialTypes extends React.Component {
   }
 
   updateAttribute(value, n) {
-    // this.props.updateAttributes(newSelected);
-    // document.getElementById(event.target.id).value = event.target.value;
-    // console.log(value, n);
     let newSelected = [...this.state.selected];
     newSelected[n].name = value;
 
