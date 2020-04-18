@@ -14,7 +14,7 @@ paths:
     get:
       summary: Get all memorials
       tags:
-        - memorials
+        - Memorials
       responses:
         "200":
           description: OK
@@ -23,20 +23,134 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Memorial"
+                  $ref: "#/components/schemas/memorials"
+
+    post:
+      summary: Add new memorials
+      tags:
+        - Memorials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/memorials"
+            examples:
+              memorials:
+                $ref: "#/components/examples/memorials"
+      responses:
+        "201":
+          description: Memorials added successfully
+
+  /memorials/types:
+    post:
+      summary: Add new memorial type
+      tags:
+        - Memorial Types
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/memorialType"
+            examples:
+              memorialType:
+                $ref: "#/components/examples/memorialType"
+      responses:
+        "201":
+          description: Memorial type added successfully
 
 components:
   schemas:
-    Memorial:
+    memorials:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+          attributes:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                value:
+                  oneOf:
+                    - type: string
+                    - type: boolean
+                    - type: number
+          uuid:
+            type: string
+    memorialType:
       type: object
       properties:
-        id:
-          type: integer
-        type:
+        name:
           type: string
-        donator:
-          type: string
-        x-coordinate:
-          type: number
-        y-coordinate:
-          type: number
+        attributes:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                oneOf:
+                  - type: string
+                  - type: boolean
+                  - type: number
+              required:
+                type: boolean
+    memorialTypes:
+      type: array
+      items:
+        $ref: "#/components/schemas/memorialType"
+
+  examples:
+    memorials:
+      summary: An example of a memorial array
+      value:
+        memorials:
+          - type: Bench
+            attributes:
+              - name: longitude
+                value: -89.955567
+              - name: latitude
+                value: 38.813762
+              - name: donor
+                value: John Doe
+              - name: Date Placed
+                value: January 31, 2018
+          - type: Historical Building
+            attributes:
+              - name: longitude
+                value: -90.115567
+              - name: latitude
+                value: 38.923124
+              - name: Public Accessible
+                value: true
+              - name: Handicap Accessible
+                value: false
+              - name: Date Built
+                value: February 31, 1968
+    memorialType:
+      summary: An example of a memorial type
+      value:
+        name: Tree
+        attributes:
+          - name: longitude
+            value: null
+            required: true
+          - name: latitude
+            value: null
+            required: true
+          - name: Donor
+            value: null
+            required: true
+          - name: Date Planted
+            value: null
+            required: true
+          - name: Species
+            value: null
+            required: false
