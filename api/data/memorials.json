@@ -2,7 +2,7 @@
   "memorials": [
     {
       "type": "Tree",
-      "guid": "1347e2c1-5b12-4aae-aa39-2890127296fa",
+      "uuid": "1347e2c1-5b12-4aae-aa39-2890127296fa",
       "attributes": [
         { "name": "longitude", "value": -89.936918 },
         { "name": "latitude", "value": 38.806531 },
@@ -12,7 +12,7 @@
     },
     {
       "type": "Bench",
-      "guid": "8df4867c-fe6e-4f13-a911-d7db66ff715a",
+      "uuid": "8df4867c-fe6e-4f13-a911-d7db66ff715a",
       "attributes": [
         { "name": "longitude", "value": -89.955567 },
         { "name": "latitude", "value": 38.813762 },
@@ -22,7 +22,7 @@
     },
     {
       "type": "Art",
-      "guid": "3b360019-667f-40e1-8e30-5772c267c35f",
+      "uuid": "3b360019-667f-40e1-8e30-5772c267c35f",
       "attributes": [
         { "name": "longitude", "value": -89.966913 },
         { "name": "latitude", "value": 38.810422 },
@@ -32,7 +32,7 @@
     },
     {
       "type": "Art",
-      "guid": "72c30160-27b0-41f7-b2ad-8051d2b41ffd",
+      "uuid": "72c30160-27b0-41f7-b2ad-8051d2b41ffd",
       "attributes": [
         { "name": "longitude", "value": -89.975152 },
         { "name": "latitude", "value": 38.810389 },
@@ -42,7 +42,7 @@
     },
     {
       "type": "Historical Building",
-      "guid": "80ad0d24-9235-4623-993e-68e8832400c1",
+      "uuid": "80ad0d24-9235-4623-993e-68e8832400c1",
       "attributes": [
         { "name": "longitude", "value": -89.962793 },
         { "name": "latitude", "value": 38.812362 },
@@ -53,7 +53,7 @@
     },
     {
       "type": "Tree",
-      "guid": "3b3f7a6a-a1da-43f4-b292-8297073b76b1",
+      "uuid": "3b3f7a6a-a1da-43f4-b292-8297073b76b1",
       "attributes": [
         { "name": "longitude", "value": -89.938928 },
         { "name": "latitude", "value": 38.806649 },
@@ -63,7 +63,7 @@
     },
     {
       "type": "Historical Building",
-      "guid": "08f703bd-8d67-4c56-bd35-70c0dd8026c9",
+      "uuid": "08f703bd-8d67-4c56-bd35-70c0dd8026c9",
       "attributes": [
         { "name": "longitude", "value": -90.009141 },
         { "name": "latitude", "value": 38.800341 },
@@ -73,7 +73,7 @@
     },
     {
       "type": "Bench",
-      "guid": "b749dbd5-e14d-42a0-b765-423a2debb6f6",
+      "uuid": "b749dbd5-e14d-42a0-b765-423a2debb6f6",
       "attributes": [
         { "name": "longitude", "value": -89.966567 },
         { "name": "latitude", "value": 38.823961 },
