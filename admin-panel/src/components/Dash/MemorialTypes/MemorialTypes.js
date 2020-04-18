@@ -93,22 +93,22 @@ class memorialTypes extends React.Component {
     let memorialTypes = this.state.types;
     memorialTypes = {memorialTypes};
     let memString = JSON.stringify(memorialTypes);
-    // post to new saved types
+    
+    // post newly saved types to memorial json
   }
 
   render() {
     return (
-    <div className="memorialTypes">
+    <div>
       <input type="text" id="new-type" defaultValue='' name={this.state.newType} onChange={event => this.handleInputChange(event)}/>
-      <button onClick={() => this.addType()}>Add Type</button>
-      <br />
+      <button className={styles.button} onClick={() => this.addType()}>Add Type</button>
       <Dropdown  
         types={this.state.types}
         dropdownChange={this.dropdownChange}
       />
-      <button onClick={() => this.addAttribute()}>Add Attribute</button>
-      <button onClick={() => this.saveAttributes()}>Save</button>
-      <Attributes 
+      <button className={styles.button} onClick={() => this.addAttribute()}>Add Attribute</button>
+      <button className={styles.button} onClick={() => this.saveAttributes()}>Save</button>
+      <Attributes
         attributes={this.state.selected}
         updateAttribute={this.updateAttribute}
         deleteAttribute={this.deleteAttribute}

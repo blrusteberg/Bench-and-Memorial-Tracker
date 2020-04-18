@@ -10,8 +10,8 @@ const attributes = (props) => {
             </div>
             :
             <div>
-                <input type="text" key={n} value={item.name} onChange={event => props.updateAttribute(event.target.value, n)}/>
-                <button onClick={() => props.deleteAttribute(n)}>DELETE</button>
+                <div><input type="text" key={n} value={item.name} onChange={event => props.updateAttribute(event.target.value, n)}/></div>
+                <button className={styles.button} onClick={() => props.deleteAttribute(n)}>DELETE</button>
             </div>
         )}
   </label>
