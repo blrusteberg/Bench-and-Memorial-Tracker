@@ -2,49 +2,53 @@ const express = require("express");
 const app = express();
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
-const swaggerDocument = YAML.load("./swagger.yaml");
-const memorials = require("./data/memorials.json");
 const port = process.env.PORT || 1337;
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const swaggerDocument = YAML.load("./docs/swagger.yaml");
+const memorialRoutes = require("./routes/memorials.js");
+const memorialTypeRoutes = require("./routes/memorialTypes.js");
+
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
 
 app.get("/", (req, res) => {
   res.status(308);
   res.redirect("/api/docs");
 });
 
-app.get("/api/memorials", (req, res) => {
-  res.status(200);
-  res.send(memorials);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/memorials", memorialRoutes);
+app.use("/memorials/types", memorialTypeRoutes);
+
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
 });
 
-app.get("/api/memorials/:id", (req, res) => {
-  res.status(200);
-  let mem = getMemorialById(req.params.id);
-  console.log(mem);
-  res.send(mem);
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    },
+  });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
-
-function getMemorialById(id) {
-  let m;
-  memorials.memorials.forEach((memorial) => {
-    if (memorial.id == id) {
-      m = memorial;
-    }
-  });
-  return typeof m == "undefined" ? "Memorial not found" : m;
-}
-
-function getMemorialByType(type) {
-  let m = [];
-  memorials.memorials.forEach((memorial) => {
-    if (memorial.type == type) {
-      m.push(memorial);
-    }
-  });
-  return m;
-}

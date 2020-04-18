@@ -3,38 +3,106 @@
     {
       "name": "Tree",
       "attributes": [
-        { "name": "longitude", "value": null, "required": null },
-        { "name": "latitude", "value": null, "required": null },
-        { "name": "Donor", "value": null, "required": null },
-        { "name": "Date Planted", "value": null, "required": null }
+        {
+          "name": "longitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "latitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Donor",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Date Planted",
+          "value": null,
+          "required": null
+        }
       ]
     },
     {
       "name": "Bench",
       "attributes": [
-        { "name": "longitude", "value": null, "required": null },
-        { "name": "latitude", "value": null, "required": null },
-        { "name": "Donor", "value": null, "required": null },
-        { "name": "Date Placed", "value": null, "required": null }
+        {
+          "name": "longitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "latitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Donor",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Date Placed",
+          "value": null,
+          "required": null
+        }
       ]
     },
     {
       "name": "Historical Building",
       "attributes": [
-        { "name": "longitude", "value": null, "required": null },
-        { "name": "latitude", "value": null, "required": null },
-        { "name": "Owner", "value": null, "required": null },
-        { "name": "Public Accessible", "value": null, "required": null },
-        { "name": "Handicap Accessible", "value": null, "required": null }
+        {
+          "name": "longitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "latitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Owner",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Public Accessible",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Handicap Accessible",
+          "value": null,
+          "required": null
+        }
       ]
     },
     {
       "name": "Art",
       "attributes": [
-        { "name": "longitude", "value": null, "required": null },
-        { "name": "latitude", "value": null, "required": null },
-        { "name": "Artist", "value": null, "required": null },
-        { "name": "Date Placed", "value": null, "required": null }
+        {
+          "name": "longitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "latitude",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Artist",
+          "value": null,
+          "required": null
+        },
+        {
+          "name": "Date Placed",
+          "value": null,
+          "required": null
+        }
       ]
     }
   ]
