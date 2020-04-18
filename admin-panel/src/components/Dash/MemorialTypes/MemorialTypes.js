@@ -11,7 +11,7 @@ class memorialTypes extends React.Component {
           types: memorials.memorialTypes,
           selected: memorials.memorialTypes[0].attributes,
           value: 0,
-          counter:  0
+          newType: ''
     };
     this.updateAttribute = this.updateAttribute.bind(this)
   }
@@ -44,10 +44,7 @@ class memorialTypes extends React.Component {
   };
 
   addAttribute() {
-    this.setState({ 
-      counter: this.state.counter+1
-    });
-    let blankAttribute = {'name' : ''+this.state.counter, "value": null, "required": false};
+    let blankAttribute = {'name' : '', "value": null, "required": false};
     let newSelected = [...this.state.selected];
     newSelected = newSelected.concat(blankAttribute);
 
@@ -73,14 +70,44 @@ class memorialTypes extends React.Component {
     });
   }
 
+  handleInputChange(event) {
+    this.setState({
+      newType : event.target.value
+    });
+  }
+
+  addType() {
+      let addType = { 'name': this.state.newType, 'attributes': [] };
+
+      this.setState({
+        types: this.state.types.concat(addType)
+      });
+
+      this.setState({
+        newType : ''
+      });
+      document.getElementById("new-type").value = "";
+  }
+
+  saveAttributes() {
+    let memorialTypes = this.state.types;
+    memorialTypes = {memorialTypes};
+    let memString = JSON.stringify(memorialTypes);
+    // post to new saved types
+  }
+
   render() {
     return (
     <div className="memorialTypes">
+      <input type="text" id="new-type" defaultValue='' name={this.state.newType} onChange={event => this.handleInputChange(event)}/>
+      <button onClick={() => this.addType()}>Add Type</button>
+      <br />
       <Dropdown  
         types={this.state.types}
         dropdownChange={this.dropdownChange}
       />
       <button onClick={() => this.addAttribute()}>Add Attribute</button>
+      <button onClick={() => this.saveAttributes()}>Save</button>
       <Attributes 
         attributes={this.state.selected}
         updateAttribute={this.updateAttribute}
