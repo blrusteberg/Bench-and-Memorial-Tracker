@@ -30,7 +30,7 @@ class memorialTypes extends React.Component {
     //   return item.name !== name;
     // });
 
-    const newSelected = this.state.selected;
+    const newSelected = [...this.state.selected];
     newSelected.splice(n, 1);
 
     const types = [...this.state.types];
