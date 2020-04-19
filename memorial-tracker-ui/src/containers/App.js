@@ -22,10 +22,12 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log("[App.js] componentDidMount");
-    axios.get("http://localhost:1337/api/memorials").then(
+    axios.get("http://localhost:1337/memorials").then(
       (result) => {
-        console.log(result.data.memorials);
-        result.data.memorials.map((m) => (m.hide = false));
+        result.data.memorials.map((m) => {
+          m.hideIcon = false;
+          m.hideBubble = true;
+        });
         this.setState({
           memorials: result.data.memorials,
           isLoaded: true,
@@ -43,23 +45,27 @@ class App extends React.Component {
   searchHandler = (searchText) => {
     const memorials = [...this.state.memorials];
     memorials.forEach((m) => {
-      m.hide = !(
-        m.type.toLowerCase().includes(searchText.toLowerCase()) ||
-        m.donator.toLowerCase().includes(searchText.toLowerCase())
-      );
-      if (m.hide === true) {
+      let hideIcon = true;
+      m.attributes.forEach((a) => {
+        if (
+          a.value.toString().toLowerCase().includes(searchText.toLowerCase())
+        ) {
+          hideIcon = false;
+        }
+        m.hideIcon = hideIcon;
+      });
+      if (m.hideIcon === true) {
         m.hideBubble = true;
       }
     });
     this.setState({ memorials: memorials });
   };
 
-  iconClickHandler = (latitude) => {
+  iconClickHandler = (uuid) => {
     const memorials = [...this.state.memorials];
     memorials.map((m) => {
       m.hideBubble = true;
-      if (latitude === m.latitude) {
-        // Replace with GUID
+      if (uuid === m.uuid) {
         m.hideBubble = false;
       }
     });

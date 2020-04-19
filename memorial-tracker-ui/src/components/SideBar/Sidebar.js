@@ -14,7 +14,12 @@ const sidebar = (props) => {
       <div className={styles.ScrollMenu}>
         {props.memorials.map((m) => {
           return (
-            <Memorial key={m.id} donor={m.donor} type={m.type} hide={m.hide} />
+            <Memorial
+              key={m.guid}
+              attributes={m.attributes}
+              type={m.type}
+              hide={m.hideIcon}
+            />
           );
         })}
       </div>

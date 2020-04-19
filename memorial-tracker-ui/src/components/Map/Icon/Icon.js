@@ -1,35 +1,29 @@
 import React from "react";
 import styles from "./Icon.module.css";
+import InfoBubble from "./InfoBubble/InfoBubble";
 
 const icon = (props) => {
-  var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${props.lat},${props.lng}&travelmode=walking`;
   const assignedStyles = [];
-  const bubbleStyle = [];
-  if (props.hide) {
+
+  if (props.hideIcon) {
     assignedStyles.push(styles.hidden);
   } else {
     assignedStyles.push(styles.IconImage);
   }
 
-  if (props.hideBubble) {
-    bubbleStyle.push(styles.hidden);
-  } else {
-    bubbleStyle.push(styles.popUp);
-  }
-
   let type = "";
   switch (props.type) {
-    case "tree":
-      type = "tree";
+    case "Tree":
+      type = "Tree";
       break;
-    case "bench":
-      type = "bench";
+    case "Bench":
+      type = "Bench";
       break;
-    case "art":
-      type = "art";
+    case "Art":
+      type = "Art";
       break;
     default:
-      type = "memorial";
+      type = "Memorial";
   }
 
   return (
@@ -40,26 +34,12 @@ const icon = (props) => {
         alt="memorial icon"
         onClick={props.clicked}
       />
-      <div className={bubbleStyle.join("")}>
-        <div className={styles.type}>
-          {type}
-          <button
-            className={styles.closeButton}
-            onClick={props.closeBubbleClick}
-          >
-            X
-          </button>
-        </div>
-        <div className={styles.popUpText}>
-          Donor: {props.donator} <br />
-          Longitude: {props.lng} <br />
-          Latitude: {props.lat} <br />
-          Directions:
-          <a href={url} target="_blank">
-            Google Maps
-          </a>
-        </div>
-      </div>
+      <InfoBubble
+        attributes={props.attributes}
+        closeBubbleClick={props.closeBubbleClick}
+        hideBubble={props.hideBubble}
+        type={props.type}
+      />
     </div>
   );
 };
