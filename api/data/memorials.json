@@ -179,36 +179,6 @@
           "value": "March 2, 2004"
         }
       ]
-    },
-    {
-      "type": "Tree",
-      "guid": "709e9ffd-ad55-4681-9b6b-e5e4822aba3c",
-      "attributes": [
-        { "name": "latitude", "value": 38.805149 },
-        { "name": "longitude", "value": -89.938819 },
-        { "name": "Donor", "value": "Daniel Smith" },
-        { "name": "Date Planted", "value": "August 23, 1999" }
-      ]
-    },
-    {
-      "type": "Historical Building",
-      "guid": "72b64864-f2c4-4b20-bc82-97ceec06fb72",
-      "attributes": [
-        { "name": "latitude", "value": 38.811341 },
-        { "name": "longitude", "value": -90.018141 },
-        { "name": "Public Accessible", "value": true },
-        { "name": "Handicap Accessible", "value": true }
-      ]
-    },
-    {
-      "type": "Bench",
-      "guid": "b7668c56-0205-482c-aec7-960bac8edb2a",
-      "attributes": [
-        { "name": "latitude", "value": 38.731741 },
-        { "name": "longitude", "value": -89.971562 },
-        { "name": "Donor", "value": "John Buck" },
-        { "name": "Date Placed", "value": "September 19, 2015" }
-      ]
     }
   ]
 }

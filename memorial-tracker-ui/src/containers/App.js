@@ -24,8 +24,10 @@ class App extends React.Component {
     console.log("[App.js] componentDidMount");
     axios.get("http://localhost:1337/memorials").then(
       (result) => {
-        console.log(result.data.memorials);
-        result.data.memorials.map((m) => (m.hide = false));
+        result.data.memorials.map((m) => {
+          m.hideIcon = false;
+          m.hideBubble = true;
+        });
         this.setState({
           memorials: result.data.memorials,
           isLoaded: true,
@@ -45,7 +47,6 @@ class App extends React.Component {
     memorials.forEach((m) => {
       let hideIcon = true;
       m.attributes.forEach((a) => {
-        console.log(a);
         if (
           a.value.toString().toLowerCase().includes(searchText.toLowerCase())
         ) {
@@ -60,12 +61,11 @@ class App extends React.Component {
     this.setState({ memorials: memorials });
   };
 
-  iconClickHandler = (guid) => {
+  iconClickHandler = (uuid) => {
     const memorials = [...this.state.memorials];
     memorials.map((m) => {
       m.hideBubble = true;
-      if (guid === m.guid) {
-        // Replace with GUID
+      if (uuid === m.uuid) {
         m.hideBubble = false;
       }
     });

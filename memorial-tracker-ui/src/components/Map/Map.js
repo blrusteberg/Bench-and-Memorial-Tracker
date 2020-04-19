@@ -20,7 +20,7 @@ const map = (props) => {
             attributes={m.attributes}
             hideIcon={m.hideIcon}
             hideBubble={m.hideBubble}
-            clicked={() => props.iconClicked(m.guid)}
+            clicked={() => props.iconClicked(m.uuid)}
             closeBubbleClick={() => props.bubbleCloseClick()}
           />
         ))}
