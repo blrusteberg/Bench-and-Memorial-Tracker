@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./InfoBubble.module.css";
 
 const infoBubble = (props) => {
-  var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${props.attributes[0].value},${props.attributes[1].value}&travelmode=driving`;
+  var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${props.attributes[1].value},${props.attributes[0].value}&travelmode=driving`;
 
   const bubbleStyle = [];
 
