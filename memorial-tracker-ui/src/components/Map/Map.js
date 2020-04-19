@@ -13,15 +13,15 @@ const map = (props) => {
       >
         {props.memorials.map((m) => (
           <Icon
-            lat={m.attributes[0].value}
-            lng={m.attributes[1].value}
+            lat={m.attributes[1].value}
+            lng={m.attributes[0].value}
             type={m.type}
             guid={m.guid}
-            attributes ={m.attributes}
+            attributes={m.attributes}
             hideIcon={m.hideIcon}
             hideBubble={m.hideBubble}
             clicked={() => props.iconClicked(m.guid)}
-            closeBubbleClick = {() => props.bubbleCloseClick()}
+            closeBubbleClick={() => props.bubbleCloseClick()}
           />
         ))}
       </GoogleMapReact>
