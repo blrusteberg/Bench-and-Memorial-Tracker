@@ -70,23 +70,19 @@ class memorialTypes extends React.Component {
     });
   }
 
-  handleInputChange(event) {
-    this.setState({
-      newType : event.target.value
-    });
-  }
-
   addType() {
-      let addType = { 'name': this.state.newType, 'attributes': [] };
+    const name = document.getElementById("new-type").value;
+    
+    const newType = { 'name': name, 'attributes': [] };
 
-      this.setState({
-        types: this.state.types.concat(addType)
-      });
+    let types = this.state.types;
+    types = types.concat(newType);
 
-      this.setState({
-        newType : ''
-      });
-      document.getElementById("new-type").value = "";
+    this.setState({
+      types: types
+    });
+
+    document.getElementById("new-type").value = "";
   }
 
   saveAttributes() {
@@ -100,8 +96,9 @@ class memorialTypes extends React.Component {
   render() {
     return (
     <div>
-      <input type="text" id="new-type" defaultValue='' name={this.state.newType} onChange={event => this.handleInputChange(event)}/>
+      <input type="text" id="new-type" defaultValue=''/>
       <button className={styles.button} onClick={() => this.addType()}>Add Type</button>
+      <br />
       <Dropdown  
         types={this.state.types}
         dropdownChange={this.dropdownChange}
