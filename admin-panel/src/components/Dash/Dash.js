@@ -6,6 +6,7 @@ import MemorialTypes from "./MemorialTypes/MemorialTypes";
 import Settings from "./Settings/Settings";
 
 import styles from "./Dash.module.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const dash = (props) => {
   let dashView = null;
