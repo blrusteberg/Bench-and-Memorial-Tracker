@@ -3,6 +3,7 @@ import memorials from './memorial-types.json'
 import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
+import { Button, FormControl} from 'react-bootstrap';
 
 class memorialTypes extends React.Component {
   constructor(props) {
@@ -25,10 +26,6 @@ class memorialTypes extends React.Component {
   };
 
   deleteAttribute = (n) => {
-    // const newSelected = this.state.selected.filter((item,n) => {
-    //   console.log(item, items);
-    //   return item.name !== name;
-    // });
 
     const newSelected = [...this.state.selected];
     newSelected.splice(n, 1);
@@ -89,22 +86,19 @@ class memorialTypes extends React.Component {
     let memorialTypes = this.state.types;
     memorialTypes = {memorialTypes};
     let memString = JSON.stringify(memorialTypes);
-    
-    // post newly saved types to memorial json
   }
 
   render() {
     return (
-    <div>
-      <input type="text" id="new-type" defaultValue=''/>
-      <button className={styles.button} onClick={() => this.addType()}>Add Type</button>
-      <br />
+    <div className={styles.mainContainer}>
+      <FormControl className={styles.newType} type="text" id="new-type" defaultValue=''/>
+      <Button variant="primary" onClick={() => this.addType()}>Add Type</Button>
       <Dropdown  
         types={this.state.types}
         dropdownChange={this.dropdownChange}
       />
-      <button className={styles.button} onClick={() => this.addAttribute()}>Add Attribute</button>
-      <button className={styles.button} onClick={() => this.saveAttributes()}>Save</button>
+      <Button variant="primary" onClick={() => this.addAttribute()}>Add Attribute</Button>
+      <Button variant="primary" onClick={() => this.saveAttributes()}>Save</Button>
       <Attributes
         attributes={this.state.selected}
         updateAttribute={this.updateAttribute}
