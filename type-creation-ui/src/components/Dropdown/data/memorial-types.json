@@ -1,73 +1,40 @@
 {
   "memorialTypes": [
     {
-<<<<<<< HEAD
       "name": "Tree",
       "attributes": [
         { "name": "longitude", "value": null, "required": false },
         { "name": "latitude", "value": null, "required": false },
         { "name": "Donor", "value": null, "required": false },
         { "name": "Date Planted", "value": null, "required": false }
-=======
-      "typeId": 4312,
-      "name": "Tree",
-      "attributes": [
-        { "name": "longitude", "value": null, "required": true },
-        { "name": "latitude", "value": null, "required": true },
-        { "name": "Donor", "value": null, "required": false },
-        { "name": "Date Planted", "value": null, "required": true },
-        { "name": "Date Watered", "value": null, "required": true }
->>>>>>> Added some nav functionality
       ]
     },
     {
       "name": "Bench",
       "attributes": [
-<<<<<<< HEAD
         { "name": "longitude", "value": null, "required": false },
         { "name": "latitude", "value": null, "required": false },
         { "name": "Donor", "value": null, "required": false },
         { "name": "Date Placed", "value": null, "required": false }
-=======
-        { "name": "longitude", "value": null, "required": null },
-        { "name": "latitude", "value": null, "required": null },
-        { "name": "Donor", "value": null, "required": null },
-        { "name": "Date Placed", "value": null, "required": null }
->>>>>>> Added some nav functionality
       ]
     },
     {
       "name": "Historical Building",
       "attributes": [
-<<<<<<< HEAD
         { "name": "longitude", "value": null, "required": false },
         { "name": "latitude", "value": null, "required": false },
         { "name": "Owner", "value": null, "required": false },
         { "name": "Public Accessible", "value": null, "required": false },
         { "name": "Handicap Accessible", "value": null, "required": false }
-=======
-        { "name": "longitude", "value": null, "required": null },
-        { "name": "latitude", "value": null, "required": null },
-        { "name": "Owner", "value": null, "required": null },
-        { "name": "Public Accessible", "value": null, "required": null },
-        { "name": "Handicap Accessible", "value": null, "required": null }
->>>>>>> Added some nav functionality
       ]
     },
     {
       "name": "Art",
       "attributes": [
-<<<<<<< HEAD
         { "name": "longitude", "value": null, "required": false },
         { "name": "latitude", "value": null, "required": false },
         { "name": "Artist", "value": null, "required": false },
         { "name": "Date Placed", "value": null, "required": false }
-=======
-        { "name": "longitude", "value": null, "required": null },
-        { "name": "latitude", "value": null, "required": null },
-        { "name": "Artist", "value": null, "required": null },
-        { "name": "Date Placed", "value": null, "required": null }
->>>>>>> Added some nav functionality
       ]
     }
   ]

@@ -1,0 +1,9 @@
+.mainContainer {
+    position: absolute;
+    right: 500px;
+    width: 300px;
+}
+
+.newType {
+    margin-top:20px;
+}
