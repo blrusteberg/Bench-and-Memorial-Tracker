@@ -38,6 +38,7 @@ const icon = (props) => {
         attributes={props.attributes}
         closeBubbleClick={props.closeBubbleClick}
         hideBubble={props.hideBubble}
+        googleMapsClick={props.googleMapsClick}
         type={props.type}
       />
     </div>

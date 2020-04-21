@@ -2,8 +2,6 @@ import React from "react";
 import styles from "./InfoBubble.module.css";
 
 const infoBubble = (props) => {
-  var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${props.attributes[1].value},${props.attributes[0].value}&travelmode=driving`;
-
   const bubbleStyle = [];
 
   if (props.hideBubble) {
@@ -22,15 +20,17 @@ const infoBubble = (props) => {
       </div>
       <div className={styles.popUpText}>
         {props.attributes.slice(2).map((a) => (
-          <div>
-            {a.name}:{" "}
-            {typeof a.value === "boolean" ? (a.value ? "Yes" : "No") : a.value}
+          <div className = {styles.attributesClass}>
+            {a.name}:{" "} 
+            {typeof a.value === "boolean" ? (a.value ? "Yes" : "No") : a.value} 
           </div>
-        ))}
-        Directions:
-        <a href={url} target="_blank">
-          Google Maps
-        </a>
+        ))} 
+        <button
+          className={styles.googleMapsButton}
+          onClick={props.googleMapsClick}
+        >
+          Directions
+        </button>
       </div>
     </div>
   );
