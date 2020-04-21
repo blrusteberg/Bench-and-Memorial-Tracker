@@ -181,16 +181,16 @@
       ]
     },
     {
-      "type": "Historical Building",
+      "type": "Memorial",
       "uuid": "44a12737-bc83-44cd-8c18-dbe7d8237a40",
       "attributes": [
         {
           "name": "longitude",
-          "value": -89.946918
+          "value": -89.968811
         },
         {
           "name": "latitude",
-          "value": 38.86531
+          "value": 38.798890
         },
         {
           "name": "Donor",
