@@ -179,6 +179,138 @@
           "value": "March 2, 2004"
         }
       ]
+    },
+    {
+      "type": "Memorial",
+      "uuid": "44a12737-bc83-44cd-8c18-dbe7d8237a40",
+      "attributes": [
+        {
+          "name": "longitude",
+          "value": -89.968811
+        },
+        {
+          "name": "latitude",
+          "value": 38.798890
+        },
+        {
+          "name": "Donor",
+          "value": "Some guy"
+        },
+        {
+          "name": "Date Planted",
+          "value": "April 18, 2020"
+        }
+      ]
+    },
+    {
+      "type": "Tree",
+      "uuid": "4e579a33-3d93-4151-994b-ed20889269a2",
+      "attributes": [
+        {
+          "name": "longitude",
+          "value": -89.981633
+        },
+        {
+          "name": "latitude",
+          "value": 38.793869
+        },
+        {
+          "name": "Donor",
+          "value": "This Person"
+        },
+        {
+          "name": "Date Planted",
+          "value": "April 18, 2020"
+        }
+      ]
+    },
+    {
+      "type": "Historical Building",
+      "uuid": "773ce0d9-f2a2-4599-8610-ab1a8b30015e",
+      "attributes": [
+        {
+          "name": "longitude",
+          "value": -90.004228
+        },
+        {
+          "name": "latitude",
+          "value": 38.792141
+        },
+        {
+          "name": "Donor",
+          "value": "This Person"
+        },
+        {
+          "name": "Date Planted",
+          "value": "April 18, 2020"
+        }
+      ]
+    },
+    {
+      "type": "Bench",
+      "uuid": "952e0cd6-af69-4877-be83-094c2aaae811",
+      "attributes": [
+        {
+          "name": "longitude",
+          "value": -89.982477
+        },
+        {
+          "name": "latitude",
+          "value": 38.784754
+        },
+        {
+          "name": "Donor",
+          "value": "This Person"
+        },
+        {
+          "name": "Date Planted",
+          "value": "April 18, 2020"
+        }
+      ]
+    },
+    {
+      "type": "Art",
+      "uuid": "e3ab737c-e13a-41da-9e87-e40945849b6a",
+      "attributes": [
+        {
+          "name": "longitude",
+          "value": -89.947502
+        },
+        {
+          "name": "latitude",
+          "value": 38.794283
+        },
+        {
+          "name": "Donor",
+          "value": "This Person"
+        },
+        {
+          "name": "Date Placed",
+          "value": "April 18, 2020"
+        }
+      ]
+    },
+    {
+      "type": "Art",
+      "uuid": "00851fae-af08-46e7-b010-e7afaa24fe3a",
+      "attributes": [
+        {
+          "name": "longitude",
+          "value": -89.963747
+        },
+        {
+          "name": "latitude",
+          "value": 38.795929
+        },
+        {
+          "name": "Donor",
+          "value": "This Person"
+        },
+        {
+          "name": "Date Placed",
+          "value": "April 18, 2020"
+        }
+      ]
     }
   ]
 }
