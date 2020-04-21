@@ -4,6 +4,7 @@ import Accounts from "./Accounts/Accounts";
 import Memorials from "./Memorials/Memorials";
 import MemorialTypes from "./MemorialTypes/MemorialTypes";
 import Settings from "./Settings/Settings";
+import TaggerForm from "./TaggerForm/TaggerForm";
 
 import styles from "./Dash.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,6 +24,11 @@ const dash = (props) => {
     case "Settings":
       dashView = <Settings />;
       break;
+    case "Tagger Form":
+      dashView = <TaggerForm />;
+      break;
+    default:
+      dashView = <Accounts />;
   }
   return <div className={styles.Dash}>{dashView}</div>;
 };
