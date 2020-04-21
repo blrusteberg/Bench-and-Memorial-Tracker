@@ -22,6 +22,7 @@ const map = (props) => {
             hideBubble={m.hideBubble}
             clicked={() => props.iconClicked(m.uuid)}
             closeBubbleClick={() => props.bubbleCloseClick()}
+            googleMapsClick={() => props.googleMapsButtonClick(m.attributes[1].value, m.attributes[0].value)}
           />
         ))}
       </GoogleMapReact>

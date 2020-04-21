@@ -80,6 +80,12 @@ class App extends React.Component {
     this.setState({ memorials: memorials });
   };
 
+  googleMapsClickHandler = (lat, lng) => {
+    var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${lat},${lng}&travelmode=driving`;
+    var win = window.open(url, '_blank');
+    win.focus(window);
+  };
+
   render() {
     const content = this.state.error ? (
       <div className="error">
@@ -96,6 +102,7 @@ class App extends React.Component {
           currentLocation={this.state.currentLocation}
           iconClicked={this.iconClickHandler}
           bubbleCloseClick={this.bubbleCloseClickHandler}
+          googleMapsButtonClick = {this.googleMapsClickHandler}
         />
         <Sidebar
           memorials={this.state.memorials}
