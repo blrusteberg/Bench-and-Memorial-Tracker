@@ -22,6 +22,9 @@ const icon = (props) => {
     case "Art":
       type = "Art";
       break;
+    case "Historical Building":
+      type = "Building";
+      break;
     default:
       type = "Memorial";
   }
