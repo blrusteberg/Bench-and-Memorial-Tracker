@@ -8,7 +8,7 @@ const navigationPanel = (props) => {
         <li>
           <div className={styles.nav} id="Accounts">
             Accounts
-            <img 
+            <img
               className={styles.img}
               alt="account icon"
               src="./images/accountImg.png"
@@ -16,9 +16,19 @@ const navigationPanel = (props) => {
           </div>
         </li>
         <li>
+          <div className={styles.nav} id="Tagger Form">
+            Tagger Form
+            <img
+              className={styles.img}
+              alt="tagger form icon"
+              src="./images/taggerForm.png"
+            />
+          </div>
+        </li>
+        <li>
           <div className={styles.nav} id="Memorials">
             Memorials
-            <img 
+            <img
               className={styles.img}
               alt="account icon"
               src="./images/memorialImg.png"
@@ -28,7 +38,7 @@ const navigationPanel = (props) => {
         <li>
           <div className={styles.nav} id="Memorial Types">
             Memorial Types
-            <img 
+            <img
               className={styles.img}
               alt="account icon"
               src="./images/typesImg.png"
@@ -38,7 +48,7 @@ const navigationPanel = (props) => {
         <li>
           <div className={styles.nav} id="Settings">
             Settings
-            <img 
+            <img
               className={styles.img}
               alt="account icon"
               src="./images/settingsImg.png"

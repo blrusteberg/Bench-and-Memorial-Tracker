@@ -1,0 +1,23 @@
+.required:after {
+  content: " *";
+  color: red;
+}
+
+.TaggerForm {
+  text-align: center;
+}
+.mainContainer {
+  position: absolute;
+  right: 13%;
+  width: 10%;
+}
+
+.dropDown {
+  width: 25%;
+  position: absolute;
+  left: 37%;
+}
+
+.submitMessage {
+  font-size: 1rem;
+}

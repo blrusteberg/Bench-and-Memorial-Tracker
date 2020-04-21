@@ -12,6 +12,8 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
+  console.log("POSE REQUEST CALLED");
+  console.log(req);
   req.body.memorials.forEach((memorial, index) => {
     if (!memorial.type) {
       res.status(400).json({

@@ -1,9 +1,10 @@
 .mainContainer {
-    position: absolute;
-    right: 500px;
-    width: 300px;
+  position: absolute;
+  right: 650px;
+  width: 400px;
+  top: 100px;
 }
 
 .newType {
-    margin-top:20px;
+  margin-top: 20px;
 }

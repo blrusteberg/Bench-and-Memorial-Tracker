@@ -21,7 +21,6 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    console.log("[App.js] componentDidMount");
     axios.get("http://localhost:1337/memorials").then(
       (result) => {
         result.data.memorials.map((m) => {
