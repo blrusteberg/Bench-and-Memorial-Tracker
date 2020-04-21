@@ -197,7 +197,7 @@
           "value": "Some guy"
         },
         {
-          "name": "Date Planted",
+          "name": "Date Placed",
           "value": "April 18, 2020"
         }
       ]
@@ -237,12 +237,12 @@
           "value": 38.792141
         },
         {
-          "name": "Donor",
-          "value": "This Person"
+          "name": "Public Accessible",
+          "value": true
         },
         {
-          "name": "Date Planted",
-          "value": "April 18, 2020"
+          "name": "Handicap Accessible",
+          "value": false
         }
       ]
     },
@@ -263,7 +263,7 @@
           "value": "This Person"
         },
         {
-          "name": "Date Planted",
+          "name": "Date Placed",
           "value": "April 18, 2020"
         }
       ]
