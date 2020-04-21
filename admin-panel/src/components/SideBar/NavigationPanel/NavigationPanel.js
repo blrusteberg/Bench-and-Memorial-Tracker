@@ -16,7 +16,7 @@ const navigationPanel = (props) => {
           </div>
         </li>
         <li>
-          <div className={styles.nav} id="TaggerForm">
+          <div className={styles.nav} id="Tagger Form">
             Tagger Form
             <img
               className={styles.img}
