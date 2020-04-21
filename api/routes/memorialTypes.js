@@ -6,7 +6,7 @@ const utils = require("../utils/index");
 const fs = require("fs");
 
 router.get("/", (req, res) => {
-  res.status(200).json({ memorialTypes });
+  res.status(200).json(memorialTypes);
 });
 
 router.post("/", (req, res) => {
