@@ -29,7 +29,7 @@ const attributes = (props) => {
                     type="checkbox"
                     checked={item.required===false}
                     value={false}
-                    onChange={event => props.updateAttribute(event.target.value, n)}
+                    onChange={event => props.updateAttribute(event.target, n)}
                 />
                 <button variant="primary" onClick={() => props.deleteAttribute(n)}>DELETE</button>
             </div>

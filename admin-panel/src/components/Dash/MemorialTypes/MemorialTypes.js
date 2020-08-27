@@ -92,12 +92,15 @@ class memorialTypes extends React.Component {
   addType() {
     const name = document.getElementById("new-type").value;
 
+    if(name.trim() === ""){
+      return
+    }
+
     let newType = { name: name, attributes: [] };
     const longitude = { name: "longitude", value: null, required: false, dataType: "number"  };
     const latitude = { name: "latitude", value: null, required: false, dataType: "number"  };
 
     newType.attributes = [longitude, latitude];
-    console.log(newType);
     let types = this.state.types;
     types = types.concat(newType);
 
@@ -112,9 +115,9 @@ class memorialTypes extends React.Component {
     let memorialTypes = this.state.types;
     memorialTypes = { memorialTypes };
     let memorialObject = JSON.stringify(memorialTypes);
-    console.log(memorialObject);
 
-    // axios.post('http://localhost:1337/memorials/types', memorialObject)
+    // Updates ENTIRE memorialTypes with newly updated memorialObject
+    // axios.put('http://localhost:1337/memorials/types', memorialObject)
     //   .then(res => console.log(res.data));
   }
 
