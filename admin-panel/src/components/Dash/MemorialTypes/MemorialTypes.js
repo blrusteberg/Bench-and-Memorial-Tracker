@@ -67,17 +67,17 @@ class memorialTypes extends React.Component {
     });
   }
 
-  updateAttribute(value, n, type) {
+  updateAttribute(event, n) {
     let newSelected = [...this.state.selected];
 
-    if(type === "NAME"){
-      newSelected[n].name = value;
+    if(event.type === "text"){
+      newSelected[n].name = event.value;
     }
-    else if(type === "DATATYPE"){
-      newSelected[n].dataType = value;
+    else if(event.type === "select-one"){
+      newSelected[n].dataType = event.value;
     }
-    else{
-      newSelected[n].required = (value === "true");
+    else if(event.type === "checkbox"){
+      newSelected[n].required = (event.value === "true");
     }
 
     const types = [...this.state.types];
@@ -111,7 +111,11 @@ class memorialTypes extends React.Component {
   saveAttributes() {
     let memorialTypes = this.state.types;
     memorialTypes = { memorialTypes };
-    let memString = JSON.stringify(memorialTypes);
+    let memorialObject = JSON.stringify(memorialTypes);
+    console.log(memorialObject);
+
+    // axios.post('http://localhost:1337/memorials/types', memorialObject)
+    //   .then(res => console.log(res.data));
   }
 
   render() {
