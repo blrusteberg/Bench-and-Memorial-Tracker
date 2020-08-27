@@ -3,38 +3,38 @@
     {
       "name": "Tree",
       "attributes": [
-        { "name": "longitude", "value": null, "required": false },
-        { "name": "latitude", "value": null, "required": false },
-        { "name": "Donor", "value": null, "required": false },
-        { "name": "Date Planted", "value": null, "required": false }
+        { "name": "longitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "latitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Donor", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Date Planted", "value": null, "required": false, "dataType": "number"  }
       ]
     },
     {
       "name": "Bench",
       "attributes": [
-        { "name": "longitude", "value": null, "required": false },
-        { "name": "latitude", "value": null, "required": false },
-        { "name": "Donor", "value": null, "required": false },
-        { "name": "Date Placed", "value": null, "required": false }
+        { "name": "longitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "latitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Donor", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Date Placed", "value": null, "required": false, "dataType": "number" }
       ]
     },
     {
       "name": "Historical Building",
       "attributes": [
-        { "name": "longitude", "value": null, "required": false },
-        { "name": "latitude", "value": null, "required": false },
-        { "name": "Owner", "value": null, "required": false },
-        { "name": "Public Accessible", "value": null, "required": false },
-        { "name": "Handicap Accessible", "value": null, "required": false }
+        { "name": "longitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "latitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Owner", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Public Accessible", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Handicap Accessible", "value": null, "required": false, "dataType": "number"  }
       ]
     },
     {
       "name": "Art",
       "attributes": [
-        { "name": "longitude", "value": null, "required": false },
-        { "name": "latitude", "value": null, "required": false },
-        { "name": "Artist", "value": null, "required": false },
-        { "name": "Date Placed", "value": null, "required": false }
+        { "name": "longitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "latitude", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Artist", "value": null, "required": false, "dataType": "number"  },
+        { "name": "Date Placed", "value": null, "required": false, "dataType": "number"  }
       ]
     }
   ]

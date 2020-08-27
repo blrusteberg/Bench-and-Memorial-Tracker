@@ -69,9 +69,18 @@ class memorialTypes extends React.Component {
     });
   }
 
-  updateAttribute(value, n) {
+  updateAttribute(value, n, type) {
     let newSelected = [...this.state.selected];
-    newSelected[n].name = value;
+
+    if(type === "NAME"){
+      newSelected[n].name = value;
+    }
+    else if(type === "DATATYPE"){
+      newSelected[n].dataType = value;
+    }
+    else{
+      newSelected[n].required = (value === "true");
+    }
 
     const types = [...this.state.types];
     types[this.state.value].attributes = newSelected;

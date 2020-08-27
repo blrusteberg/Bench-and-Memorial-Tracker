@@ -11,25 +11,27 @@ const attributes = (props) => {
             </div>
             :
             <div className={styles.container}>
-                <FormControl type="text" key={n} value={item.name} onChange={event => props.updateAttribute(event.target.value, n)}/>
+                <FormControl type="text" key={n} value={item.name} onChange={event => props.updateAttribute(event.target.value, n, "NAME")}/>
                 <Button variant="primary" onClick={() => props.deleteAttribute(n)}>DELETE</Button>
-                <select id={item.name} value={item.dataType}>
+                <select value={item.dataType} onChange={event => props.updateAttribute(event.target.value, n, "DATATYPE")}>
                   <option value="date">Date</option>
                   <option value="number">Number</option>
-                  <option value="true/false">True/False</option>
-                  <option value="words">Words</option>
+                  <option value="boolean">True/False</option>
+                  <option value="string">Words</option>
                 </select>
                 <h1>YES</h1>
                 <input
                     type="checkbox"
                     checked={item.required===true}
-                    value="Yes"
+                    value={true}
+                    onChange={event => props.updateAttribute(event.target.value, n, "REQUIRED")}
                 />
                 <h1>NO</h1>
                 <input
                     type="checkbox"
                     checked={item.required===false}
-                    value="No"
+                    value={false}
+                    onChange={event => props.updateAttribute(event.target.value, n, "REQUIRED")}
                 />
             </div>
         )}
