@@ -4,18 +4,35 @@ import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
 import { Button, FormControl } from "react-bootstrap";
+import axios from 'axios';
 
 class memorialTypes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      types: memorials.memorialTypes,
-      selected: memorials.memorialTypes[0].attributes,
+      types: [],
+      selected: [],
       value: 0,
       newType: "",
     };
+
     this.updateAttribute = this.updateAttribute.bind(this);
+
   }
+
+  componentDidMount() {
+    axios.get('http://localhost:1337/memorials/types')
+      .then(response => {
+        this.setState({ 
+          types: response.data.memorialTypes, 
+          selected: response.data.memorialTypes[0].attributes,
+        })
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
 
   dropdownChange = (event) => {
     const selected = this.state.types[event.target.value].attributes;
