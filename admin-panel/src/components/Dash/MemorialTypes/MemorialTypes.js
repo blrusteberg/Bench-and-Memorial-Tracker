@@ -1,9 +1,7 @@
 import React from "react";
-import memorials from "./memorial-types.json";
 import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
-import { Button, FormControl } from "react-bootstrap";
 import axios from 'axios';
 
 class memorialTypes extends React.Component {
@@ -56,7 +54,7 @@ class memorialTypes extends React.Component {
   };
 
   addAttribute() {
-    let blankAttribute = { name: "", value: null, required: false };
+    let blankAttribute = { name: "", value: null, required: false, dataType: "number" };
     let newSelected = [...this.state.selected];
     newSelected = newSelected.concat(blankAttribute);
 
@@ -94,8 +92,12 @@ class memorialTypes extends React.Component {
   addType() {
     const name = document.getElementById("new-type").value;
 
-    const newType = { name: name, attributes: [] };
+    let newType = { name: name, attributes: [] };
+    const longitude = { name: "longitude", value: null, required: false, dataType: "number"  };
+    const latitude = { name: "latitude", value: null, required: false, dataType: "number"  };
 
+    newType.attributes = [longitude, latitude];
+    console.log(newType);
     let types = this.state.types;
     types = types.concat(newType);
 
@@ -115,29 +117,29 @@ class memorialTypes extends React.Component {
   render() {
     return (
       <div className={styles.mainContainer}>
-        <FormControl
+        <input
           className={styles.newType}
           type="text"
           id="new-type"
           defaultValue=""
         />
-        <br />
-        <Button variant="primary" onClick={() => this.addType()}>
+        <button variant="primary" onClick={() => this.addType()}>
           Add Type
-        </Button>
+        </button>
         <br />
         <br />
         <Dropdown
           types={this.state.types}
           dropdownChange={this.dropdownChange}
         />
-        <br />
-        <Button variant="primary" onClick={() => this.addAttribute()}>
-          Add Attribute
-        </Button>
-        <Button variant="primary" onClick={() => this.saveAttributes()}>
+        <button variant="primary" onClick={() => this.saveAttributes()}>
           Save
-        </Button>
+        </button>
+        <br />
+        <button variant="primary" onClick={() => this.addAttribute()}>
+          Add Attribute
+        </button>
+        <br />
         <Attributes
           attributes={this.state.selected}
           updateAttribute={this.updateAttribute}
