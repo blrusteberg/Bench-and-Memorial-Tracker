@@ -77,7 +77,7 @@ class memorialTypes extends React.Component {
       newSelected[n].dataType = event.value;
     }
     else if(event.type === "checkbox"){
-      newSelected[n].required = (event.value === "true");
+      newSelected[n].required = !(event.value === "true");
     }
 
     const types = [...this.state.types];
@@ -130,7 +130,7 @@ class memorialTypes extends React.Component {
           id="new-type"
           defaultValue=""
         />
-        <button variant="primary" onClick={() => this.addType()}>
+        <button onClick={() => this.addType()}>
           Add Type
         </button>
         <br />
@@ -139,11 +139,11 @@ class memorialTypes extends React.Component {
           types={this.state.types}
           dropdownChange={this.dropdownChange}
         />
-        <button variant="primary" onClick={() => this.saveAttributes()}>
+        <button onClick={() => this.saveAttributes()}>
           Save
         </button>
         <br />
-        <button variant="primary" onClick={() => this.addAttribute()}>
+        <button onClick={() => this.addAttribute()}>
           Add Attribute
         </button>
         <br />

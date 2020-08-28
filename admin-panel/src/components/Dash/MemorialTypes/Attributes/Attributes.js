@@ -3,10 +3,17 @@ import styles from "./Attributes.module.css";
 
 const attributes = (props) => {
   return (
-    <label>
+    <div>
+      <div className={styles.container}>
+        <span className={styles.firstLabel}>Property</span>
+        <span className={styles.secondLabel}>Type</span>
+        <span className={styles.thirdLabel}>Allow Empty</span>
+      </div>
         {props.attributes.map((item, n) => (item.name === 'longitude' || item.name === 'latitude') ?
             <div className={styles.container}>
-                <input readOnly type="text" key={item.name} value={item.name}/>
+                <input readOnly type="text" disabled="disabled" key={item.name} value={item.name}/>
+                <input readOnly type="text" disabled="disabled" value="Number"/>
+                <input type="checkbox" disabled="disabled" checked="checked"/>
             </div>
             :
             <div className={styles.container}>
@@ -17,24 +24,16 @@ const attributes = (props) => {
                   <option value="boolean">True/False</option>
                   <option value="string">Words</option>
                 </select>
-                <div>YES</div>
                 <input
                     type="checkbox"
-                    checked={item.required===true}
-                    value={true}
+                    checked={item.required}
+                    value={item.required}
                     onChange={event => props.updateAttribute(event.target, n)}
                 />
-                <div>NO</div>
-                <input
-                    type="checkbox"
-                    checked={item.required===false}
-                    value={false}
-                    onChange={event => props.updateAttribute(event.target, n)}
-                />
-                <button variant="primary" onClick={() => props.deleteAttribute(n)}>DELETE</button>
+                <button onClick={() => props.deleteAttribute(n)}>DELETE</button>
             </div>
         )}
-    </label>
+    </div>
   );
 };
 
