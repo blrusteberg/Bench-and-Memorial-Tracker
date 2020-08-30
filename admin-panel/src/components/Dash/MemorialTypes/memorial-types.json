@@ -1,0 +1,41 @@
+{
+  "memorialTypes": [
+    {
+      "name": "Tree",
+      "attributes": [
+        { "name": "longitude", "value": null, "required": false },
+        { "name": "latitude", "value": null, "required": false },
+        { "name": "Donor", "value": null, "required": false },
+        { "name": "Date Planted", "value": null, "required": false }
+      ]
+    },
+    {
+      "name": "Bench",
+      "attributes": [
+        { "name": "longitude", "value": null, "required": false },
+        { "name": "latitude", "value": null, "required": false },
+        { "name": "Donor", "value": null, "required": false },
+        { "name": "Date Placed", "value": null, "required": false }
+      ]
+    },
+    {
+      "name": "Historical Building",
+      "attributes": [
+        { "name": "longitude", "value": null, "required": false },
+        { "name": "latitude", "value": null, "required": false },
+        { "name": "Owner", "value": null, "required": false },
+        { "name": "Public Accessible", "value": null, "required": false },
+        { "name": "Handicap Accessible", "value": null, "required": false }
+      ]
+    },
+    {
+      "name": "Art",
+      "attributes": [
+        { "name": "longitude", "value": null, "required": false },
+        { "name": "latitude", "value": null, "required": false },
+        { "name": "Artist", "value": null, "required": false },
+        { "name": "Date Placed", "value": null, "required": false }
+      ]
+    }
+  ]
+}
