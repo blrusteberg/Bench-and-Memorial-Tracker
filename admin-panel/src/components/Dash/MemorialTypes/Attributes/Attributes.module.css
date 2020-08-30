@@ -1,3 +1,15 @@
 .container {
     display: flex; /* or inline-flex */
 }
+
+.firstLabel {
+    margin-right: 90px;
+}
+
+.secondLabel {
+    margin-right: 50px;
+}
+
+.thirdLabel {
+    margin-right: 50px;
+}

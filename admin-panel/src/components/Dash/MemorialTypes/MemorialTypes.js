@@ -1,21 +1,36 @@
 import React from "react";
-import memorials from "./memorial-types.json";
 import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
-import { Button, FormControl } from "react-bootstrap";
+import axios from 'axios';
 
 class memorialTypes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      types: memorials.memorialTypes,
-      selected: memorials.memorialTypes[0].attributes,
+      types: [],
+      selected: [],
       value: 0,
       newType: "",
     };
+
     this.updateAttribute = this.updateAttribute.bind(this);
+
   }
+
+  componentDidMount() {
+    axios.get('http://localhost:1337/memorials/types')
+      .then(response => {
+        this.setState({ 
+          types: response.data.memorialTypes, 
+          selected: response.data.memorialTypes[0].attributes,
+        })
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
 
   dropdownChange = (event) => {
     const selected = this.state.types[event.target.value].attributes;
@@ -38,8 +53,8 @@ class memorialTypes extends React.Component {
     });
   };
 
-  addAttribute() {
-    let blankAttribute = { name: "", value: null, required: false };
+  addAttribute = () => {
+    let blankAttribute = { name: "", value: null, required: false, dataType: "number" };
     let newSelected = [...this.state.selected];
     newSelected = newSelected.concat(blankAttribute);
 
@@ -52,9 +67,18 @@ class memorialTypes extends React.Component {
     });
   }
 
-  updateAttribute(value, n) {
+  updateAttribute = (event, n) => {
     let newSelected = [...this.state.selected];
-    newSelected[n].name = value;
+
+    if(event.type === "text"){
+      newSelected[n].name = event.value;
+    }
+    else if(event.type === "select-one"){
+      newSelected[n].dataType = event.value;
+    }
+    else if(event.type === "checkbox"){
+      newSelected[n].required = !(event.value === "true");
+    }
 
     const types = [...this.state.types];
     types[this.state.value].attributes = newSelected;
@@ -65,11 +89,18 @@ class memorialTypes extends React.Component {
     });
   }
 
-  addType() {
+  addType = () => {
     const name = document.getElementById("new-type").value;
 
-    const newType = { name: name, attributes: [] };
+    if(name.trim() === ""){
+      return
+    }
 
+    let newType = { name: name, attributes: [] };
+    const longitude = { name: "longitude", value: null, required: false, dataType: "number"  };
+    const latitude = { name: "latitude", value: null, required: false, dataType: "number"  };
+
+    newType.attributes = [longitude, latitude];
     let types = this.state.types;
     types = types.concat(newType);
 
@@ -80,38 +111,42 @@ class memorialTypes extends React.Component {
     document.getElementById("new-type").value = "";
   }
 
-  saveAttributes() {
+  saveAttributes = () => {
     let memorialTypes = this.state.types;
     memorialTypes = { memorialTypes };
-    let memString = JSON.stringify(memorialTypes);
+    let memorialObject = JSON.stringify(memorialTypes);
+
+    // Updates ENTIRE memorialTypes with newly updated memorialObject
+    // axios.put('http://localhost:1337/memorials/types', memorialObject)
+    //   .then(res => console.log(res.data));
   }
 
   render() {
     return (
       <div className={styles.mainContainer}>
-        <FormControl
+        <input
           className={styles.newType}
           type="text"
           id="new-type"
           defaultValue=""
         />
-        <br />
-        <Button variant="primary" onClick={() => this.addType()}>
+        <button onClick={() => this.addType()}>
           Add Type
-        </Button>
+        </button>
         <br />
         <br />
         <Dropdown
           types={this.state.types}
           dropdownChange={this.dropdownChange}
         />
-        <br />
-        <Button variant="primary" onClick={() => this.addAttribute()}>
-          Add Attribute
-        </Button>
-        <Button variant="primary" onClick={() => this.saveAttributes()}>
+        <button onClick={() => this.saveAttributes()}>
           Save
-        </Button>
+        </button>
+        <br />
+        <button onClick={() => this.addAttribute()}>
+          Add Attribute
+        </button>
+        <br />
         <Attributes
           attributes={this.state.selected}
           updateAttribute={this.updateAttribute}

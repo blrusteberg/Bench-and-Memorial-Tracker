@@ -6,13 +6,13 @@ const dropdown = (props) => {
   return (
     <div>
         <label>Memorial Types</label>
-        <FormControl as="select" onChange={event => props.dropdownChange(event)}>
+        <select onChange={event => props.dropdownChange(event)}>
             {(Object.values(props.types)).map((list, n) => (
                 <option key={list.name} value={n}>
                     {list.name}
                 </option>
             ))}
-        </FormControl>
+        </select>
     </div>
   );
 };
