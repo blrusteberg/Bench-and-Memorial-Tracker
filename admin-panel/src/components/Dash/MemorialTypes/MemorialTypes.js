@@ -53,7 +53,7 @@ class memorialTypes extends React.Component {
     });
   };
 
-  addAttribute() {
+  addAttribute = () => {
     let blankAttribute = { name: "", value: null, required: false, dataType: "number" };
     let newSelected = [...this.state.selected];
     newSelected = newSelected.concat(blankAttribute);
@@ -67,7 +67,7 @@ class memorialTypes extends React.Component {
     });
   }
 
-  updateAttribute(event, n) {
+  updateAttribute = (event, n) => {
     let newSelected = [...this.state.selected];
 
     if(event.type === "text"){
@@ -89,7 +89,7 @@ class memorialTypes extends React.Component {
     });
   }
 
-  addType() {
+  addType = () => {
     const name = document.getElementById("new-type").value;
 
     if(name.trim() === ""){
@@ -111,7 +111,7 @@ class memorialTypes extends React.Component {
     document.getElementById("new-type").value = "";
   }
 
-  saveAttributes() {
+  saveAttributes = () => {
     let memorialTypes = this.state.types;
     memorialTypes = { memorialTypes };
     let memorialObject = JSON.stringify(memorialTypes);
