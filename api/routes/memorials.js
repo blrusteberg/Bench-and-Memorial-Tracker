@@ -1,19 +1,21 @@
 "user strict";
 const express = require("express");
 const router = express.Router();
-const memorials = require("../data/memorials.json");
+const MemorialsController = require("../controllers/memorials");
 const utils = require("../utils/index");
 const fs = require("fs");
 const uuid = require("uuid");
 
 router.get("/", (req, res) => {
   res.status(200);
-  res.send(memorials);
+  res.send(
+    MemorialsController.getMemorials(req, res, () => {
+      console.log("RECEIVENED DATA FROM MEMORIALS CONTROLLER");
+    })
+  );
 });
 
 router.post("/", (req, res) => {
-  console.log("POSE REQUEST CALLED");
-  console.log(req);
   req.body.memorials.forEach((memorial, index) => {
     if (!memorial.type) {
       res.status(400).json({

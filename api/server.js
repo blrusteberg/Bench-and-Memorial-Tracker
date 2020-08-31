@@ -1,8 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
-const port = process.env.PORT || 1337;
+const port = process.env.PORT;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
