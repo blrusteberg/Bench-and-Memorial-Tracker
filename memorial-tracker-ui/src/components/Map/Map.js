@@ -7,7 +7,7 @@ const map = (props) => {
   return (
     <div className={styles.Map}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "" }} //key:AIzaSyDrtzpv9c0WNdx6RDzrvijV76YoiUuKNf
+        bootstrapURLKeys={{ key: "" }}
         defaultCenter={props.currentLocation}
         defaultZoom={14}
       >
