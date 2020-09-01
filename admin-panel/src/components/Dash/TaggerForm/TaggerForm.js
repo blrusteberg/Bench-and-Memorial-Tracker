@@ -37,6 +37,7 @@ class TaggerForm extends React.Component {
       isLoaded: false,
       submitMessage: "",
     };
+    
   }
 
   componentDidMount() {
@@ -90,6 +91,21 @@ class TaggerForm extends React.Component {
       .catch((err) => console.log(err));
   }
 
+  getLocationHandler = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.setCoordinates);
+    } else {
+      alert("Geolocation is not supportd by this browser");
+    }
+  }
+
+  setCoordinates = (position) => {
+    this.setState({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    });
+  }
+
   render() {
     return (
       <Container className={styles.mainContainer}>
@@ -118,6 +134,9 @@ class TaggerForm extends React.Component {
               </option>
             ))}
           </FormControl>
+          <button onClick={this.getLocationHandler}>Get Location</button>
+          <p>Latitude: {this.state.latitude}</p>
+          <p>Longitude: {this.state.longitude}</p>
         </Form.Group>
         <br />
         <br />
