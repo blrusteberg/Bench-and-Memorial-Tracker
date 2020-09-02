@@ -12,18 +12,28 @@ class memorialTypes extends React.Component {
       selected: [],
       value: 0,
       newType: "",
+      selectNewType: false  
     };
 
+    this.addAttribute = this.addAttribute.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
+    this.saveAttributes = this.saveAttributes.bind(this);
+    this.deleteAttribute = this.deleteAttribute.bind(this);
 
   }
 
   componentDidMount() {
     axios.get('http://localhost:1337/memorials/types')
       .then(response => {
+        let memorialTypes = response.data.memorialTypes;
+        let addType = {
+                        name: "Add a type", 
+                        attributes: [{ "name": "longitude", "value": null, "required": false, "dataType": "number"  },
+                        { "name": "latitude", "value": null, "required": false, "dataType": "number"  }]
+        };
+        memorialTypes.push(addType);
         this.setState({ 
-          types: response.data.memorialTypes, 
-          selected: response.data.memorialTypes[0].attributes,
+          types: memorialTypes
         })
         console.log(response);
       })
@@ -33,11 +43,19 @@ class memorialTypes extends React.Component {
     }
 
   dropdownChange = (event) => {
-    const selected = this.state.types[event.target.value].attributes;
-    this.setState({
-      selected: selected,
-      value: event.target.value,
-    });
+    if(event.target.value === "selectType"){
+      this.setState({
+        selectNewType: false
+      })
+    }
+    else {
+      const selected = this.state.types[event.target.value].attributes;
+      this.setState({
+        selectNewType: true,
+        selected: selected,
+        value: event.target.value,
+      });
+    }
   };
 
   deleteAttribute = (n) => {
@@ -139,19 +157,18 @@ class memorialTypes extends React.Component {
           types={this.state.types}
           dropdownChange={this.dropdownChange}
         />
-        <button onClick={() => this.saveAttributes()}>
-          Save
-        </button>
         <br />
-        <button onClick={() => this.addAttribute()}>
-          Add Attribute
-        </button>
         <br />
+        {this.state.selectNewType ? 
         <Attributes
           attributes={this.state.selected}
+          addeAttribute={this.addAttribute}
           updateAttribute={this.updateAttribute}
+          saveAttributes={this.saveAttributes}
           deleteAttribute={this.deleteAttribute}
-        />
+        /> 
+        : null
+        }
       </div>
     );
   }
