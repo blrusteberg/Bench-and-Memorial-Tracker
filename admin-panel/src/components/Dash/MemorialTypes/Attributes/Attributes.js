@@ -4,12 +4,6 @@ import styles from "./Attributes.module.css";
 const attributes = (props) => {
   return (
     <div>
-      <button onClick={() => props.addAttribute()}>
-        Add Attribute
-      </button>
-      <button onClick={() => props.saveAttributes()}>
-        Save
-      </button> 
       <div className={styles.container}>
         <span className={styles.firstLabel}>Property</span>
         <span className={styles.secondLabel}>Type</span>
@@ -39,6 +33,13 @@ const attributes = (props) => {
                 <button onClick={() => props.deleteAttribute(n)}>DELETE</button>
             </div>
         )}
+      <button onClick={() => props.addAttribute()}>
+        Add Attribute
+      </button>
+      <br />
+      <button onClick={() => props.saveAttributes()}>
+        Save
+      </button> 
     </div>
   );
 };

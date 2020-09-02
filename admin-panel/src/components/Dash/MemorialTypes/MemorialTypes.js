@@ -11,7 +11,7 @@ class memorialTypes extends React.Component {
       types: [],
       selected: [],
       value: 0,
-      newType: "",
+      newTypeName: "",
       selectNewType: false  
     };
 
@@ -19,6 +19,7 @@ class memorialTypes extends React.Component {
     this.updateAttribute = this.updateAttribute.bind(this);
     this.saveAttributes = this.saveAttributes.bind(this);
     this.deleteAttribute = this.deleteAttribute.bind(this);
+    this.handleNewTypeNameChange = this.handleNewTypeNameChange.bind(this);
 
   }
 
@@ -45,7 +46,8 @@ class memorialTypes extends React.Component {
   dropdownChange = (event) => {
     if(event.target.value === "selectType"){
       this.setState({
-        selectNewType: false
+        selectNewType: false,
+        value: -1
       })
     }
     else {
@@ -107,28 +109,6 @@ class memorialTypes extends React.Component {
     });
   }
 
-  addType = () => {
-    const name = document.getElementById("new-type").value;
-
-    if(name.trim() === ""){
-      return
-    }
-
-    let newType = { name: name, attributes: [] };
-    const longitude = { name: "longitude", value: null, required: false, dataType: "number"  };
-    const latitude = { name: "latitude", value: null, required: false, dataType: "number"  };
-
-    newType.attributes = [longitude, latitude];
-    let types = this.state.types;
-    types = types.concat(newType);
-
-    this.setState({
-      types: types,
-    });
-
-    document.getElementById("new-type").value = "";
-  }
-
   saveAttributes = () => {
     let memorialTypes = this.state.types;
     memorialTypes = { memorialTypes };
@@ -139,30 +119,37 @@ class memorialTypes extends React.Component {
     //   .then(res => console.log(res.data));
   }
 
+  handleNewTypeNameChange = (event) => {
+    this.setState({newTypeName: event.target.value});
+  }
+
   render() {
     return (
       <div className={styles.mainContainer}>
-        <input
-          className={styles.newType}
-          type="text"
-          id="new-type"
-          defaultValue=""
-        />
-        <button onClick={() => this.addType()}>
-          Add Type
-        </button>
         <br />
         <br />
         <Dropdown
           types={this.state.types}
           dropdownChange={this.dropdownChange}
         />
-        <br />
+        {(this.state.value == this.state.types.length-1) ? 
+          <div>
+            <label>Type name</label>
+            <input
+              className={styles.newType}
+              type="text"
+              placeholder="Enter a name..."
+              value={this.state.newTypeName}
+              onChange={(this.handleNewTypeNameChange)}
+            />
+          </div>
+          : null
+        }
         <br />
         {this.state.selectNewType ? 
         <Attributes
           attributes={this.state.selected}
-          addeAttribute={this.addAttribute}
+          addAttribute={this.addAttribute}
           updateAttribute={this.updateAttribute}
           saveAttributes={this.saveAttributes}
           deleteAttribute={this.deleteAttribute}
