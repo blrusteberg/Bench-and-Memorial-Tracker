@@ -1,14 +1,7 @@
 import React from "react";
 import axios from "axios";
-import {
-  Form,
-  Button,
-  FormControl,
-  Container,
-  Col,
-  Row,
-} from "react-bootstrap";
 
+import Attribute from "./Attribute/Attribute";
 import styles from "./TaggerForm.module.css";
 
 class TaggerForm extends React.Component {
@@ -18,39 +11,91 @@ class TaggerForm extends React.Component {
       memorialTypes: [
         {
           name: "Tree",
+          id: "asdjadpj0912u309123ui",
           attributes: [
-            { name: "longitude", value: "number", required: null },
-            { name: "latitude", value: "number", required: false },
-            { name: "Donor", value: "word", required: false },
-            { name: "Date Planted", value: "date", required: false },
+            {
+              name: "longitude",
+              type: "number",
+              required: true,
+              id: "3203sebg20t4",
+            },
+            {
+              name: "latitude",
+              type: "number",
+              required: true,
+              id: "32032sgbf0t4",
+            },
+            {
+              name: "Donor",
+              type: "word",
+              required: false,
+              id: "320aw3rfads320t4",
+            },
+            {
+              name: "Date Planted",
+              type: "date",
+              required: false,
+              id: "32032awr30t4",
+            },
           ],
         },
         {
           name: "Art",
+          id: "aodhjasegrd098u2309",
           attributes: [
-            { name: "longitude", value: null, required: null },
-            { name: "latitude", value: null, required: false },
-            { name: "Donor", value: null, required: false },
-            { name: "Date Placed", value: null, required: false },
+            {
+              name: "longitude",
+              type: "number",
+              required: null,
+              id: "3203stravs20t4",
+            },
+            {
+              name: "latitude",
+              type: "number",
+              required: false,
+              id: "32erdgf0320t4",
+            },
+            {
+              name: "Donor",
+              type: "words",
+              required: false,
+              id: "320320tavsdff434",
+            },
+            {
+              name: "Date Placed",
+              type: "date",
+              required: false,
+              id: "32032asvdf0t4",
+            },
           ],
         },
         {
           name: "Bench",
-          attributes: [
-            { name: "longitude", value: null, required: null },
-            { name: "latitude", value: null, required: false },
-            { name: "Donor", value: null, required: false },
-            { name: "Date Placed", value: null, required: false },
-          ],
-        },
-      ],
-      memorials: [
-        {
-          type: null,
+          id: "jmda0dj021asvdf9jd102",
           attributes: [
             {
-              name: null,
-              value: null,
+              name: "longitude",
+              type: "number",
+              required: null,
+              id: "320asvdfhgd320t4",
+            },
+            {
+              name: "latitude",
+              type: "number",
+              required: false,
+              id: "32032htrrrerh0t4",
+            },
+            {
+              name: "Donor",
+              type: "words",
+              required: false,
+              id: "3203afwehg20t4",
+            },
+            {
+              name: "Date Placed",
+              type: "date",
+              required: false,
+              id: "32032egtryt0t4",
             },
           ],
         },
@@ -58,7 +103,11 @@ class TaggerForm extends React.Component {
       typeSelectedIndex: null,
       error: null,
       isLoaded: false,
-      submitMessage: "",
+      memorial: {
+        name: "",
+        memorialTypeId: "",
+        attributes: [{ value: "", memorialTypeAttributeId: "", isValid: null }],
+      },
     };
   }
 
@@ -79,30 +128,33 @@ class TaggerForm extends React.Component {
     );
   }
 
-  dropDownChange(event) {
+  dropDownChange = (event) => {
     const memorialType = [...this.state.memorialTypes][event.target.value];
     const memorial = {};
     memorial.type = memorialType.name;
     memorial.attributes = memorialType.attributes.map((attribute) => {
-      return { name: attribute.name, value: attribute.value };
+      return { name: attribute.name, type: attribute.value };
     });
-    const newMemorials = [...this.state.memorials];
-    newMemorials[0] = memorial;
 
     this.setState({
       typeSelectedIndex: event.target.value,
     });
-    this.setState({ memorials: newMemorials });
-  }
+  };
 
-  inputChange(event, index) {
+  inputChange = (event, index) => {
     const memorials = [...this.state.memorials];
     memorials[0].attributes[index].value = event.target.value;
 
     this.setState({ memorials: memorials });
-  }
+  };
 
-  taggerSubmitHandler(event) {
+  saveMemorialHandler = () => {
+    // trigger on save memorial button click
+    // loop through this.state.memorialAttributes, check if all isValid are true
+    // also check if all required attributes have values
+  };
+
+  taggerSubmitHandler = (event) => {
     event.preventDefault();
     this.setState({ submitMessage: "" });
     axios
@@ -111,7 +163,7 @@ class TaggerForm extends React.Component {
       })
       .then((res) => this.setState({ submitMessage: "Memorial submitted" }))
       .catch((err) => console.log(err));
-  }
+  };
 
   getLocationHandler = () => {
     if (navigator.geolocation) {
@@ -130,16 +182,8 @@ class TaggerForm extends React.Component {
 
   render() {
     return (
-      <div id="container">
-        ---------------------------------------------------------------------------------------------------------------------------------
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <label for="Memorial-Types">Memorial Types</label>
+      <div className={styles.container}>
+        <label>Memorial Types</label>
         <br />
         <select
           name="Memorial-Types"
@@ -150,52 +194,36 @@ class TaggerForm extends React.Component {
           {this.state.memorialTypes.map((type, n) => (
             <option key={n} value={n}>
               {type.name}
-              {type.value}
             </option>
           ))}
         </select>
         <br />
+        <label className={styles.valueType}>Value</label>
         <br />
-        <br />
-        <label id="value-label">Value__________</label>
         <label id="value-type-label">Value Type</label>
         <form onSubmit={(event) => this.taggerSubmitHandler(event)}>
           {!this.state.typeSelectedIndex ? (
             ""
           ) : (
-            <form>
+            <div>
               {this.state.memorialTypes[
                 this.state.typeSelectedIndex
               ].attributes.map((attribute, index) => (
-                <div id="form123">
-                  <label id="attribute-name">{attribute.name}</label>
-                  <br />
-                  <input type="text" name="attribute-text-box"></input>
-
-                  <input
-                    type="text"
-                    name="value-text-box"
-                    readOnly
-                    placeholder={attribute.value}
-                  ></input>
-
-                  {/* <form
-                    onChange={(event) => this.inputChange(event, index)}
-                    className={styles.required}
-                    placeholder={attribute.value}
-                    required={attribute.required}
-                  /> */}
-                </div>
+                <Attribute
+                  name={attribute.name}
+                  type={attribute.type}
+                  required={attribute.required}
+                  typeId={attribute.id}
+                  key={index}
+                />
               ))}
               <br />
-
               <button variant="primary" type="submit">
                 Save Memorial
               </button>
-            </form>
+            </div>
           )}
         </form>
-        <div className={styles.submitMessage}>{this.state.submitMessage}</div>
       </div>
     );
   }

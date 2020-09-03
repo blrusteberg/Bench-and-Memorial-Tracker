@@ -29,9 +29,7 @@ class App extends React.Component {
     return (
       <div className={styles.App}>
         <SideBar handleNavigationClick={this.handleNavigationClick} />
-        <div className="Content">
-          <Dash page={this.state.page} />
-        </div>
+        <Dash page={this.state.page} />
       </div>
     );
   }
