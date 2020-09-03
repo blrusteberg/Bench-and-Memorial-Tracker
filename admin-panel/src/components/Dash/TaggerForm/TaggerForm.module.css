@@ -1,3 +1,16 @@
+.container {
+  text-align:center;
+}
+
+#value-type{
+  color: red;
+}
+
+#attribute-name {
+  align-content: left;
+}
+
+
 .required:after {
   content: " *";
   color: red;

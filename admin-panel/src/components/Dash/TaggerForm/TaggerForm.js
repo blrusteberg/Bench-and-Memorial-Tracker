@@ -17,8 +17,31 @@ class TaggerForm extends React.Component {
     this.state = {
       memorialTypes: [
         {
-          name: null,
-          attributes: [{ name: null, value: null, required: null }],
+          name: "Tree",
+          attributes: [
+            { name: "longitude", value: "number", required: null },
+            { name: "latitude", value: "number", required: false },
+            { name: "Donor", value: "word", required: false },
+            { name: "Date Planted", value: "date", required: false },
+          ],
+        },
+        {
+          name: "Art",
+          attributes: [
+            { name: "longitude", value: null, required: null },
+            { name: "latitude", value: null, required: false },
+            { name: "Donor", value: null, required: false },
+            { name: "Date Placed", value: null, required: false },
+          ],
+        },
+        {
+          name: "Bench",
+          attributes: [
+            { name: "longitude", value: null, required: null },
+            { name: "latitude", value: null, required: false },
+            { name: "Donor", value: null, required: false },
+            { name: "Date Placed", value: null, required: false },
+          ],
         },
       ],
       memorials: [
@@ -37,7 +60,6 @@ class TaggerForm extends React.Component {
       isLoaded: false,
       submitMessage: "",
     };
-    
   }
 
   componentDidMount() {
@@ -97,18 +119,19 @@ class TaggerForm extends React.Component {
     } else {
       alert("Geolocation is not supportd by this browser");
     }
-  }
+  };
 
   setCoordinates = (position) => {
     this.setState({
       latitude: position.coords.latitude,
-      longitude: position.coords.longitude
+      longitude: position.coords.longitude,
     });
-  }
+  };
 
   render() {
     return (
-      <Container className={styles.mainContainer}>
+      <div id="container">
+        ---------------------------------------------------------------------------------------------------------------------------------
         <br />
         <br />
         <br />
@@ -116,64 +139,64 @@ class TaggerForm extends React.Component {
         <br />
         <br />
         <br />
-
-        <Form.Group className={styles.dropDown}>
-          <label>Memorial Types</label>
-          <FormControl
-            as="select"
-            onChange={(event) => this.dropDownChange(event)}
-          >
-            {!this.state.typeSelectedIndex ? (
-              <option>Select a type</option>
-            ) : (
-              ""
-            )}
-            {this.state.memorialTypes.map((type, n) => (
-              <option key={n} value={n}>
-                {type.name}
-              </option>
-            ))}
-          </FormControl>
-          <button onClick={this.getLocationHandler}>Get Location</button>
-          <p>Latitude: {this.state.latitude}</p>
-          <p>Longitude: {this.state.longitude}</p>
-        </Form.Group>
+        <label for="Memorial-Types">Memorial Types</label>
+        <br />
+        <select
+          name="Memorial-Types"
+          id="Memorial-Types"
+          onChange={(event) => this.dropDownChange(event)}
+        >
+          {!this.state.typeSelectedIndex ? <option>Select a type</option> : ""}
+          {this.state.memorialTypes.map((type, n) => (
+            <option key={n} value={n}>
+              {type.name}
+              {type.value}
+            </option>
+          ))}
+        </select>
         <br />
         <br />
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <Form onSubmit={(event) => this.taggerSubmitHandler(event)}>
+        <label id="value-label">Value__________</label>
+        <label id="value-type-label">Value Type</label>
+        <form onSubmit={(event) => this.taggerSubmitHandler(event)}>
           {!this.state.typeSelectedIndex ? (
             ""
           ) : (
-            <Form.Group>
+            <form>
               {this.state.memorialTypes[
                 this.state.typeSelectedIndex
               ].attributes.map((attribute, index) => (
-                <div>
-                  <Form.Label>{attribute.name}</Form.Label>
+                <div id="form123">
+                  <label id="attribute-name">{attribute.name}</label>
+                  <br />
+                  <input type="text" name="attribute-text-box"></input>
 
-                  <Form.Control
+                  <input
+                    type="text"
+                    name="value-text-box"
+                    readOnly
+                    placeholder={attribute.value}
+                  ></input>
+
+                  {/* <form
                     onChange={(event) => this.inputChange(event, index)}
                     className={styles.required}
                     placeholder={attribute.value}
                     required={attribute.required}
-                  />
+                  /> */}
                 </div>
               ))}
               <br />
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form.Group>
+
+              <button variant="primary" type="submit">
+                Save Memorial
+              </button>
+            </form>
           )}
-        </Form>
+        </form>
         <div className={styles.submitMessage}>{this.state.submitMessage}</div>
-      </Container>
+      </div>
     );
   }
 }
