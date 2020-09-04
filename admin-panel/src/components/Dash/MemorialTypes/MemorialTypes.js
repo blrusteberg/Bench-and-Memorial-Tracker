@@ -12,7 +12,7 @@ class memorialTypes extends React.Component {
       selected: [],
       value: 0,
       newTypeName: "",
-      selectNewType: false  
+      selectNewType: false
     };
 
     this.addAttribute = this.addAttribute.bind(this);
@@ -51,10 +51,12 @@ class memorialTypes extends React.Component {
       })
     }
     else {
-      const selected = this.state.types[event.target.value].attributes;
+      console.log(this.state.types[event.target.value].attributes); 
+      let attributes = [...(this.state.types[event.target.value].attributes)];
+      console.log(attributes);
       this.setState({
         selectNewType: true,
-        selected: selected,
+        selected: attributes,
         value: event.target.value,
       });
     }
@@ -64,12 +66,8 @@ class memorialTypes extends React.Component {
     const newSelected = [...this.state.selected];
     newSelected.splice(n, 1);
 
-    const types = [...this.state.types];
-    types[this.state.value].attributes = newSelected;
-
     this.setState({
       selected: newSelected,
-      types: types,
     });
   };
 
@@ -78,34 +76,26 @@ class memorialTypes extends React.Component {
     let newSelected = [...this.state.selected];
     newSelected = newSelected.concat(blankAttribute);
 
-    const types = [...this.state.types];
-    types[this.state.value].attributes = newSelected;
-
     this.setState({
       selected: newSelected,
-      types: types,
     });
   }
 
   updateAttribute = (event, n) => {
     let newSelected = [...this.state.selected];
 
-    if(event.type === "text"){
-      newSelected[n].name = event.value;
+    if(event.target.type === "text"){
+      newSelected[n].name = event.target.value;
     }
-    else if(event.type === "select-one"){
-      newSelected[n].dataType = event.value;
+    if(event.target.type === "select-one"){
+      newSelected[n].dataType = event.target.value;
     }
-    else if(event.type === "checkbox"){
-      newSelected[n].required = !(event.value === "true");
+    else if(event.target.type === "checkbox"){
+      newSelected[n].required = !(event.target.value === "true");
     }
-
-    const types = [...this.state.types];
-    types[this.state.value].attributes = newSelected;
-
+    console.log(this.state.selected);
     this.setState({
-      selected: newSelected,
-      types: types,
+      selected: newSelected
     });
   }
 

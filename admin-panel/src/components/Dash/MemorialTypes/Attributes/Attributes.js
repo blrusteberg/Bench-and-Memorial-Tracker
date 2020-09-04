@@ -17,8 +17,8 @@ const attributes = (props) => {
             </div>
             :
             <div className={styles.container}>
-                <input type="text" key={n} value={item.name} onChange={event => props.updateAttribute(event.target, n)}/>
-                <select value={item.dataType} onChange={event => props.updateAttribute(event.target, n)}>
+                <input type="text" key={n} value={item.name} onChange={event => props.updateAttribute(event, n)}/>
+                <select value={item.dataType} onChange={event => props.updateAttribute(event, n)}>
                   <option value="date">Date</option>
                   <option value="number">Number</option>
                   <option value="boolean">True/False</option>
@@ -28,7 +28,7 @@ const attributes = (props) => {
                     type="checkbox"
                     checked={item.required}
                     value={item.required}
-                    onChange={event => props.updateAttribute(event.target, n)}
+                    onChange={event => props.updateAttribute(event, n)}
                 />
                 <button onClick={() => props.deleteAttribute(n)}>DELETE</button>
             </div>
