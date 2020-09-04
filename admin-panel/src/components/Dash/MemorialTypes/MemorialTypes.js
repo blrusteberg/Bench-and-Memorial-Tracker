@@ -117,7 +117,7 @@ class memorialTypes extends React.Component {
           selectedTypeIndex={this.state.selectedTypeIndex}
           dropdownChange={this.dropdownChange}
         />
-        {this.state.selectedTypeIndex ? (
+        {parseInt(this.state.selectedTypeIndex) === this.state.initialTypes.length-1 ? (
           <div>
             <label>Type name</label>
             <input
@@ -127,15 +127,19 @@ class memorialTypes extends React.Component {
               value={this.state.newTypeName}
               onChange={this.handleNewTypeNameChange}
             />
-            <Attributes
-              attributes={this.state.selected}
-              addAttribute={this.addAttribute}
-              updateAttribute={this.updateAttribute}
-              saveAttributes={this.saveAttributes}
-              deleteAttribute={this.deleteAttribute}
-            />
-          </div>
-        ) : null}
+          </div>) 
+          : null
+        }
+        {this.state.selectedTypeIndex ? 
+          <Attributes
+            attributes={this.state.selected}
+            addAttribute={this.addAttribute}
+            updateAttribute={this.updateAttribute}
+            saveAttributes={this.saveAttributes}
+            deleteAttribute={this.deleteAttribute}
+          />
+          : null
+        }
       </div>
     );
   }

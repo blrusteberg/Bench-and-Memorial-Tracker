@@ -13,3 +13,15 @@
 .thirdLabel {
     margin-right: 50px;
 }
+
+.addAttributeButton {
+    cursor: pointer;
+    width: 5%;
+    height: auto;
+}
+
+.deleteAttributeButton {
+    cursor: pointer;
+    width: 5%;
+    height: auto;
+}
