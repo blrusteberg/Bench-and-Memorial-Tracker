@@ -75,7 +75,7 @@ class memorialTypes extends React.Component {
       dataType: "number",
     };
     this.setState({
-      selected: [this.state.selected, blankAttribute],
+      selected: [...this.state.selected, blankAttribute],
     });
   };
 

@@ -20,6 +20,7 @@ const attributes = (props) => {
             </div>
             :
             <div >
+                <img className={styles.deleteAttributeButton} src={deleteAttributeButton} onClick={() => props.deleteAttribute(n)}></img>
                 <input type="text" key={n} value={item.name} onChange={event => props.updateAttribute(event, n)}/>
                 <select value={item.dataType} onChange={event => props.updateAttribute(event, n)}>
                   <option value="date">Date</option>
@@ -33,11 +34,10 @@ const attributes = (props) => {
                     value={item.required}
                     onChange={event => props.updateAttribute(event, n)}
                 />
-                {/* <img className={styles.deleteAttributeButton} src={deleteAttributeButton} onClick={() => props.deleteAttribute(n)}></img> */}
             </div>
         )}
       </div>
-      {/* <img className={styles.addAttributeButton} src={addAttributeButton} onClick={() => props.addAttribute()}></img> */}
+      <img className={styles.addAttributeButton} src={addAttributeButton} onClick={() => props.addAttribute()}></img>
       <label>Add attribute</label>
       <br />
       <button onClick={() => props.saveAttributes()}>
