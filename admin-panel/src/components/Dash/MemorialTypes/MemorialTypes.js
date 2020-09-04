@@ -5,6 +5,7 @@ import lodash from "lodash";
 import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
+import Popup from './Popup/Popup';
 
 class memorialTypes extends React.Component {
   constructor(props) {
@@ -14,6 +15,10 @@ class memorialTypes extends React.Component {
       selected: [],
       selectedTypeIndex: 0,
       newTypeName: "",
+      showPopup: false,
+      updatedAttributes: 0,
+      deletedAttributes: 0,
+      addedAttributes: 0
     };
   }
 
@@ -64,6 +69,7 @@ class memorialTypes extends React.Component {
     newSelected.splice(attributeIndex, 1);
     this.setState({
       selected: newSelected,
+      deletedAttributes: this.state.deletedAttributes + 1
     });
   };
 
@@ -72,10 +78,11 @@ class memorialTypes extends React.Component {
       name: "",
       value: null,
       required: false,
-      dataType: "number",
+      dataType: "string",
     };
     this.setState({
       selected: [...this.state.selected, blankAttribute],
+      addedAttributes: this.state.addedAttributes + 1
     });
   };
 
@@ -90,11 +97,20 @@ class memorialTypes extends React.Component {
       newSelected[n].required = !(event.target.value === "true");
     }
     this.setState({
-      selected: newSelected,
+      selected: newSelected
     });
   };
 
   saveAttributes = () => {
+
+    this.setState({  
+      showPopup: !this.state.showPopup  
+    }); 
+
+    console.log("saving!!");
+
+    // continue is pressed -> show SAVING then refresh page then show toast
+
     let memorialTypes = this.state.Initialtypes;
     memorialTypes = { memorialTypes };
     let memorialObject = JSON.stringify(memorialTypes);
@@ -107,6 +123,13 @@ class memorialTypes extends React.Component {
   handleNewTypeNameChange = (event) => {
     this.setState({ newTypeName: event.target.value });
   };
+
+  togglePopup = () => {
+    this.setState({  
+      showPopup: !this.state.showPopup  
+    });  
+
+  }
 
   render() {
     return (
@@ -135,11 +158,22 @@ class memorialTypes extends React.Component {
             attributes={this.state.selected}
             addAttribute={this.addAttribute}
             updateAttribute={this.updateAttribute}
-            saveAttributes={this.saveAttributes}
+            saveAttributes={this.togglePopup}
             deleteAttribute={this.deleteAttribute}
           />
           : null
         }
+        {this.state.showPopup ?  
+          <Popup  
+              text='Click "Cancel" to hide popup' 
+              saveAttributes={this.saveAttributes}
+              closePopup={this.togglePopup}
+              addedAttributes={this.state.addedAttributes}
+              updatedAttributes={this.state.updatedAttributes}
+              deletedAttributes={this.state.deletedAttributes}
+          />  
+          : null  
+        }  
       </div>
     );
   }
