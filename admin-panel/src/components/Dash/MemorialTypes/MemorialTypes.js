@@ -114,6 +114,7 @@ class memorialTypes extends React.Component {
         <div className={styles.title}>Memorial Types</div>
         <Dropdown
           types={this.state.initialTypes}
+          selectedTypeIndex={this.state.selectedTypeIndex}
           dropdownChange={this.dropdownChange}
         />
         {this.state.selectedTypeIndex ? (
