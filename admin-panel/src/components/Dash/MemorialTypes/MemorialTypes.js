@@ -1,128 +1,122 @@
 import React from "react";
+import axios from "axios";
+import lodash from "lodash";
+
 import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
-import axios from 'axios';
 
 class memorialTypes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      types: [],
+      initialTypes: [],
       selected: [],
-      value: 0,
+      selectedTypeIndex: 0,
       newTypeName: "",
-      selectNewType: false
     };
-
-    this.addAttribute = this.addAttribute.bind(this);
-    this.updateAttribute = this.updateAttribute.bind(this);
-    this.saveAttributes = this.saveAttributes.bind(this);
-    this.deleteAttribute = this.deleteAttribute.bind(this);
-    this.handleNewTypeNameChange = this.handleNewTypeNameChange.bind(this);
-
   }
 
   componentDidMount() {
-    axios.get('http://localhost:1337/memorials/types')
-      .then(response => {
-        let memorialTypes = response.data.memorialTypes;
-        let addType = {
-                        name: "Add a type", 
-                        attributes: [{ "name": "longitude", "value": null, "required": false, "dataType": "number"  },
-                        { "name": "latitude", "value": null, "required": false, "dataType": "number"  }]
+    axios
+      .get("http://localhost:1337/memorials/types")
+      .then((response) => {
+        const memorialTypes = response.data.memorialTypes;
+        const addType = {
+          name: " + New Type",
+          attributes: [
+            {
+              name: "longitude",
+              value: null,
+              required: true,
+              dataType: "number",
+            },
+            {
+              name: "latitude",
+              value: null,
+              required: true,
+              dataType: "number",
+            },
+          ],
         };
         memorialTypes.push(addType);
-        this.setState({ 
-          types: memorialTypes
-        })
-        console.log(response);
+        this.setState({
+          initialTypes: memorialTypes,
+        });
       })
       .catch((error) => {
         console.log(error);
-      })
-    }
+      });
+  }
 
   dropdownChange = (event) => {
-    if(event.target.value === "selectType"){
-      this.setState({
-        selectNewType: false,
-        value: -1
-      })
-    }
-    else {
-      console.log(this.state.types[event.target.value].attributes); 
-      let attributes = [...(this.state.types[event.target.value].attributes)];
-      console.log(attributes);
-      this.setState({
-        selectNewType: true,
-        selected: attributes,
-        value: event.target.value,
-      });
-    }
+    const attributes = lodash.cloneDeep(
+      this.state.initialTypes[event.target.value].attributes
+    );
+    this.setState({
+      selected: attributes,
+      selectedTypeIndex: event.target.value,
+    });
   };
 
-  deleteAttribute = (n) => {
-    const newSelected = [...this.state.selected];
-    newSelected.splice(n, 1);
-
+  deleteAttribute = (attributeIndex) => {
+    const newSelected = lodash.cloneDeep(this.state.selected);
+    newSelected.splice(attributeIndex, 1);
     this.setState({
       selected: newSelected,
     });
   };
 
   addAttribute = () => {
-    let blankAttribute = { name: "", value: null, required: false, dataType: "number" };
-    let newSelected = [...this.state.selected];
-    newSelected = newSelected.concat(blankAttribute);
+    let blankAttribute = {
+      name: "",
+      value: null,
+      required: false,
+      dataType: "number",
+    };
+    this.setState({
+      selected: [this.state.selected, blankAttribute],
+    });
+  };
 
+  updateAttribute = (event, n) => {
+    const newSelected = lodash.cloneDeep(this.state.selected);
+    if (event.target.type === "text") {
+      newSelected[n].name = event.target.value;
+    }
+    if (event.target.type === "select-one") {
+      newSelected[n].dataType = event.target.value;
+    } else if (event.target.type === "checkbox") {
+      newSelected[n].required = !(event.target.value === "true");
+    }
     this.setState({
       selected: newSelected,
     });
-  }
-
-  updateAttribute = (event, n) => {
-    let newSelected = [...this.state.selected];
-
-    if(event.target.type === "text"){
-      newSelected[n].name = event.target.value;
-    }
-    if(event.target.type === "select-one"){
-      newSelected[n].dataType = event.target.value;
-    }
-    else if(event.target.type === "checkbox"){
-      newSelected[n].required = !(event.target.value === "true");
-    }
-    console.log(this.state.selected);
-    this.setState({
-      selected: newSelected
-    });
-  }
+  };
 
   saveAttributes = () => {
-    let memorialTypes = this.state.types;
+    let memorialTypes = this.state.Initialtypes;
     memorialTypes = { memorialTypes };
     let memorialObject = JSON.stringify(memorialTypes);
 
     // Updates ENTIRE memorialTypes with newly updated memorialObject
     // axios.put('http://localhost:1337/memorials/types', memorialObject)
     //   .then(res => console.log(res.data));
-  }
+  };
 
   handleNewTypeNameChange = (event) => {
-    this.setState({newTypeName: event.target.value});
-  }
+    this.setState({ newTypeName: event.target.value });
+  };
 
   render() {
     return (
-      <div className={styles.mainContainer}>
-        <br />
-        <br />
+      <div className={styles.memorialTypes}>
+        <div className={styles.title}>Memorial Types</div>
         <Dropdown
-          types={this.state.types}
+          types={this.state.initialTypes}
           dropdownChange={this.dropdownChange}
         />
-        {(this.state.value == this.state.types.length-1) ? 
+        {this.state.selectedTypeIndex ? (
           <div>
             <label>Type name</label>
             <input
@@ -130,22 +124,17 @@ class memorialTypes extends React.Component {
               type="text"
               placeholder="Enter a name..."
               value={this.state.newTypeName}
-              onChange={(this.handleNewTypeNameChange)}
+              onChange={this.handleNewTypeNameChange}
+            />
+            <Attributes
+              attributes={this.state.selected}
+              addAttribute={this.addAttribute}
+              updateAttribute={this.updateAttribute}
+              saveAttributes={this.saveAttributes}
+              deleteAttribute={this.deleteAttribute}
             />
           </div>
-          : null
-        }
-        <br />
-        {this.state.selectNewType ? 
-        <Attributes
-          attributes={this.state.selected}
-          addAttribute={this.addAttribute}
-          updateAttribute={this.updateAttribute}
-          saveAttributes={this.saveAttributes}
-          deleteAttribute={this.deleteAttribute}
-        /> 
-        : null
-        }
+        ) : null}
       </div>
     );
   }
