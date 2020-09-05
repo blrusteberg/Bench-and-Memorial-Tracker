@@ -11,8 +11,8 @@ class Popup extends React.Component {
                     <br />
                     <br />
                     <h1>
-                        You are about to update {this.props.updatedAttributes} attributes, delete {this.props.deletedAttributes} attributes, 
-                        and add {this.props.addedAttributes} new attributes.
+                        You are about to add {this.props.addedAttributes} new attributes 
+                        and delete {this.props.deletedAttributes} attributes.
                     </h1>  
                     <br />
                     <h2>Do you want to continue?</h2>

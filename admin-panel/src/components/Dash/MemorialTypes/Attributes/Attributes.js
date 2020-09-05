@@ -41,8 +41,10 @@ const attributes = (props) => {
       <label>Add attribute</label>
       <br />
       <button onClick={() => props.saveAttributes()}>
-        Save
+        {props.isNewType ? "Update" : "Save"}
       </button> 
+      <h3>{props.isSaving ? "Saving..." : null}</h3>
+      <h3>{props.isUpdating ? "Updating..." : null}</h3>
     </div>
   );
 };

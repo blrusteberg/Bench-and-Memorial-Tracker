@@ -16,9 +16,10 @@ class memorialTypes extends React.Component {
       selectedTypeIndex: 0,
       newTypeName: "",
       showPopup: false,
-      updatedAttributes: 0,
       deletedAttributes: 0,
-      addedAttributes: 0
+      addedAttributes: 0,
+      isSaving: false,
+      isUpdating: false
     };
   }
 
@@ -61,6 +62,8 @@ class memorialTypes extends React.Component {
     this.setState({
       selected: attributes,
       selectedTypeIndex: event.target.value,
+      deletedAttributes: 0,
+      addedAttributes: 0
     });
   };
 
@@ -107,9 +110,21 @@ class memorialTypes extends React.Component {
       showPopup: !this.state.showPopup  
     }); 
 
-    console.log("saving!!");
+    if(this.checkIfNewType()){
+      this.setState({  
+        isUpdating: true 
+      }); 
+      //axios.put
+      window.location.reload(false);
+    } else {
+      this.setState({  
+        isSaving: true 
+      }); 
+      //axios.push
+      window.location.reload(false);
+    }
 
-    // continue is pressed -> show SAVING then refresh page then show toast
+    // continue is pressed -> DISABLE SAVE BUTTON then show SAVING then refresh page then show toast
 
     let memorialTypes = this.state.Initialtypes;
     memorialTypes = { memorialTypes };
@@ -131,6 +146,10 @@ class memorialTypes extends React.Component {
 
   }
 
+  checkIfNewType = () => {
+    return (parseInt(this.state.selectedTypeIndex) === this.state.initialTypes.length-1)
+  }
+
   render() {
     return (
       <div className={styles.memorialTypes}>
@@ -140,7 +159,7 @@ class memorialTypes extends React.Component {
           selectedTypeIndex={this.state.selectedTypeIndex}
           dropdownChange={this.dropdownChange}
         />
-        {parseInt(this.state.selectedTypeIndex) === this.state.initialTypes.length-1 ? (
+        {this.checkIfNewType() ? (
           <div>
             <label>Type name</label>
             <input
@@ -160,6 +179,9 @@ class memorialTypes extends React.Component {
             updateAttribute={this.updateAttribute}
             saveAttributes={this.togglePopup}
             deleteAttribute={this.deleteAttribute}
+            isNewType={this.checkIfNewType}
+            isSaving={this.state.isSaving}
+            isUpdating={this.state.isUpdating}
           />
           : null
         }
@@ -169,7 +191,6 @@ class memorialTypes extends React.Component {
               saveAttributes={this.saveAttributes}
               closePopup={this.togglePopup}
               addedAttributes={this.state.addedAttributes}
-              updatedAttributes={this.state.updatedAttributes}
               deletedAttributes={this.state.deletedAttributes}
           />  
           : null  
