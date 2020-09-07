@@ -1,46 +1,63 @@
-"user strict";
 const express = require("express");
 const router = express.Router();
-const memorialTypes = require("../data/memorial-types.json");
-const utils = require("../utils/index");
-const fs = require("fs");
 
-router.get("/", (req, res) => {
-  res.status(200).json(memorialTypes);
+const MemorialType = require("../models/memorialType");
+
+router.get("/", async (req, res) => {
+  try {
+    const memorialTypes = await MemorialType.find();
+    res.status(200).json(memorialTypes);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
 });
 
-router.post("/", (req, res) => {
-  if (!utils.validateMemorialTypes(req.body.memorialTypes)) {
-    res.status(400).json({
-      message: "invalid memorial types",
+router.post("/", async (req, res) => {
+  const memorialType = new MemorialType({
+    name: req.body.name,
+    attributes: req.body.attributes,
+  });
+  try {
+    const savedMemorialType = await memorialType.save();
+    res.status(200).json(savedMemorialType._id);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Unable to create new memorial type.",
     });
   }
-
-  addMemorialTypes(req.body);
-
-  res.status(201).json({
-    message: "memorial types added",
-  });
 });
 
-function addMemorialTypes(newMemorialTypes) {
-  utils.jsonReader("data/memorial-types.json", (err, memorialTypes) => {
-    if (err) {
-      console.log("Error reading file:", err);
-      return;
-    }
-
-    memorialTypes.memorialTypes = memorialTypes.memorialTypes.concat(
-      newMemorialTypes.memorialTypes
-    );
-    fs.writeFile(
-      "data/memorial-types.json",
-      JSON.stringify(memorialTypes, null, 2),
-      (err) => {
-        if (err) console.log("Error writing file:", err);
-      }
-    );
+router.put("/", async (req, res) => {
+  const updatedMemorialType = new MemorialType({
+    name: req.body.name,
+    _id: req.body._id,
+    attributes: req.body.attributes,
   });
-}
+  try {
+    await MemorialType.findOneAndUpdate(
+      { _id: updatedMemorialType._id },
+      updatedMemorialType,
+      { new: true, overwrite: true }
+    );
+    res.status(200).json({ message: "1 memorial type was updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "Unable to update memorial type.",
+    });
+  }
+});
+
+router.delete("/:_id", async (req, res) => {
+  try {
+    await MemorialType.deleteOne({ _id: req.params._id });
+    res.status(204).json({ message: "1 memorial type was deleted." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error });
+  }
+});
 
 module.exports = router;
