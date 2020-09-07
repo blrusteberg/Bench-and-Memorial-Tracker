@@ -25,7 +25,7 @@ const attributes = (props) => {
                 <select value={item.dataType} onChange={event => props.updateAttribute(event, n)}>
                   <option value="date">Date</option>
                   <option value="number">Number</option>
-                  <option value="boolean">True/False</option>
+                  <option value="boolean">Yes/No</option>
                   <option value="string">Words</option>
                 </select>
                 <input

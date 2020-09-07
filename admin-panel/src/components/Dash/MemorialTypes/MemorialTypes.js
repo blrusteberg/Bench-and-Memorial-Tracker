@@ -116,12 +116,14 @@ class memorialTypes extends React.Component {
       }); 
       //axios.put
       window.location.reload(false);
+      //create toast
     } else {
       this.setState({  
         isSaving: true 
       }); 
       //axios.push
       window.location.reload(false);
+      //create toast
     }
 
     // continue is pressed -> DISABLE SAVE BUTTON then show SAVING then refresh page then show toast
