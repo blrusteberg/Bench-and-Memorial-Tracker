@@ -25,9 +25,12 @@ class memorialTypes extends React.Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:1337/memorials/types")
+      .get("http://localhost:1337/memorialTypes")
       .then((response) => {
-        const memorialTypes = response.data.memorialTypes;
+        const memorialTypes = [];
+        if(response.data.length > 0){
+          memorialTypes = response.data.memorialTypes
+        }
         const addType = {
           name: " + New Type",
           attributes: [
@@ -161,7 +164,7 @@ class memorialTypes extends React.Component {
           selectedTypeIndex={this.state.selectedTypeIndex}
           dropdownChange={this.dropdownChange}
         />
-        {this.checkIfNewType() ? (
+        {this.state.selectedTypeIndex ? (
           <div>
             <label>Type name</label>
             <input
@@ -171,20 +174,17 @@ class memorialTypes extends React.Component {
               value={this.state.newTypeName}
               onChange={this.handleNewTypeNameChange}
             />
-          </div>) 
-          : null
-        }
-        {this.state.selectedTypeIndex ? 
-          <Attributes
-            attributes={this.state.selected}
-            addAttribute={this.addAttribute}
-            updateAttribute={this.updateAttribute}
-            saveAttributes={this.togglePopup}
-            deleteAttribute={this.deleteAttribute}
-            isNewType={this.checkIfNewType}
-            isSaving={this.state.isSaving}
-            isUpdating={this.state.isUpdating}
-          />
+            <Attributes
+              attributes={this.state.selected}
+              addAttribute={this.addAttribute}
+              updateAttribute={this.updateAttribute}
+              saveAttributes={this.togglePopup}
+              deleteAttribute={this.deleteAttribute}
+              isNewType={this.checkIfNewType}
+              isSaving={this.state.isSaving}
+              isUpdating={this.state.isUpdating}
+            />
+          </div>)
           : null
         }
         {this.state.showPopup ?  
