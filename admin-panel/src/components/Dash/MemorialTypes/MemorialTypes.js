@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import lodash from "lodash";
+import lodash, { update } from "lodash";
 
 import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
@@ -27,22 +27,21 @@ class memorialTypes extends React.Component {
     axios
       .get("http://localhost:1337/memorialTypes")
       .then((response) => {
-        const memorialTypes = [];
+        console.log(response.data);
+        let memorialTypes = [];
         if(response.data.length > 0){
-          memorialTypes = response.data.memorialTypes
+          memorialTypes = response.data
         }
         const addType = {
           name: " + New Type",
           attributes: [
             {
               name: "longitude",
-              value: null,
               required: true,
               dataType: "number",
             },
             {
               name: "latitude",
-              value: null,
               required: true,
               dataType: "number",
             },
@@ -82,7 +81,6 @@ class memorialTypes extends React.Component {
   addAttribute = () => {
     let blankAttribute = {
       name: "",
-      value: null,
       required: false,
       dataType: "string",
     };
@@ -114,26 +112,31 @@ class memorialTypes extends React.Component {
     }); 
 
     if(this.checkIfNewType()){
+      console.log('true');
       this.setState({  
         isUpdating: true 
       }); 
-      //axios.put
-      window.location.reload(false);
+      let newMemorialTypesObject = { name: this.state.newTypeName, attributes: this.state.selected };
+      axios.post('http://localhost:1337/memorialTypes', newMemorialTypesObject)
+      .then(res => console.log(res.data));
+      window.location.reload(true);
       //create toast
     } else {
+      console.log('false');
       this.setState({  
         isSaving: true 
       }); 
-      //axios.push
-      window.location.reload(false);
+      let index = this.state.selectedTypeIndex;
+      let memorialTypeName = this.state.initialTypes[index].name;
+      let memorialTypeId = this.state.initialTypes[index]._id;
+      let updatedMemorialTypesObject = { _id: memorialTypeId, name: memorialTypeName, attributes: this.state.selected };
+      axios.put('http://localhost:1337/memorialTypes', updatedMemorialTypesObject)
+      .then(res => console.log(res.data));
+      window.location.reload(true);
       //create toast
     }
 
     // continue is pressed -> DISABLE SAVE BUTTON then show SAVING then refresh page then show toast
-
-    let memorialTypes = this.state.Initialtypes;
-    memorialTypes = { memorialTypes };
-    let memorialObject = JSON.stringify(memorialTypes);
 
     // Updates ENTIRE memorialTypes with newly updated memorialObject
     // axios.put('http://localhost:1337/memorials/types', memorialObject)
@@ -164,7 +167,7 @@ class memorialTypes extends React.Component {
           selectedTypeIndex={this.state.selectedTypeIndex}
           dropdownChange={this.dropdownChange}
         />
-        {this.state.selectedTypeIndex ? (
+        {(this.state.selectedTypeIndex && this.checkIfNewType()) ? (
           <div>
             <label>Type name</label>
             <input
@@ -174,6 +177,11 @@ class memorialTypes extends React.Component {
               value={this.state.newTypeName}
               onChange={this.handleNewTypeNameChange}
             />
+          </div>)
+          : null
+        }
+        {this.state.selectedTypeIndex ? (
+          <div>
             <Attributes
               attributes={this.state.selected}
               addAttribute={this.addAttribute}
