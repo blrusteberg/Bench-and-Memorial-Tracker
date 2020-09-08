@@ -10,7 +10,6 @@ class App extends React.Component {
     page: "Accounts",
   };
   handleNavigationClick = (e) => {
-    console.log(e);
     const page = e.target.id;
     if (page) {
       this.changePage(page);
