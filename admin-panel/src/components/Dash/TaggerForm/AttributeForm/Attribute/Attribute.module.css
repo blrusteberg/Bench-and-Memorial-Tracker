@@ -1,0 +1,28 @@
+.inputLabel {
+    text-align: left;
+    font-size: 16px;
+}
+
+.validInput {
+    visibility: hidden;
+    font-size: 20px;
+}
+
+.invalidInput {
+    color: red;
+}
+
+.error {
+    color: red;
+}
+
+
+.attributeTextBox {
+    margin-right: 10px;
+    flex-direction: left;
+
+}
+
+.valueTextBox {
+    width: 100px;
+}

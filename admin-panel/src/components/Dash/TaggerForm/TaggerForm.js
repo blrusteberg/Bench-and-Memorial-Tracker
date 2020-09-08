@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
 
-import Attribute from "./Attribute/Attribute";
 import styles from "./TaggerForm.module.css";
+import AttributeForm from "./AttributeForm/AttributeForm";
 
 class TaggerForm extends React.Component {
   constructor(props) {
@@ -197,33 +197,38 @@ class TaggerForm extends React.Component {
             </option>
           ))}
         </select>
-        <br />
-        <label className={styles.valueType}>Value</label>
-        <br />
-        <label id="value-type-label">Value Type</label>
-        <form onSubmit={(event) => this.taggerSubmitHandler(event)}>
-          {!this.state.typeSelectedIndex ? (
-            ""
-          ) : (
-            <div>
-              {this.state.memorialTypes[
-                this.state.typeSelectedIndex
-              ].attributes.map((attribute, index) => (
-                <Attribute
-                  name={attribute.name}
-                  type={attribute.type}
-                  required={attribute.required}
-                  typeId={attribute.id}
-                  key={index}
-                />
-              ))}
-              <br />
-              <button variant="primary" type="submit">
-                Save Memorial
-              </button>
-            </div>
-          )}
-        </form>
+
+        {!this.state.typeSelectedIndex ? (
+          ""
+        ) : (
+          <div className={styles.attributesWrapper}>
+            <AttributeForm
+              memorialType={this.state.memorialTypes[this.state.typeSelectedIndex]}
+              lat = {this.state.latitude}
+              lng = {this.state.longitude}
+            />
+            <br />
+            <button
+              className={styles.saveMemorial}
+              variant="primary"
+              type="submit"
+            >
+              Save Memorial
+            </button>
+
+            <button
+              className={styles.AutoGenerate}
+              variant="primary"
+              type="submit"
+              onClick={this.getLocationHandler}
+            >
+              Auto Generate Lat and Long
+            </button>
+            {
+              //} {attribute.name == this.state.latitude ? attribute.name == this.state.longitude: "gls"}}
+            }
+          </div>
+        )}
       </div>
     );
   }
