@@ -44,6 +44,7 @@ class AttributeForm extends React.Component {
               key={index}
               lat={this.props.lat}
               lng={this.props.lng}
+              coordsButtonClicked={this.props.coordsButtonClicked}
             />
             </tr>
           ))}

@@ -3,16 +3,13 @@
     font-size: 16px;
 }
 
-.validInput {
-    visibility: hidden;
-    font-size: 20px;
-}
-
 .invalidInput {
-    color: red;
+    border-color: red;
+    margin-right: 10px;
+    flex-direction: left;
 }
 
-.error {
+.validInput{
     color: red;
 }
 
@@ -20,9 +17,19 @@
 .attributeTextBox {
     margin-right: 10px;
     flex-direction: left;
+    background-color: white;
 
 }
 
-.valueTextBox {
+.valueTypeTextBox {
     width: 100px;
+}
+
+.noError {
+    color: transparent;
+}
+
+.error {
+    color: red;
+    font: bold;
 }

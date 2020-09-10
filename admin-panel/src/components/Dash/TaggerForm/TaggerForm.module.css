@@ -34,6 +34,7 @@
 .TaggerForm {
   text-align: center;
 }
+
 .mainContainer {
   position: absolute;
   right: 13%;
@@ -44,4 +45,15 @@
   width: 25%;
   position: absolute;
   left: 37%;
+}
+
+.saveMemorialButton {
+
+}
+
+.autoGenerateButton {
+
+}
+
+.imageButton {
 }

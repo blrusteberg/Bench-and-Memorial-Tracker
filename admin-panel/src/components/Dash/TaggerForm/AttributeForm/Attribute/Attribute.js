@@ -5,74 +5,56 @@ import styles from "./Attribute.module.css";
 class Attribute extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { inputValue: " ", isValid: false };
+    this.state = { inputValue: " ", isValid: true };
   }
 
-  validateNumber = (required) => {
-    console.log("Validating number...");
-    // validate input here
-  };
+  validateNumber = (inputValue) => /[+-]?([0-9]*[.])?[0-9]+/.test(inputValue);
 
-  validateWords = (required) => {
-    console.log("Validating words...");
-    var regex = /^[A-Za-z_ ]+$/;
-    if (regex.test(required)) {
-      console.log("word is valid...");
-      return true;
-    } else {
-      console.log("word is invalid...");
-      return false;
-    }
-  };
+  validateWords = (inputValue) => (inputValue = true);
 
-  validateBoolean = (required) => {
-    console.log("Validating boolean...");
-    // validate input here
-  };
+  validateDate = (inputValue) =>
+    /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/.test(inputValue);
 
-  validateDate = (required) => {
-    console.log("Validating date...");
-    // validate input here
-    // form: mm/dd/yyyy using regex
-  };
+  handleInputChange = (event) => {
+    // console.log(this.props.coordsButtonClicked)
+    // event.target.value =
+    //this.props.name == "latitude" && this.props.coordsButtonClicked == true
+    // ? this.props.lat
+    //: this.props.name == "longitude" && this.props.coordsButtonClicked == true
+    //? this.props.lng
+    // : this.state.inputValue;
 
-  handleAttributeBoxChange = (event) => {
-    //while (this.state.isValid == false) {
-    console.log("handle attribute called");
-    //var regex = this.validateWords(event.target.value);
-    // } else if (this.props.type == "number") {
-    //} else if (this.props.type == "date") {
-    //} else if (this.props.type == "Yes/No") {
-    //}
-
-    //}
-
-    //console.log(regex)
     this.setState({
       inputValue: event.target.value,
-      isValid: event.target.isValid,
     });
   };
 
-  updateInput = (event) => {
+  handleInputValidation = (event) => {
     // Blur Function
-    console.log(event.target.value);
-    var regex = this.validateWords(event.target.value);
-    console.log(regex);
-
-    this.setState({
-      inputValue: event.target.value,
-      isValid: regex,
-    });
-  };
-
-  render() {
     const type = this.props.type;
     const validateFunctionName = `validate${
       type.charAt(0).toUpperCase() + type.slice(1)
     }`;
 
-    console.log(validateFunctionName);
+    const isValid = this[validateFunctionName](event.target.value);
+    console.log(isValid);
+
+    this.setState({
+      inputValue: event.target.value,
+      isValid: isValid,
+    });
+  };
+
+  getErrorMessage = (type) => {
+    const errorMessages = {
+      date: "Invalid. Try MM/DD/YYYY.",
+      number: "Your number is invalid.",
+      words: "Everything is a word.",
+    };
+    return errorMessages[type];
+  };
+
+  render() {
     //onClick={() => this[validateFunctionName](this.props.required)}
     // use this for adding valid/invalid input styling className={this.state.isValid ? styles.validInput : styles.invalidInput
     return (
@@ -84,16 +66,16 @@ class Attribute extends React.Component {
           </td>
         </tr>
         <tr>
-          <td
-            classname={
-              this.state.isValid ? styles.validInput : styles.invalidInput
-            }
-          >
-            *
+          <td>
+            <div classname={styles.validInput}></div>
           </td>
           <td>
             <input
-              className={styles.attributeTextBox}
+              className={
+                this.state.isValid
+                  ? styles.attributeTextBox
+                  : styles.invalidInput
+              }
               type="text"
               name="attributeTextBox"
               id="attributeTextBox"
@@ -104,16 +86,15 @@ class Attribute extends React.Component {
                   ? this.props.lng
                   : this.state.inputValue
               }
-              onChange={this.handleAttributeBoxChange}
-              onBlur={() => this[validateFunctionName](this.props.required)}
+              onChange={this.handleInputChange}
+              onBlur={this.handleInputValidation}
             />
-            <tr id="error"> </tr>
           </td>
           <td>
             <input
-              className={styles.valueTextBox}
+              className={styles.valueTypeTextBox}
               type="text"
-              name="valueTextBox"
+              name="valueTypeTextBox"
               readOnly
               placeholder={this.props.type}
             />
@@ -121,9 +102,13 @@ class Attribute extends React.Component {
         </tr>
         <tr>
           <td></td>
-          {
-            //Error label goes here
-          }
+          <tr>
+            <span
+              className={this.state.isValid ? styles.noError : styles.error}
+            >
+              {this.getErrorMessage(this.props.type)}
+            </span>
+          </tr>
         </tr>
       </table>
     );
