@@ -11,92 +11,14 @@ class TaggerForm extends React.Component {
     this.state = {
       memorialTypes: [
         {
-          name: "Tree",
-          id: "asdjadpj0912u309123ui",
+          name: "",
+          _id: "",
           attributes: [
             {
-              name: "longitude",
-              type: "number",
-              required: true,
-              id: "3203sebg20t4",
-            },
-            {
-              name: "latitude",
-              type: "number",
-              required: true,
-              id: "32032sgbf0t4",
-            },
-            {
-              name: "Donor",
-              type: "words",
-              required: false,
-              id: "320aw3rfads320t4",
-            },
-            {
-              name: "Date Planted",
-              type: "date",
-              required: false,
-              id: "32032awr30t4",
-            },
-          ],
-        },
-        {
-          name: "Art",
-          id: "aodhjasegrd098u2309",
-          attributes: [
-            {
-              name: "longitude",
-              type: "number",
+              name: "",
+              type: "",
               required: null,
-              id: "3203stravs20t4",
-            },
-            {
-              name: "latitude",
-              type: "number",
-              required: false,
-              id: "32erdgf0320t4",
-            },
-            {
-              name: "Donor",
-              type: "words",
-              required: false,
-              id: "320320tavsdff434",
-            },
-            {
-              name: "Date Placed",
-              type: "date",
-              required: false,
-              id: "32032asvdf0t4",
-            },
-          ],
-        },
-        {
-          name: "Bench",
-          id: "jmda0dj021asvdf9jd102",
-          attributes: [
-            {
-              name: "longitude",
-              type: "number",
-              required: null,
-              id: "320asvdfhgd320t4",
-            },
-            {
-              name: "latitude",
-              type: "number",
-              required: false,
-              id: "32032htrrrerh0t4",
-            },
-            {
-              name: "Donor",
-              type: "words",
-              required: false,
-              id: "3203afwehg20t4",
-            },
-            {
-              name: "Date Placed",
-              type: "date",
-              required: false,
-              id: "32032egtryt0t4",
+              _id: "",
             },
           ],
         },
@@ -107,17 +29,19 @@ class TaggerForm extends React.Component {
       selectedFile: null,
       memorial: {
         name: "",
-        memorialTypeId: "",
+        memorialTypeId_: "",
         attributes: [{ value: "", memorialTypeAttributeId: "", isValid: null }],
       },
     };
   }
 
   componentDidMount() {
-    axios.get("http://localhost:1337/memorials/types").then(
+    axios.get("http://localhost:1337/memorialTypes").then(
       (res) => {
+        console.log("LOOKKKK");
+        console.log(res.data);
         this.setState({
-          memorialTypes: res.data.memorialTypes,
+          memorialTypes: res.data,
           isLoaded: true,
         });
       },
@@ -135,7 +59,11 @@ class TaggerForm extends React.Component {
     const memorial = {};
     memorial.type = memorialType.name;
     memorial.attributes = memorialType.attributes.map((attribute) => {
-      return { name: attribute.name, type: attribute.value };
+      return {
+        name: attribute.name,
+        type: attribute.value,
+        key: attribute._id,
+      };
     });
 
     this.setState({
@@ -156,14 +84,13 @@ class TaggerForm extends React.Component {
     // also check if all required attributes have values
   };
 
- saveMemorialHandler = (event) => {
+  saveMemorialHandler = (event) => {
     // event.preventDefault();
-    
     //   const memorial = {};
     //   memorial.attributes = memorialType.attributes.map((attribute) => {
     //     return { name: attribute.name, type: attribute.value, isValid: attribute.isValid };
     //   });
-    //   this.setState({ 
+    //   this.setState({
     //     submitMessage: "" });
     //   axios
     //     .post("http://localhost:1337/memorials", {
@@ -171,8 +98,6 @@ class TaggerForm extends React.Component {
     //     })
     //     .then((res) => this.setState({ submitMessage: "Memorial submitted" }))
     //      .catch((err) => console.log(err))
-    
-  
   };
 
   getLocationHandler = () => {
@@ -187,14 +112,14 @@ class TaggerForm extends React.Component {
     this.setState({
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
-      coordsButtonClicked: true
+      coordsButtonClicked: true,
     });
   };
 
   imageButtonHandler = (event) => {
     this.setState({
-      selectedFile: event.target.files[0]
-    })
+      selectedFile: event.target.files[0],
+    });
   };
 
   fileUploadHandler = () => {
@@ -229,7 +154,7 @@ class TaggerForm extends React.Component {
         ) : (
           <div className={styles.attributesWrapper}>
             <AttributeForm
-              memorialType={
+              memorialTypes={
                 this.state.memorialTypes[this.state.typeSelectedIndex]
               }
               lat={this.state.latitude}
@@ -241,7 +166,7 @@ class TaggerForm extends React.Component {
               className={styles.saveMemorialButton}
               variant="primary"
               type="submit"
-              onchange={this.saveMemorialHandler}
+              onChange={this.saveMemorialHandler}
             >
               Save Memorial
             </button>
@@ -256,7 +181,7 @@ class TaggerForm extends React.Component {
             </button>
 
             <div className="App">
-              <input type="file" onChange={this.imageButtonHandler}/>
+              <input type="file" onChange={this.imageButtonHandler} />
               <button onClick={this.fileUploadHandler}>Upload</button>
             </div>
 

@@ -2,6 +2,7 @@ import React from "react";
 
 import styles from "./AttributeForm.module.css";
 import Attribute from "./Attribute/Attribute";
+import attributes from "../../MemorialTypes/Attributes/Attributes";
 
 /*
     memorial: {
@@ -28,26 +29,30 @@ class AttributeForm extends React.Component {
     return (
       <div className={styles.divBox}>
         <table>
-          <tr className = {styles.tableHeader}>
-            <tc></tc>
-            <tc className = {styles.valueHeader}>Value</tc>
-            <tc className = {styles.valueTypeHeader}>Value Type</tc>
-          </tr>
-
-          {this.props.memorialType.attributes.map((attribute, index) => (
-            <tr>
-            <Attribute
-              name={attribute.name}
-              type={attribute.type}
-              required={attribute.required}
-              typeId={attribute.id}
-              key={index}
-              lat={this.props.lat}
-              lng={this.props.lng}
-              coordsButtonClicked={this.props.coordsButtonClicked}
-            />
+          <tbody>
+            <tr className={styles.tableHeader}>
+              <td></td>
+              <td className={styles.valueHeader}>Value</td>
+              <td className={styles.valueTypeHeader}>Value Type</td>
             </tr>
-          ))}
+
+            {this.props.memorialTypes.attributes.map((attribute, index) => (
+              <tr key={attribute._id}>
+                <td>
+                  <Attribute
+                    name={attribute.name}
+                    type={attribute.dataType}
+                    required={attribute.required}
+                    typeId={attribute._id}
+                    key={index}
+                    lat={this.props.lat}
+                    lng={this.props.lng}
+                    coordsButtonClicked={this.props.coordsButtonClicked}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     );
