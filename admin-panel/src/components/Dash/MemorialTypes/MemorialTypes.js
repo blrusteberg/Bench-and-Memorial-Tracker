@@ -206,7 +206,6 @@ class memorialTypes extends React.Component {
           />  
           : null  
         }  
-        <Toast />
       </div>
     );
   }
