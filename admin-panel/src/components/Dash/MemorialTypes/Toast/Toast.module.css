@@ -1,0 +1,10 @@
+.styled {
+	background-color: #444;
+	color: white;
+	padding: 16px;
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	z-index: 999;
+	transition: bottom-right 0.5s ease;
+}

@@ -6,6 +6,7 @@ import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
 import Popup from './Popup/Popup';
+import Toast from './Toast/Toast';
 
 class memorialTypes extends React.Component {
   constructor(props) {
@@ -205,6 +206,7 @@ class memorialTypes extends React.Component {
           />  
           : null  
         }  
+        <Toast />
       </div>
     );
   }
