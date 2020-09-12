@@ -1,62 +1,68 @@
 const express = require("express");
 const router = express.Router();
+const uuid = require("uuid");
+const Error = require("../error/error");
 
-const Memorial = require("../models/memorial");
+const Memorial = require("../models/Memorial");
 
 router.get("/", async (req, res) => {
   try {
-    const memorials = await Memorial.find();
+    const memorials = await Memorial.query();
     res.status(200).json(memorials);
-  } catch (error) {
-    res.status(500).json({ message: error });
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
+router.get("/:id/types", async (req, res) => {
+  try {
+    const memorial = await Memorial.relatedQuery("Type").for(req.params.id);
+    res.status(200).json(memorial);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
+router.get("/:id/types", async (req, res) => {
+  try {
+    const memorialType = await Memorial.relatedQuery("Type").for(req.params.id);
+    res.status(200).json(memorialType);
+  } catch (err) {
+    Error.errorHandler(err, res);
   }
 });
 
 router.post("/", async (req, res) => {
-  const memorial = new Memorial({
-    name: req.body.name,
-    typeId: req.body.typeId,
-    attributes: req.body.attributes,
-  });
   try {
-    const savedMemorial = await memorial.save();
-    res.status(200).json(savedMemorial._id);
-  } catch (error) {
-    res.status(500).json({
-      message: error,
+    const memorial = await Memorial.query().insert({
+      Id: uuid.v4(),
+      TypeId: req.body.typeId,
     });
+    res.status(201).json(memorial);
+  } catch (err) {
+    Error.errorHandler(err, res);
   }
 });
 
 router.put("/", async (req, res) => {
-  const updatedMemorial = new Memorial({
-    name: req.body.name,
-    typeId: req.body.typeId,
-    _id: req.body._id,
-    attributes: req.body.attributes,
-  });
   try {
-    await Memorial.findOneAndUpdate(
-      { _id: updatedMemorial._id },
-      updatedMemorial,
-      { new: true, overwrite: true }
-    );
-    res.status(200).json({ message: "1 memorial was updated" });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "Unable to update memorial.",
+    const numUpdated = await Memorial.query().findById(req.body.id).patch({
+      TypeId: req.body.typeId,
     });
+    const s = numUpdated === 1 ? "" : "s";
+    res.status(200).json({ message: `Updated ${numUpdated} memorial${s}` });
+  } catch (err) {
+    Error.errorHandler(err, res);
   }
 });
 
-router.delete("/:_id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    await Memorial.deleteOne({ _id: req.params._id });
-    res.status(204).json({ message: "1 memorial was deleted." });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: error });
+    const numDeleted = await Memorial.query().deleteById(req.params.id);
+    const s = numDeleted === 1 ? "" : "s";
+    res.status(200).json({ message: `${numDeleted} memorial${s} deleted.` });
+  } catch (err) {
+    Error.errorHandler(err, res);
   }
 });
 

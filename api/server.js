@@ -3,14 +3,12 @@ const express = require("express");
 const app = express();
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
-const port = process.env.PORT;
+const port = process.env.API_PORT;
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-
 const swaggerDocument = YAML.load("./docs/swagger.yaml");
 const memorialRoutes = require("./routes/memorials.js");
-const memorialTypeRoutes = require("./routes/memorialTypes.js");
+const typeRoutes = require("./routes/types.js");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -36,18 +34,12 @@ app.get("/", (req, res) => {
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/memorials", memorialRoutes);
-app.use("/memorialTypes", memorialTypeRoutes);
+app.use("/types", typeRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
   error.status = 404;
   next(error);
-});
-
-mongoose.connect(process.env.DB_PRIMARY_CONNECTION_STRING, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));

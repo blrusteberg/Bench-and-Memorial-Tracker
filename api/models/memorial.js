@@ -1,32 +1,51 @@
-const mongoose = require("mongoose");
-const uuid = require("uuid");
+const { Model } = require("objection");
+const knex = require("../db/knex");
 
-const MemorialSchema = mongoose.Schema({
-  name: String,
-  _id: {
-    type: String,
-    default: () => uuid.v4(),
-  },
-  typeId: {
-    type: String,
-    required: true,
-  },
-  attributes: [
-    {
-      _id: {
-        type: String,
-        default: () => uuid.v4(),
-      },
-      value: {
-        type: mongoose.Schema.Types.Mixed,
-        default: null,
-      },
-      attributeId: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
-});
+Model.knex(knex);
 
-module.exports = mongoose.model("memorials", MemorialSchema);
+class Memorial extends Model {
+  static get tableName() {
+    return "Memorials";
+  }
+
+  static get idColumn() {
+    return "Id";
+  }
+
+  static get jsonSchema() {
+    return {
+      type: "object",
+      required: ["TypeId"],
+      properties: {
+        TypeId: { type: "string" },
+      },
+    };
+  }
+
+  static get relationMappings() {
+    const Type = require("./Type");
+    const Value = require("./Value");
+
+    return {
+      Type: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Type,
+        join: {
+          from: "Memorials.TypeId",
+          to: "Types.Id",
+        },
+      },
+
+      Values: {
+        relation: Model.HasManyRelation,
+        modelClass: Value,
+        join: {
+          from: "Memorials.Id",
+          to: "Values.MemorialId",
+        },
+      },
+    };
+  }
+}
+
+module.exports = Memorial;
