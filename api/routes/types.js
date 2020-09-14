@@ -15,10 +15,10 @@ router.get("/", async (req, res) => {
 
 router.get("/:id/attributes", async (req, res) => {
   try {
-    const type = await Type.query()
-      .findById(req.params.id)
-      .select("Types.*", Type.relatedQuery("Attributes").for(req.params.id));
-    res.status(200).json(types);
+    const attributes = await Type.relatedQuery("Attributes")
+      .for(req.params.id)
+      .orderBy("Name");
+    res.status(200).json(attributes);
   } catch (err) {
     Error.errorHandler(err, res);
   }
@@ -29,7 +29,6 @@ router.post("/", async (req, res) => {
     const type = await Type.query().insert({
       Name: req.body.Name,
     });
-
     res.status(201).json(type);
   } catch (err) {
     Error.errorHandler(err, res);
