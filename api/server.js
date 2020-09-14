@@ -35,6 +35,8 @@ app.get("/", (req, res) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/memorials", memorialRoutes);
 app.use("/types", typeRoutes);
+app.use("/attributes", memorialRoutes);
+app.use("/values", typeRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
