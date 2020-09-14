@@ -4,11 +4,11 @@ module.exports = {
   development: {
     client: "mssql",
     connection: {
-      user: "test_user",
-      password: "password",
-      server: "localhost",
-      port: 1433,
-      database: "EdwardsvilleMemorialTracker",
+      user: process.env.SQL_SERVER_USER,
+      password: process.env.SQL_SERVER_PASSWORD,
+      server: process.env.SQL_SERVER,
+      port: process.env.SQL_SERVER_PORT,
+      database: process.env.SQL_DATABASE,
     },
   },
 
