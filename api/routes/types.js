@@ -13,13 +13,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id/attributes", async (req, res) => {
+  try {
+    const type = await Type.query()
+      .findById(req.params.id)
+      .select("Types.*", Type.relatedQuery("Attributes").for(req.params.id));
+    res.status(200).json(types);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     const type = await Type.query().insert({
-      Name: req.body.name,
+      Name: req.body.Name,
     });
 
-    res.status(200).json(type);
+    res.status(201).json(type);
   } catch (err) {
     Error.errorHandler(err, res);
   }
@@ -27,11 +38,11 @@ router.post("/", async (req, res) => {
 
 router.put("/", async (req, res) => {
   try {
-    const numUpdated = await Type.query().findById(req.body.id).patch({
-      Name: req.body.name,
+    const numUpdated = await Type.query().findById(req.body.Id).patch({
+      Name: req.body.Name,
     });
     const s = numUpdated === 1 ? "" : "s";
-    res.status(200).json({ message: `Updated ${numUpdated} type${s}` });
+    res.status(204).json({ message: `Updated ${numUpdated} type${s}` });
   } catch (err) {
     Error.errorHandler(err, res);
   }

@@ -12,8 +12,10 @@ servers:
 paths:
   /memorials:
     tags:
-    - Memorials
+      - Memorials
     get:
+      tags:
+        - Memorials
       summary: Get all memorials
       responses:
         "200":
@@ -25,6 +27,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/Memorial"
     post:
+      tags:
+        - Memorials
       summary: Add new memorial
       responses:
         "201":
@@ -36,6 +40,8 @@ paths:
               $ref: "#/components/schemas/Memorial"
   /memorials/{id}:
     delete:
+      tags:
+        - Memorials
       summary: Delete memorial by ID
       parameters:
         - in: path
@@ -48,6 +54,8 @@ paths:
           description: Deleted
   /types:
     get:
+      tags:
+        - Types
       summary: Get all types
       responses:
         "200":
@@ -59,6 +67,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/Type"
     post:
+      tags:
+        - Types
       summary: Add new type
       responses:
         "201":
@@ -73,6 +83,8 @@ paths:
                   type: string
   /types/{id}:
     delete:
+      tags:
+        - Types
       summary: Delete type by ID
       parameters:
         - in: path

@@ -8,6 +8,10 @@ class Type extends Model {
     return "Types";
   }
 
+  static get idColumn() {
+    return "Id";
+  }
+
   static get jsonSchema() {
     return {
       type: "object",
