@@ -16,15 +16,6 @@ router.get("/", async (req, res) => {
 
 router.get("/:id/types", async (req, res) => {
   try {
-    const memorial = await Memorial.relatedQuery("Type").for(req.params.id);
-    res.status(200).json(memorial);
-  } catch (err) {
-    Error.errorHandler(err, res);
-  }
-});
-
-router.get("/:id/types", async (req, res) => {
-  try {
     const memorialType = await Memorial.relatedQuery("Type").for(req.params.id);
     res.status(200).json(memorialType);
   } catch (err) {
@@ -35,8 +26,7 @@ router.get("/:id/types", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const memorial = await Memorial.query().insert({
-      Id: uuid.v4(),
-      TypeId: req.body.typeId,
+      TypeId: req.body.TypeId,
     });
     res.status(201).json(memorial);
   } catch (err) {
@@ -50,7 +40,7 @@ router.put("/", async (req, res) => {
       TypeId: req.body.typeId,
     });
     const s = numUpdated === 1 ? "" : "s";
-    res.status(200).json({ message: `Updated ${numUpdated} memorial${s}` });
+    res.status(204).json({ message: `Updated ${numUpdated} memorial${s}` });
   } catch (err) {
     Error.errorHandler(err, res);
   }

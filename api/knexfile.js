@@ -6,7 +6,7 @@ module.exports = {
     connection: {
       user: "test_user",
       password: "password",
-      server: "192.168.1.2",
+      server: "localhost",
       port: 1433,
       database: "EdwardsvilleMemorialTracker",
     },
