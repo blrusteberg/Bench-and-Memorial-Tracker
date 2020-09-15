@@ -58,11 +58,11 @@ class memorialTypes extends React.Component {
   }
 
   dropdownChange = (event) => {
-    const attributes = lodash.cloneDeep(
-      this.state.initialTypes[event.target.value].attributes
+    const selectedType = lodash.cloneDeep(
+      this.state.initialTypes[event.target.value]
     );
     this.setState({
-      selected: attributes,
+      selected: selectedType,
       selectedTypeIndex: event.target.value,
       deletedAttributes: 0,
       addedAttributes: 0
@@ -167,7 +167,7 @@ class memorialTypes extends React.Component {
           selectedTypeIndex={this.state.selectedTypeIndex}
           dropdownChange={this.dropdownChange}
         />
-        {(this.state.selectedTypeIndex && this.checkIfNewType()) ? (
+        {(this.state.selectedTypeIndex ? (
           <div>
             <label>Type name</label>
             <input
@@ -177,13 +177,9 @@ class memorialTypes extends React.Component {
               value={this.state.newTypeName}
               onChange={this.handleNewTypeNameChange}
             />
-          </div>)
-          : null
-        }
-        {this.state.selectedTypeIndex ? (
-          <div>
             <Attributes
-              attributes={this.state.selected}
+              key={this.state.selected.Id}
+              selectedTypeId={this.state.selected.Id}
               addAttribute={this.addAttribute}
               updateAttribute={this.updateAttribute}
               saveAttributes={this.togglePopup}
@@ -194,7 +190,7 @@ class memorialTypes extends React.Component {
             />
           </div>)
           : null
-        }
+        )}
         {this.state.showPopup ?  
           <Popup  
               text='Click "Cancel" to hide popup' 
