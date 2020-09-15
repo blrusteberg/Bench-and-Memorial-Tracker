@@ -14,8 +14,8 @@ const dropdown = (props) => {
         null
         }
         {Object.values(props.types).map((list, n) => (
-          <option key={list._id} value={n}>
-            {list.name}
+          <option key={list.Id} value={n}>
+            {list.Name}
           </option>
         ))}
       </select>

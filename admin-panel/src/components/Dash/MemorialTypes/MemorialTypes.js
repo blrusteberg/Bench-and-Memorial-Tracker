@@ -6,7 +6,6 @@ import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
 import Popup from './Popup/Popup';
-import Toast from './Toast/Toast';
 
 class memorialTypes extends React.Component {
   constructor(props) {
@@ -26,7 +25,7 @@ class memorialTypes extends React.Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:1337/memorialTypes")
+      .get("http://localhost:1337/types")
       .then((response) => {
         console.log(response.data);
         let memorialTypes = [];
@@ -34,7 +33,7 @@ class memorialTypes extends React.Component {
           memorialTypes = response.data
         }
         const addType = {
-          name: " + New Type",
+          Name: " + New Type",
           attributes: [
             {
               name: "longitude",
