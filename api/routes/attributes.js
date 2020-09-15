@@ -1,23 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const uuid = require("uuid");
 const Error = require("../error/error");
 
-const Memorial = require("../models/Memorial");
+const Attribute = require("../models/Attribute");
 
 router.get("/", async (req, res) => {
   try {
-    const memorials = await Memorial.query();
-    res.status(200).json(memorials);
-  } catch (err) {
-    Error.errorHandler(err, res);
-  }
-});
-
-router.get("/:id/types", async (req, res) => {
-  try {
-    const memorialType = await Memorial.relatedQuery("Type").for(req.params.id);
-    res.status(200).json(memorialType);
+    const attributes = await Attribute.query();
+    res.status(200).json(attributes);
   } catch (err) {
     Error.errorHandler(err, res);
   }
@@ -25,10 +15,11 @@ router.get("/:id/types", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const memorial = await Memorial.query().insert({
-      TypeId: req.body.TypeId,
+    const type = await Attribute.query().insert({
+      Name: req.body.Name,
+      ValueType: req.body.ValueType,
     });
-    res.status(201).json(memorial);
+    res.status(201).json(type);
   } catch (err) {
     Error.errorHandler(err, res);
   }
@@ -36,8 +27,9 @@ router.post("/", async (req, res) => {
 
 router.put("/", async (req, res) => {
   try {
-    const numUpdated = await Memorial.query().findById(req.body.id).patch({
-      TypeId: req.body.typeId,
+    const numUpdated = await Attribute.query().findById(req.body.Id).patch({
+      Name: req.body.Name,
+      ValueType: req.body.ValueType,
     });
     const s = numUpdated === 1 ? "" : "s";
     res.status(204).json({ message: `Updated ${numUpdated} memorial${s}` });
@@ -48,7 +40,7 @@ router.put("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const numDeleted = await Memorial.query().deleteById(req.params.id);
+    const numDeleted = await Attribute.query().deleteById(req.params.id);
     const s = numDeleted === 1 ? "" : "s";
     res.status(200).json({ message: `${numDeleted} memorial${s} deleted.` });
   } catch (err) {
