@@ -20,7 +20,7 @@ class Attribute extends Model {
         Name: { type: "string" },
         ValueType: {
           type: "string",
-          enum: ["boolean", "words", "date", "number"],
+          enum: ["Yes/No", "Words", "Date", "Number"],
         },
       },
     };
@@ -48,6 +48,7 @@ class Attribute extends Model {
           through: {
             from: "Types_Attributes.AttributeId",
             to: "Types_Attributes.TypeId",
+            extra: ["Required"],
           },
           to: "Type.Id",
         },
