@@ -11,7 +11,8 @@ class attributes extends React.Component {
 
     this.state = {
       selectedAttributes: [],
-      allAttributes: []
+      allAttributes: [],
+      showAttributes: false
     };
   }
 
@@ -49,9 +50,37 @@ class attributes extends React.Component {
     });
   };
 
+  showAttributeDropdown = (show) => {
+    this.setState({
+      showAttributes: show
+    })
+    console.log(this.state.showAttributes);
+  }
+
   render(){
+    const showAttributes = this.state.showAttributes;
     return (
       <div>
+        <br />
+        <div class={styles.dropdown} onMouseEnter={()=>this.showAttributeDropdown(true)} onMouseLeave={()=>this.showAttributeDropdown(false)}>
+          <input type="text" placeholder="Add an Attribute.." onKeyUp={()=>this.filterFunction()} autocomplete="off" />
+          {showAttributes && (
+            <ul class={styles.dropdownContent}>
+              <a href="#">Adele</a>
+              <a href="#">Agnes</a>
+            </ul>
+          )}
+        
+          {/* <select>
+          {Object.values(this.state.allAttributes).map(list => (
+            <option key={list.Id} value={list.Name}>
+              {list.Name}
+            </option>
+          ))}
+          </select> */}
+        </div>
+        <br />
+        <br />
         <div>
           <span>Label</span>
           <span>Data Type</span>
