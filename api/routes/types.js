@@ -35,6 +35,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.post("/attributes", async (req, res) => {
+  try {
+    const type = await Type.query().insert({
+      Name: req.body.Type.Name,
+    });
+
+    const relatePromises = [];
+    req.body.Attributes.forEach((attribute) => {
+      const relatePromise = type.$relatedQuery("Attributes").relate({
+        Id: attribute.Id,
+        Required: attribute.Required,
+      });
+      relatePromises.push(relatePromise);
+    });
+    Promise.all(relatePromises).then((data) => {
+      res.status(201).json(type);
+    });
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
 router.put("/:Id/attributes", async (req, res) => {
   try {
     const graph = await Type.query().upsertGraph(

@@ -4,6 +4,7 @@ const uuid = require("uuid");
 const Error = require("../error/error");
 
 const Memorial = require("../models/Memorial");
+const Value = require("../models/Value");
 
 router.get("/", async (req, res) => {
   try {
@@ -29,6 +30,28 @@ router.post("/", async (req, res) => {
       TypeId: req.body.TypeId,
     });
     res.status(201).json(memorial);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
+router.post("/types/:TypeId/attributes/values", async (req, res) => {
+  try {
+    const memorial = await Memorial.query().insert({
+      Name: req.body.Memorial.Name,
+      TypeId: req.params.TypeId,
+    });
+
+    const insertValuePromises = [];
+    req.body.Values.forEach((value) => {
+      const insertPromise = Value.query().insert({
+        Value: value.Value,
+        AttributeId: value.AttributeId,
+        MemorialId: memorial.Id,
+      });
+      insertValuePromises.push(insertPromise);
+    });
+    Promise.all(insertValuePromises).then((data) => res.status(201).json(data));
   } catch (err) {
     Error.errorHandler(err, res);
   }

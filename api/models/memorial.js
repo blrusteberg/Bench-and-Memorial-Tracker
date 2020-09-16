@@ -18,6 +18,7 @@ class Memorial extends Model {
       required: ["TypeId"],
       properties: {
         TypeId: { type: "string" },
+        Name: {type: "string"}
       },
     };
   }
