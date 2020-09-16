@@ -130,7 +130,17 @@ class attributes extends React.Component {
       let newMemorialTypesObject = { Name: this.props.typeName, Attributes: this.state.selectedAttributes };
       axios.post('http://localhost:1337/types', newMemorialTypesObject)
       .then(res => console.log(res.data));
+      
     }
+  }
+
+  deleteType = () => {
+    axios.delete('http://localhost:1337/types/'+ this.props.selectedTypeId)
+      .then((res) => { console.log(res.data) })
+      .catch((error) => {
+        console.log(error);
+      });
+    window.location.reload(true);
   }
 
   render(){
@@ -186,7 +196,7 @@ class attributes extends React.Component {
           </button>
           <br />
           {(isExistingType ? (
-            <button>Delete</button>)
+            <button onClick={() => this.deleteType()}>Delete</button>)
             : null
           )} 
         </div>
