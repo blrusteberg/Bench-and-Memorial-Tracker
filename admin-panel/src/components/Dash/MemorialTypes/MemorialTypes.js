@@ -65,43 +65,8 @@ class memorialTypes extends React.Component {
       selected: selectedType,
       selectedTypeIndex: event.target.value,
       deletedAttributes: 0,
-      addedAttributes: 0
-    });
-  };
-
-  deleteAttribute = (attributeIndex) => {
-    const newSelected = lodash.cloneDeep(this.state.selected);
-    newSelected.splice(attributeIndex, 1);
-    this.setState({
-      selected: newSelected,
-      deletedAttributes: this.state.deletedAttributes + 1
-    });
-  };
-
-  addAttribute = () => {
-    let blankAttribute = {
-      name: "",
-      required: false,
-      dataType: "string",
-    };
-    this.setState({
-      selected: [...this.state.selected, blankAttribute],
-      addedAttributes: this.state.addedAttributes + 1
-    });
-  };
-
-  updateAttribute = (event, n) => {
-    const newSelected = lodash.cloneDeep(this.state.selected);
-    if (event.target.type === "text") {
-      newSelected[n].name = event.target.value;
-    }
-    if (event.target.type === "select-one") {
-      newSelected[n].dataType = event.target.value;
-    } else if (event.target.type === "checkbox") {
-      newSelected[n].required = !(event.target.value === "true");
-    }
-    this.setState({
-      selected: newSelected
+      addedAttributes: 0,
+      newTypeName: selectedType.Id ? selectedType.Name : ""
     });
   };
 
@@ -154,10 +119,6 @@ class memorialTypes extends React.Component {
 
   }
 
-  checkIfNewType = () => {
-    return (parseInt(this.state.selectedTypeIndex) === this.state.initialTypes.length-1)
-  }
-
   render() {
     return (
       <div className={styles.memorialTypes}>
@@ -173,25 +134,21 @@ class memorialTypes extends React.Component {
             <input
               className={styles.newType}
               type="text"
-              placeholder="Enter a name..."
               value={this.state.newTypeName}
+              placeholder="Enter a name..."
               onChange={this.handleNewTypeNameChange}
             />
             <Attributes
               key={this.state.selected.Id}
               selectedTypeId={this.state.selected.Id}
-              addAttribute={this.addAttribute}
-              updateAttribute={this.updateAttribute}
-              saveAttributes={this.togglePopup}
-              deleteAttribute={this.deleteAttribute}
-              isNewType={this.checkIfNewType}
               isSaving={this.state.isSaving}
               isUpdating={this.state.isUpdating}
+              typeName={this.state.newTypeName}
             />
           </div>)
           : null
         )}
-        {this.state.showPopup ?  
+        {/* {this.state.showPopup ?  
           <Popup  
               text='Click "Cancel" to hide popup' 
               saveAttributes={this.saveAttributes}
@@ -200,7 +157,7 @@ class memorialTypes extends React.Component {
               deletedAttributes={this.state.deletedAttributes}
           />  
           : null  
-        }  
+        }   */}
       </div>
     );
   }
