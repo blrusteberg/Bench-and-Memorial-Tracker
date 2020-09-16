@@ -27,7 +27,6 @@ class memorialTypes extends React.Component {
     axios
       .get("http://localhost:1337/types")
       .then((response) => {
-        console.log(response.data);
         let memorialTypes = [];
         if(response.data.length > 0){
           memorialTypes = response.data
@@ -143,6 +142,7 @@ class memorialTypes extends React.Component {
               selectedTypeId={this.state.selected.Id}
               isSaving={this.state.isSaving}
               isUpdating={this.state.isUpdating}
+              oldTypeName={this.state.selected.Name}
               typeName={this.state.newTypeName}
             />
           </div>)

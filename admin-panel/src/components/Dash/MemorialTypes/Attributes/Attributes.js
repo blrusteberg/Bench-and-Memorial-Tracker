@@ -112,24 +112,33 @@ class attributes extends React.Component {
   }
 
   saveAttributes = () => {
-    console.log(this.props.typeName);
-    console.log(this.state.selectedAttributes);
 
     if(this.props.selectedTypeId){
+      if(this.props.typeName != this.props.oldTypeName){
+        const newTypeName = { Name: this.props.typeName }
+        axios.put('http://localhost:1337/types/' + this.props.selectedTypeId, newTypeName)
+        .then((res) => { console.log(res.data) })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
       //lock button and change to updating
-      // axios put
-      // refresh page
-      // let newMemorialTypesObject = { name: this.props.typeName, attributes: this.state.selectedAttributes };
-      // axios.put('http://localhost:1337/types', newMemorialTypesObject)
-      // .then(res => console.log(res.data));
+      const newMemorialTypesObject = { Attributes: this.state.selectedAttributes };
+      axios.put('http://localhost:1337/types/'+ this.props.selectedTypeId + "/attributes", newMemorialTypesObject)
+        .then((res) => { console.log(res.data) })
+        .catch((error) => {
+          console.log(error);
+        });
+      window.location.reload(true);
     } else {
        //lock button and change to saving
-      // axios post
-      // refresh page
-      let newMemorialTypesObject = { Name: this.props.typeName, Attributes: this.state.selectedAttributes };
-      axios.post('http://localhost:1337/types', newMemorialTypesObject)
-      .then(res => console.log(res.data));
-      
+      const newMemorialTypesObject = { Type: { Name: this.props.typeName }, Attributes: this.state.selectedAttributes };
+      axios.post('http://localhost:1337/types/attributes', newMemorialTypesObject)
+        .then((res) => { console.log(res.data) })
+        .catch((error) => {
+          console.log(error);
+        });
+      window.location.reload(true);
     }
   }
 

@@ -75,13 +75,13 @@ router.put("/:Id/attributes", async (req, res) => {
   }
 });
 
-router.put("/", async (req, res) => {
+router.put("/:Id", async (req, res) => {
   try {
-    const numUpdated = await Type.query().findById(req.body.Id).patch({
+    const numUpdated = await Type.query().findById(req.params.Id).patch({
       Name: req.body.Name,
     });
     const s = numUpdated === 1 ? "" : "s";
-    res.status(204).json({ message: `Updated ${numUpdated} type${s}` });
+    res.status(201).json({ message: `Updated ${numUpdated} type${s}` });
   } catch (err) {
     Error.errorHandler(err, res);
   }
