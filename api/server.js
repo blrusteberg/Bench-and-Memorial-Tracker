@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const swaggerDocument = YAML.load("./docs/swagger.yaml");
 const memorialRoutes = require("./routes/memorials.js");
 const typeRoutes = require("./routes/types.js");
+const attributeRoutes = require("./routes/attributes.js");
+const valueRoutes = require("./routes/values.js");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -35,8 +37,8 @@ app.get("/", (req, res) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/memorials", memorialRoutes);
 app.use("/types", typeRoutes);
-app.use("/attributes", memorialRoutes);
-app.use("/values", typeRoutes);
+app.use("/attributes", attributeRoutes);
+app.use("/values", valueRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");

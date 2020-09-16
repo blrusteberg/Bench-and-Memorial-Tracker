@@ -48,6 +48,7 @@ class Type extends Model {
           through: {
             from: "Types_Attributes.TypeId",
             to: "Types_Attributes.AttributeId",
+            extra: ["Required"],
           },
           to: "Attributes.Id",
         },

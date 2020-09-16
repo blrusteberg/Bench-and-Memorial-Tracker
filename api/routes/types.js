@@ -35,6 +35,24 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:Id/attributes", async (req, res) => {
+  try {
+    const graph = await Type.query().upsertGraph(
+      {
+        Id: req.params.Id,
+        Attributes: req.body.Attributes,
+      },
+      {
+        relate: true,
+        unrelate: true,
+      }
+    );
+    res.status(201).json(graph);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
 router.put("/", async (req, res) => {
   try {
     const numUpdated = await Type.query().findById(req.body.Id).patch({
