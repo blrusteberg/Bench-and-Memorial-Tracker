@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/types/:TypeId/values", async (req, res) => {
+router.post("/types/:TypeId/attributes/values", async (req, res) => {
   try {
     const memorial = await Memorial.query().insert({
       Name: req.body.Name,
