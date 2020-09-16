@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import lodash, { filter, update, difference } from "lodash";
 import styles from "./Attributes.module.css";
-import addAttributeButton from "../../../../assets/addAttribute.png"
 import deleteAttributeButton from "../../../../assets/deleteAttribute.png"
 
 class attributes extends React.Component {
