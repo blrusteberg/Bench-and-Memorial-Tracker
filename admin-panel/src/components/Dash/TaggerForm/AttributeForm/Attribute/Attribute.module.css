@@ -1,35 +1,40 @@
 .inputLabel {
-    text-align: left;
-    font-size: 16px;
+  text-align: left;
+  font-size: 16px;
 }
 
 .invalidInput {
-    border-color: red;
-    margin-right: 10px;
-    flex-direction: left;
+  border-color: red;
+  margin-right: 10px;
+  flex-direction: left;
 }
 
-.validInput{
-    color: red;
+.required {
+  color: red;
+  
+  
 }
 
+.notRequired {
+  visibility: hidden;
+  max-height: 0;  
+}
 
 .attributeTextBox {
-    margin-right: 10px;
-    flex-direction: left;
-    background-color: white;
-
+  margin-right: 10px;
+  flex-direction: left;
+  background-color: white;
 }
 
 .valueTypeTextBox {
-    width: 100px;
+  width: 100px;
 }
 
 .noError {
-    color: transparent;
+  display: none;
 }
 
 .error {
-    color: red;
-    font: bold;
+  color: red;
+  font: bold;
 }

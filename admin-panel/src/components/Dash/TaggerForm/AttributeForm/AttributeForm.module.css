@@ -1,12 +1,13 @@
 .tableHeader {
-  text-align: center;
+  display: inline-block;
   font-size: 18px;
+  align-content: center;
 }
 
-.valueHeader {
-  margin: 8%;
+.tableHeaderDiv {
+  text-align: center;
 }
 
-.valueTypeHeader {
-  margin: 15%;
+.autoGenerateButton {
+  margin-top: 15px;
 }

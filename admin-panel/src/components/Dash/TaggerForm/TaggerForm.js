@@ -9,39 +9,35 @@ class TaggerForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      memorialTypes: [
+      Types: [
         {
-          name: "",
-          _id: "",
-          attributes: [
-            {
-              name: "",
-              type: "",
-              required: null,
-              _id: "",
-            },
-          ],
+          Name: "",
+          Id: "",
         },
       ],
+      MemorialData: {
+        Memorial: {
+          Name: "",
+        },
+        Values: [
+          {
+            Value: "",
+            AttributeId: "",
+          },
+        ],
+      },
       typeSelectedIndex: null,
       error: null,
       isLoaded: false,
       selectedFile: null,
-      memorial: {
-        name: "",
-        memorialTypeId_: "",
-        attributes: [{ value: "", memorialTypeAttributeId: "", isValid: null }],
-      },
     };
   }
 
   componentDidMount() {
-    axios.get("http://localhost:1337/memorialTypes").then(
+    axios.get("http://localhost:1337/types").then(
       (res) => {
-        console.log("LOOKKKK");
-        console.log(res.data);
         this.setState({
-          memorialTypes: res.data,
+          Types: res.data,
           isLoaded: true,
         });
       },
@@ -55,19 +51,16 @@ class TaggerForm extends React.Component {
   }
 
   dropDownChange = (event) => {
-    const memorialType = [...this.state.memorialTypes][event.target.value];
-    const memorial = {};
-    memorial.type = memorialType.name;
-    memorial.attributes = memorialType.attributes.map((attribute) => {
-      return {
-        name: attribute.name,
-        type: attribute.value,
-        key: attribute._id,
-      };
-    });
-
     this.setState({
       typeSelectedIndex: event.target.value,
+    });
+  };
+
+  setTaggerValues = (Values) => {
+    this.setState({
+      MemorialData: {
+        Values: [Values],
+      },
     });
   };
 
@@ -84,36 +77,8 @@ class TaggerForm extends React.Component {
     // also check if all required attributes have values
   };
 
-  saveMemorialHandler = (event) => {
-    // event.preventDefault();
-    //   const memorial = {};
-    //   memorial.attributes = memorialType.attributes.map((attribute) => {
-    //     return { name: attribute.name, type: attribute.value, isValid: attribute.isValid };
-    //   });
-    //   this.setState({
-    //     submitMessage: "" });
-    //   axios
-    //     .post("http://localhost:1337/memorials", {
-    //       memorials: this.state.memorials,
-    //     })
-    //     .then((res) => this.setState({ submitMessage: "Memorial submitted" }))
-    //      .catch((err) => console.log(err))
-  };
-
-  getLocationHandler = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.setCoordinates);
-    } else {
-      alert("Geolocation is not supportd by this browser");
-    }
-  };
-
-  setCoordinates = (position) => {
-    this.setState({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-      coordsButtonClicked: true,
-    });
+  saveMemorialHandler = () => {
+    console.log("SAVING MEMORIAL...");
   };
 
   imageButtonHandler = (event) => {
@@ -142,9 +107,9 @@ class TaggerForm extends React.Component {
           onChange={(event) => this.dropDownChange(event)}
         >
           {!this.state.typeSelectedIndex ? <option>Select a type</option> : ""}
-          {this.state.memorialTypes.map((type, n) => (
-            <option key={n} value={n}>
-              {type.name}
+          {this.state.Types.map((type, n) => (
+            <option key={type.Id} value={n}>
+              {type.Name}
             </option>
           ))}
         </select>
@@ -154,40 +119,27 @@ class TaggerForm extends React.Component {
         ) : (
           <div className={styles.attributesWrapper}>
             <AttributeForm
-              memorialTypes={
-                this.state.memorialTypes[this.state.typeSelectedIndex]
-              }
-              lat={this.state.latitude}
-              lng={this.state.longitude}
-              coordsButtonClicked={this.state.coordsButtonClicked}
+              TypeId={this.state.Types[this.state.typeSelectedIndex].Id}
+              Name={this.state.Name}
+              key={this.state.Types[this.state.typeSelectedIndex].Id}
+              setTaggerValues={this.setTaggerValues}
             />
             <br />
-            <button
-              className={styles.saveMemorialButton}
-              variant="primary"
-              type="submit"
-              onChange={this.saveMemorialHandler}
-            >
-              Save Memorial
-            </button>
 
-            <button
-              className={styles.autoGenerateButton}
-              variant="primary"
-              type="submit"
-              onClick={this.getLocationHandler}
-            >
-              Auto Generate Lat and Long
-            </button>
-
-            <div className="App">
+            <div className={styles.uploadButtonDiv}>
               <input type="file" onChange={this.imageButtonHandler} />
               <button onClick={this.fileUploadHandler}>Upload</button>
             </div>
 
-            {
-              //} {attribute.name == this.state.latitude ? attribute.name == this.state.longitude: "gls"}}
-            }
+            <button
+              className={styles.saveMemorialButton}
+              class="small blue button"
+              variant="primary"
+              type="submit"
+              onClick={this.saveMemorialHandler}
+            >
+              Save Memorial
+            </button>
           </div>
         )}
       </div>
