@@ -53,10 +53,27 @@ class TaggerForm extends React.Component {
   dropDownChange = (event) => {
     this.setState({
       typeSelectedIndex: event.target.value,
+      latitude: "",
+      longitude: "",
     });
   };
 
-  setTaggerValues = (Values) => {
+  getLocationHandler = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.setCoordinates);
+    } else {
+      alert("Geolocation is not supportd by this browser");
+    }
+  };
+
+  setCoordinates = (position) => {
+    this.setState({
+      longitude: position.coords.longitude,
+      latitude: position.coords.latitude,
+    });
+  };
+
+  setMemorialValues = (Values) => {
     this.setState({
       MemorialData: {
         Values: [Values],
@@ -99,41 +116,58 @@ class TaggerForm extends React.Component {
   render() {
     return (
       <div className={styles.container}>
-        <label>Memorial Types</label>
-        <br />
-        <select
-          name="Memorial-Types"
-          id="Memorial-Types"
-          onChange={(event) => this.dropDownChange(event)}
-        >
-          {!this.state.typeSelectedIndex ? <option>Select a type</option> : ""}
-          {this.state.Types.map((type, n) => (
-            <option key={type.Id} value={n}>
-              {type.Name}
-            </option>
-          ))}
-        </select>
-
+        <div className={styles.dropDownWrapper}>
+          <label>Memorial Types</label>
+          <select
+            name="Memorial-Types"
+            id="Memorial-Types"
+            onChange={(event) => this.dropDownChange(event)}
+          >
+            {!this.state.typeSelectedIndex ? (
+              <option>Select a type</option>
+            ) : (
+              ""
+            )}
+            {this.state.Types.map((type, n) => (
+              <option key={type.Id} value={n}>
+                {type.Name}
+              </option>
+            ))}
+          </select>
+        </div>
         {!this.state.typeSelectedIndex ? (
           ""
         ) : (
-          <div className={styles.attributesWrapper}>
-            <AttributeForm
-              TypeId={this.state.Types[this.state.typeSelectedIndex].Id}
-              Name={this.state.Name}
-              key={this.state.Types[this.state.typeSelectedIndex].Id}
-              setTaggerValues={this.setTaggerValues}
-            />
-            <br />
-
-            <div className={styles.uploadButtonDiv}>
-              <input type="file" onChange={this.imageButtonHandler} />
-              <button onClick={this.fileUploadHandler}>Upload</button>
+          <div>
+            <div className={styles.attributesWrapper}>
+              <AttributeForm
+                TypeId={this.state.Types[this.state.typeSelectedIndex].Id}
+                Name={this.state.Name}
+                key={this.state.Types[this.state.typeSelectedIndex].Id}
+                setMemorialValues={this.setMemorialValues}
+                latitude={this.state.latitude}
+                longitude={this.state.longitude}
+              />
             </div>
-
+            <br />
+            <div className={styles.buttonsWrapper}>
+              <button
+                className={styles.autoGenerateButton}
+                variant="primary"
+                type="submit"
+                onClick={this.getLocationHandler}
+              >
+                Auto Generate Lat and Long
+              </button>
+              <div className={styles.uploadButtonDiv}>
+                <input style={{ display: "none" }} type="file" />
+                <button onClick={() => this.fileUploadHandler}>
+                  Upload/Capture Image
+                </button>
+              </div>
+            </div>
             <button
               className={styles.saveMemorialButton}
-              class="small blue button"
               variant="primary"
               type="submit"
               onClick={this.saveMemorialHandler}

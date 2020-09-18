@@ -1,7 +1,23 @@
 .inputLabel {
   text-align: left;
-  font-size: 16px;
+  font-size: 12px;
+  color: #6e6e6e;
 }
+
+.valueInput {
+  font-family: "Ranchers", cursive;
+}
+
+.valueInputDisabled {
+  background: #dddddd;
+}
+
+.valueInputInvalid {
+  background: salmon;
+}
+
+
+
 
 .invalidInput {
   border-color: red;
@@ -11,13 +27,11 @@
 
 .required {
   color: red;
-  
-  
 }
 
 .notRequired {
   visibility: hidden;
-  max-height: 0;  
+  max-height: 0;
 }
 
 .attributeTextBox {

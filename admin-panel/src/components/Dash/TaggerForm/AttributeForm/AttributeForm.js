@@ -42,8 +42,8 @@ class AttributeForm extends React.Component {
 
       Values: [{ Value: "", AttributeId: "" }],
       error: "Error",
-      longitude: "",
-      latitude: "",
+      lattitude: this.props.latitude,
+      longitude: this.props.longitude,
     };
   }
 
@@ -73,63 +73,35 @@ class AttributeForm extends React.Component {
     );
   }
 
-  getLocationHandler = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.setCoordinates);
-    } else {
-      alert("Geolocation is not supportd by this browser");
-    }
-  };
-
   onValueInput = (value, attributeId) => {
     const values = [...this.state.Values];
   };
 
-  setCoordinates = (position) => {
-    this.setState({
-      longitude: position.coords.longitude,
-      latitude: position.coords.latitude,
-    });
-  };
 
   render() {
     return (
       <div className={styles.divBox}>
         <table>
           <tbody>
-
-              <tr className={styles.tableHeader}>
-                <td></td>
-                <td className={styles.valueHeader}>Value</td>
-                <td className={styles.valueTypeHeader}>Value Type</td>
-              </tr>
+            <tr className={styles.tableHeader}>
+              <td></td>
+              <td className={styles.valueHeader}>Value</td>
+              <td className={styles.valueTypeHeader}>Value Type</td>
+            </tr>
             {this.state.sortedAttributes.map((attribute) => (
-              <tr key={attribute.Id}>
-                <td>
-                  <Attribute
-                    Id={attribute.Id}
-                    Name={attribute.Name}
-                    key={attribute.Id}
-                    ValueType={attribute.ValueType}
-                    Required={attribute.Required}
-                    longitude={this.state.longitude}
-                    latitude={this.state.latitude}
-                    onValueInput={this.onValueInput}
-                  />
-                </td>
-              </tr>
+              <Attribute
+                Id={attribute.Id}
+                Name={attribute.Name}
+                key={attribute.Id}
+                ValueType={attribute.ValueType}
+                Required={attribute.Required}
+                longitude={this.props.longitude}
+                latitude={this.props.latitude}
+                onValueInput={this.onValueInput}
+              />
             ))}
           </tbody>
         </table>
-
-        <button
-          className={styles.autoGenerateButton}
-          variant="primary"
-          type="submit"
-          onClick={this.getLocationHandler}
-        >
-          Auto Generate Lat and Long
-        </button>
       </div>
     );
   }
