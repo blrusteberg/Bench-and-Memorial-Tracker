@@ -51,8 +51,19 @@ class attributes extends React.Component {
                 console.log(error);
               });
           } else {
-            const sortedAttributes = (res.data).sort((a, b) => (a.Name.toLowerCase() > b.Name.toLowerCase()) ? 1 : -1)
+            const longitudeAttribute = res.data.find(item => item.Name.toLowerCase() == "longitude");
+            const latitudeAttribute = res.data.find(item => item.Name.toLowerCase() == "latitude");
+            const selectedAttributes = [longitudeAttribute, latitudeAttribute];
+
+            let filteredAttributes  = res.data.filter(function(allAttributes){
+              return selectedAttributes.filter(function(selectedAttributes){
+                  return selectedAttributes.Id == allAttributes.Id;
+              }).length == 0
+            });
+
+            const sortedAttributes = filteredAttributes.sort((a, b) => (a.Name.toLowerCase() > b.Name.toLowerCase()) ? 1 : -1)
             this.setState({
+              selectedAttributes, selectedAttributes,
               allAttributes: [...sortedAttributes]
             });
           }
@@ -165,6 +176,15 @@ class attributes extends React.Component {
     window.location.reload(true);
   }
 
+  // createNewType = () => {
+  //   allAttributes = this.state.allAttributes;
+  //   let filteredAttributes  = res.data.filter(function(allAttributes){
+  //     return response.data.filter(function(selectedAttributes){
+  //         return selectedAttributes.Id == allAttributes.Id;
+  //     }).length == 0
+  //   });
+  // }
+
   render(){
 
     const showSaveButton = this.state.showSaveButton;
@@ -175,6 +195,8 @@ class attributes extends React.Component {
     let filteredAttributes = this.state.allAttributes.filter(attribute => {
       return attribute.Name.toLowerCase().indexOf(this.state.searchAttribute.toLowerCase()) !== -1;
     })
+
+    // !isExistingType && this.state.createNewType();
 
     return (
       <div>
