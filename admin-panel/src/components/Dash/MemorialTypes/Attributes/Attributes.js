@@ -13,7 +13,8 @@ class attributes extends React.Component {
       allAttributes: [],
       showAttributes: false,
       searchAttribute: "",
-      showSaveButton: false
+      showSaveButton: false,
+      isSaving: false
     };
   }
 
@@ -138,6 +139,10 @@ class attributes extends React.Component {
 
   saveAttributes = () => {
 
+    this.setState({
+      isSaving: true
+    })
+
     if(this.props.selectedTypeId){
       if(this.props.typeName != this.props.oldTypeName){
         const newTypeName = { Name: this.props.typeName }
@@ -168,6 +173,11 @@ class attributes extends React.Component {
   }
 
   deleteType = () => {
+    
+    this.setState({
+      isSaving: true
+    })
+
     axios.delete('http://localhost:1337/types/'+ this.props.selectedTypeId)
       .then((res) => { console.log(res.data) })
       .catch((error) => {
@@ -190,6 +200,7 @@ class attributes extends React.Component {
     const showSaveButton = this.state.showSaveButton;
     const showAttributes = this.state.showAttributes;
     const isExistingType = this.props.selectedTypeId;
+    const isSaving = this.state.isSaving;
 
     let selectedAttributes = this.state.selectedAttributes;
     let filteredAttributes = this.state.allAttributes.filter(attribute => {
@@ -248,13 +259,13 @@ class attributes extends React.Component {
           )}
           {
             showSaveButton &&
-            <button onClick={() => this.saveAttributes()}>
-              Save
+            <button onClick={() => this.saveAttributes()} disabled={isSaving}>
+              Save Type
             </button>
           }
           <br />
           {(isExistingType ? (
-            <button onClick={() => this.deleteType()}>Delete</button>)
+            <button onClick={() => this.deleteType()} disabled={isSaving}>Delete Type</button>)
             : null
           )} 
         </div>
