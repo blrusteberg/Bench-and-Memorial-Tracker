@@ -1,11 +1,10 @@
 import React from "react";
 import axios from "axios";
-import lodash, { update } from "lodash";
+import lodash from "lodash";
 
 import styles from "./MemorialTypes.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
-import Popup from './Popup/Popup';
 
 class memorialTypes extends React.Component {
   constructor(props) {
@@ -15,8 +14,6 @@ class memorialTypes extends React.Component {
       selected: [],
       selectedTypeIndex: 0,
       newTypeName: "",
-      deletedAttributes: 0,
-      addedAttributes: 0,
       isTypeNameChanged: false
     };
   }
@@ -49,8 +46,6 @@ class memorialTypes extends React.Component {
     this.setState({
       selected: selectedType,
       selectedTypeIndex: event.target.value,
-      deletedAttributes: 0,
-      addedAttributes: 0,
       newTypeName: selectedType.Id ? selectedType.Name : "",
       isTypeNameChanged: false
     });
