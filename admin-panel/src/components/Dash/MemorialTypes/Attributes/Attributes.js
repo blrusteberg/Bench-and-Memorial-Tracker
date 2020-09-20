@@ -26,8 +26,15 @@ class attributes extends React.Component {
             axios
               .get("http://localhost:1337/types/"+ this.props.selectedTypeId +"/attributes")
               .then((response) => {
+                let selectedAttributes = []
+                response.data.forEach((attribute, index) => {
+                  attribute.Name.toLowerCase() == "longitude" ||
+                  attribute.Name.toLowerCase() == "latitude"
+                    ? selectedAttributes.unshift(response.data[index])
+                    : selectedAttributes.push(response.data[index]);
+                });
                 this.setState({
-                  selectedAttributes: [...response.data]
+                  selectedAttributes: selectedAttributes
                 }); 
             
                 let filteredAttributes  = res.data.filter(function(allAttributes){
@@ -164,6 +171,7 @@ class attributes extends React.Component {
     const showAttributes = this.state.showAttributes;
     const isExistingType = this.props.selectedTypeId;
 
+    let selectedAttributes = this.state.selectedAttributes;
     let filteredAttributes = this.state.allAttributes.filter(attribute => {
       return attribute.Name.toLowerCase().indexOf(this.state.searchAttribute.toLowerCase()) !== -1;
     })
@@ -182,14 +190,6 @@ class attributes extends React.Component {
               ))}
             </ul>
           )}
-        
-          {/* <select>
-          {Object.values(this.state.allAttributes).map(list => (
-            <option key={list.Id} value={list.Name}>
-              {list.Name}
-            </option>
-          ))}
-          </select> */}
         </div>
         <br />
         <br />
@@ -199,18 +199,29 @@ class attributes extends React.Component {
           <span>Required</span>
         </div>
         <div>
-          {this.state.selectedAttributes.map((item, n) => 
+          {selectedAttributes.map((item, n) => 
             <div>
-            <img className={styles.deleteAttributeButton} src={deleteAttributeButton} onClick={() =>this.deleteAttribute(item.Id)}></img>
-              <input type="text" key={item.Id} value={item.Name} disabled="disabled"/>
-              <input type="text" value={item.ValueType} disabled="disabled"/>
-              <input
-                      type="checkbox"
-                      checked={item.Required}
-                      value={item.Required}
-                      onChange={(event) => this.onChangeRequired(event, n)}
-              />
-              <br />
+            {item.Name.toLowerCase() == "longitude" || item.Name.toLowerCase() == "latitude" ? 
+              <div>
+                <input type="text" key={item.Id} value={item.Name} disabled="disabled"/>
+                <input type="text" value={item.ValueType} disabled="disabled"/> 
+                <input type="checkbox" checked="true" disabled="disabled"/>
+                <br />
+              </div>
+              :
+              <div>
+                <img className={styles.deleteAttributeButton} src={deleteAttributeButton} onClick={() =>this.deleteAttribute(item.Id)}></img>
+                <input type="text" key={item.Id} value={item.Name} disabled="disabled"/>
+                <input type="text" value={item.ValueType} disabled="disabled"/>
+                <input
+                        type="checkbox"
+                        checked={item.Required}
+                        value={item.Required}
+                        onChange={(event) => this.onChangeRequired(event, n)}
+                />
+                <br />
+              </div>
+            }
             </div>
           )}
           {
