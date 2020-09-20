@@ -12,7 +12,8 @@ class attributes extends React.Component {
       selectedAttributes: [],
       allAttributes: [],
       showAttributes: false,
-      searchAttribute: ""
+      searchAttribute: "",
+      showSaveButton: false
     };
   }
 
@@ -58,7 +59,8 @@ class attributes extends React.Component {
     const selected = lodash.cloneDeep(this.state.selectedAttributes);
     selected[n].Required = !(event.target.value === "true");
     this.setState({
-      selectedAttributes: selected
+      selectedAttributes: selected,
+      showSaveButton: true
     });
   };
 
@@ -86,7 +88,8 @@ class attributes extends React.Component {
 
     this.setState({
       allAttributes: allAttributes,
-      selectedAttributes: selectedAttributes
+      selectedAttributes: selectedAttributes,
+      showSaveButton: true
     })
 
   }
@@ -106,7 +109,8 @@ class attributes extends React.Component {
 
     this.setState({
       allAttributes: sortedAttributes,
-      selectedAttributes: selectedAttributes
+      selectedAttributes: selectedAttributes,
+      showSaveButton: true
     })
 
   }
@@ -152,6 +156,7 @@ class attributes extends React.Component {
   }
 
   render(){
+    const showSaveButton = this.state.showSaveButton;
     const showAttributes = this.state.showAttributes;
     const isExistingType = this.props.selectedTypeId;
     return (
@@ -199,9 +204,12 @@ class attributes extends React.Component {
               <br />
             </div>
           )}
-          <button onClick={() => this.saveAttributes()}>
-            {isExistingType ? "Update" : "Save"}
-          </button>
+          {
+            showSaveButton &&
+            <button onClick={() => this.saveAttributes()}>
+              Save
+            </button>
+          }
           <br />
           {(isExistingType ? (
             <button onClick={() => this.deleteType()}>Delete</button>)
