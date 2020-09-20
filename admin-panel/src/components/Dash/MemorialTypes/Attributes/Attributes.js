@@ -139,6 +139,11 @@ class attributes extends React.Component {
 
   saveAttributes = () => {
 
+    if(this.props.typeName.toLowerCase() === ""){
+      alert("Type Name cannot be empty");
+      return
+    }
+
     this.setState({
       isSaving: true
     })
@@ -152,7 +157,6 @@ class attributes extends React.Component {
           console.log(error);
         });
       }
-      //lock button and change to updating
       const newMemorialTypesObject = { Attributes: this.state.selectedAttributes };
       axios.put('http://localhost:1337/types/'+ this.props.selectedTypeId + "/attributes", newMemorialTypesObject)
         .then((res) => { console.log(res.data) })
@@ -161,7 +165,6 @@ class attributes extends React.Component {
         });
       window.location.reload(true);
     } else {
-       //lock button and change to saving
       const newMemorialTypesObject = { Type: { Name: this.props.typeName }, Attributes: this.state.selectedAttributes };
       axios.post('http://localhost:1337/types/attributes', newMemorialTypesObject)
         .then((res) => { console.log(res.data) })
@@ -186,11 +189,6 @@ class attributes extends React.Component {
     window.location.reload(true);
   }
 
-  // enableSaveButton = () => {
-  //   console.log('hi');
-  //   this.setState({ showSaveButton: true })
-  // }
-
   render(){
 
     const showSaveButton = this.state.showSaveButton || this.props.isTypeNameChanged;
@@ -202,9 +200,6 @@ class attributes extends React.Component {
     let filteredAttributes = this.state.allAttributes.filter(attribute => {
       return attribute.Name.toLowerCase().indexOf(this.state.searchAttribute.toLowerCase()) !== -1;
     })
-
-    // this.props.isTypeNameChanged && this.enableSaveButton();
-    // console.log(this.props.isTypeNameChanged);
 
     return (
       <div>
@@ -264,42 +259,20 @@ class attributes extends React.Component {
           {(isExistingType ? (
             <button onClick={() => this.deleteType()} disabled={isSaving}>Delete Type</button>)
             : null
-          )} 
-        </div>
-        {/* <div>
-          {props.attributes.map((item, n) => (item.name === 'longitude' || item.name === 'latitude') ?
-              <div>
-                  <input readOnly type="text" disabled="disabled" key={item._id} value={item.name}/>
-                  <input readOnly type="text" disabled="disabled" value="Number"/>
-                  <input type="checkbox" disabled="disabled" checked="checked"/>
-              </div>
-              :
-              <div>
-                  <img className={styles.deleteAttributeButton} src={deleteAttributeButton} onClick={() => props.deleteAttribute(n)}></img>
-                  <input type="text" key={item._id} value={item.name} onChange={event => props.updateAttribute(event, n)}/>
-                  <select value={item.dataType} onChange={event => props.updateAttribute(event, n)}>
-                    <option value="date">Date</option>
-                    <option value="number">Number</option>
-                    <option value="boolean">Yes/No</option>
-                    <option value="string">Words</option>
-                  </select>
-                  <input
-                      type="checkbox"
-                      checked={item.required}
-                      value={item.required}
-                      onChange={event => props.updateAttribute(event, n)}
-                  />
-              </div>
           )}
         </div>
-        <img className={styles.addAttributeButton} src={addAttributeButton} onClick={() => props.addAttribute()}></img>
-        <label>Add attribute</label>
-        <br />
-        <button onClick={() => props.saveAttributes()}>
-          {props.isNewType() ? "Update" : "Save"}
-        </button> 
-        <h3>{props.isSaving ? "Saving..." : null}</h3>
-        <h3>{props.isUpdating ? "Updating..." : null}</h3> */}
+        {/* <div className={styles.divBox}>
+          <table>
+            <tbody>
+              <tr className={styles.tableHeader}>
+                <td></td>
+                <td className={styles.valueHeader}>Value</td>
+                <td className={styles.valueTypeHeader}>Value Type</td>
+              </tr>
+              <h3>HI</h3>
+            </tbody>
+          </table>
+        </div> */}
       </div>
     );
   }

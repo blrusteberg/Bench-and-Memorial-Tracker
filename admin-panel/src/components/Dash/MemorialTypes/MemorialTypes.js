@@ -15,11 +15,8 @@ class memorialTypes extends React.Component {
       selected: [],
       selectedTypeIndex: 0,
       newTypeName: "",
-      showPopup: false,
       deletedAttributes: 0,
       addedAttributes: 0,
-      isSaving: false,
-      isUpdating: false,
       isTypeNameChanged: false
     };
   }
@@ -33,19 +30,7 @@ class memorialTypes extends React.Component {
           memorialTypes = response.data
         }
         const addType = {
-          Name: " + New Type",
-          attributes: [
-            {
-              name: "longitude",
-              required: true,
-              dataType: "number",
-            },
-            {
-              name: "latitude",
-              required: true,
-              dataType: "number",
-            },
-          ],
+          Name: " + New Type"
         };
         memorialTypes.push(addType);
         this.setState({
@@ -69,44 +54,6 @@ class memorialTypes extends React.Component {
       newTypeName: selectedType.Id ? selectedType.Name : "",
       isTypeNameChanged: false
     });
-  };
-
-  saveAttributes = () => {
-
-    this.setState({  
-      showPopup: !this.state.showPopup  
-    }); 
-
-    if(this.checkIfNewType()){
-      console.log('true');
-      this.setState({  
-        isUpdating: true 
-      }); 
-      let newMemorialTypesObject = { name: this.state.newTypeName, attributes: this.state.selected };
-      axios.post('http://localhost:1337/memorialTypes', newMemorialTypesObject)
-      .then(res => console.log(res.data));
-      window.location.reload(true);
-      //create toast
-    } else {
-      console.log('false');
-      this.setState({  
-        isSaving: true 
-      }); 
-      let index = this.state.selectedTypeIndex;
-      let memorialTypeName = this.state.initialTypes[index].name;
-      let memorialTypeId = this.state.initialTypes[index]._id;
-      let updatedMemorialTypesObject = { _id: memorialTypeId, name: memorialTypeName, attributes: this.state.selected };
-      axios.put('http://localhost:1337/memorialTypes', updatedMemorialTypesObject)
-      .then(res => console.log(res.data));
-      window.location.reload(true);
-      //create toast
-    }
-
-    // continue is pressed -> DISABLE SAVE BUTTON then show SAVING then refresh page then show toast
-
-    // Updates ENTIRE memorialTypes with newly updated memorialObject
-    // axios.put('http://localhost:1337/memorials/types', memorialObject)
-    //   .then(res => console.log(res.data));
   };
 
   handleNewTypeNameChange = (event) => {
@@ -145,8 +92,6 @@ class memorialTypes extends React.Component {
             <Attributes
               key={this.state.selected.Id}
               selectedTypeId={this.state.selected.Id}
-              isSaving={this.state.isSaving}
-              isUpdating={this.state.isUpdating}
               oldTypeName={this.state.selected.Name}
               typeName={this.state.newTypeName}
               isTypeNameChanged={this.state.isTypeNameChanged}
