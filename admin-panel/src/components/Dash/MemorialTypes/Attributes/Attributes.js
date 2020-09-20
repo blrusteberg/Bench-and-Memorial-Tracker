@@ -70,8 +70,11 @@ class attributes extends React.Component {
     })
   }
 
-  attributeDropdownFilter = (searchText) => {
-
+  updateSearch = (event) => {
+    let searchText = event.target.value;
+    this.setState({
+      searchAttribute: searchText
+    })
   }
 
   addAttribute = (attributeId) => {
@@ -156,17 +159,23 @@ class attributes extends React.Component {
   }
 
   render(){
+
     const showSaveButton = this.state.showSaveButton;
     const showAttributes = this.state.showAttributes;
     const isExistingType = this.props.selectedTypeId;
+
+    let filteredAttributes = this.state.allAttributes.filter(attribute => {
+      return attribute.Name.toLowerCase().indexOf(this.state.searchAttribute.toLowerCase()) !== -1;
+    })
+
     return (
       <div>
         <br />
         <div class={styles.dropdown} onMouseEnter={()=>this.setAttributeDropdownShown(true)} onMouseLeave={()=>this.setAttributeDropdownShown(false)}>
-          <input type="text" placeholder="Add an Attribute.." value={this.state.searchAttribute} onKeyUp={()=>this.attributeDropdownFilter()} autoComplete="off" />
+          <input type="text" placeholder="Add an Attribute.." value={this.state.searchAttribute} onChange={(event)=>this.updateSearch(event)} autoComplete="off" />
           {showAttributes && (
             <ul class={styles.dropdownContent}>
-              {Object.values(this.state.allAttributes).map(list => (
+              {Object.values(filteredAttributes).map(list => (
                 <div key={list.Id} value={list.Name} onClick={() =>this.addAttribute(list.Id)}>
                   {list.Name}
                 </div>

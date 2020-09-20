@@ -35,6 +35,7 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
+    position: absolute;
 }
 
 .dropdownContent div {
@@ -45,7 +46,7 @@
     text-decoration: none;
     font-size: 18px;
     color: black;
-    display: block
+    display: block;
 }
 
 .dropdown div:hover {
