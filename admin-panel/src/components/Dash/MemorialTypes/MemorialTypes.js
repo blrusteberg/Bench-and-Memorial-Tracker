@@ -29,7 +29,7 @@ class memorialTypes extends React.Component {
         const addType = {
           Name: " + New Type"
         };
-        memorialTypes.push(addType);
+        memorialTypes.unshift(addType);
         this.setState({
           initialTypes: memorialTypes,
         });
