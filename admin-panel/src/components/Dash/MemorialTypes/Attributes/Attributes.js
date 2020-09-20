@@ -173,7 +173,7 @@ class attributes extends React.Component {
   }
 
   deleteType = () => {
-    
+
     this.setState({
       isSaving: true
     })
@@ -186,18 +186,14 @@ class attributes extends React.Component {
     window.location.reload(true);
   }
 
-  // createNewType = () => {
-  //   allAttributes = this.state.allAttributes;
-  //   let filteredAttributes  = res.data.filter(function(allAttributes){
-  //     return response.data.filter(function(selectedAttributes){
-  //         return selectedAttributes.Id == allAttributes.Id;
-  //     }).length == 0
-  //   });
+  // enableSaveButton = () => {
+  //   console.log('hi');
+  //   this.setState({ showSaveButton: true })
   // }
 
   render(){
 
-    const showSaveButton = this.state.showSaveButton;
+    const showSaveButton = this.state.showSaveButton || this.props.isTypeNameChanged;
     const showAttributes = this.state.showAttributes;
     const isExistingType = this.props.selectedTypeId;
     const isSaving = this.state.isSaving;
@@ -207,7 +203,8 @@ class attributes extends React.Component {
       return attribute.Name.toLowerCase().indexOf(this.state.searchAttribute.toLowerCase()) !== -1;
     })
 
-    // !isExistingType && this.state.createNewType();
+    // this.props.isTypeNameChanged && this.enableSaveButton();
+    // console.log(this.props.isTypeNameChanged);
 
     return (
       <div>

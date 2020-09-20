@@ -19,7 +19,8 @@ class memorialTypes extends React.Component {
       deletedAttributes: 0,
       addedAttributes: 0,
       isSaving: false,
-      isUpdating: false
+      isUpdating: false,
+      isTypeNameChanged: false
     };
   }
 
@@ -65,7 +66,8 @@ class memorialTypes extends React.Component {
       selectedTypeIndex: event.target.value,
       deletedAttributes: 0,
       addedAttributes: 0,
-      newTypeName: selectedType.Id ? selectedType.Name : ""
+      newTypeName: selectedType.Id ? selectedType.Name : "",
+      isTypeNameChanged: false
     });
   };
 
@@ -108,7 +110,10 @@ class memorialTypes extends React.Component {
   };
 
   handleNewTypeNameChange = (event) => {
-    this.setState({ newTypeName: event.target.value });
+    this.setState({ 
+      newTypeName: event.target.value,
+      isTypeNameChanged: true 
+    });
   };
 
   togglePopup = () => {
@@ -144,6 +149,7 @@ class memorialTypes extends React.Component {
               isUpdating={this.state.isUpdating}
               oldTypeName={this.state.selected.Name}
               typeName={this.state.newTypeName}
+              isTypeNameChanged={this.state.isTypeNameChanged}
             />
           </div>)
           : null
