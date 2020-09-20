@@ -261,18 +261,6 @@ class attributes extends React.Component {
             : null
           )}
         </div>
-        {/* <div className={styles.divBox}>
-          <table>
-            <tbody>
-              <tr className={styles.tableHeader}>
-                <td></td>
-                <td className={styles.valueHeader}>Value</td>
-                <td className={styles.valueTypeHeader}>Value Type</td>
-              </tr>
-              <h3>HI</h3>
-            </tbody>
-          </table>
-        </div> */}
       </div>
     );
   }
