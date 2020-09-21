@@ -1,0 +1,67 @@
+.attribute {
+}
+
+.inputLabel {
+  text-align: left;
+  font-size: 12px;
+  color: #6e6e6e;
+}
+
+.valueInput {
+  font-family: "Ranchers", cursive;
+  width: 100%;
+}
+
+.valueInputDisabled {
+  background: #dddddd;
+}
+
+.valueInputInvalid {
+  background: salmon;
+}
+
+.yesNoInput {
+  width: 100%;
+}
+
+.invalidInput {
+  border-color: red;
+  margin-right: 10px;
+  flex-direction: left;
+}
+
+.required {
+  color: red;
+}
+
+.notRequired {
+  visibility: hidden;
+  max-height: 0;
+}
+
+.attributeTextBox {
+  margin-right: 10px;
+  flex-direction: left;
+  background-color: white;
+}
+
+.valueTypeInput {
+  width: 75%;
+  background-color: #dddddd;
+}
+
+.valueTypeInputCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noError {
+  visibility: hidden;
+  font-size: 10px;
+}
+
+.error {
+  color: red;
+  font-size: 10px;
+}
