@@ -28,10 +28,7 @@ class Attribute extends React.Component {
 
   validateNumber = (inputValue) => /^(\d|-)?(\d|,)*\.?\d*$/.test(inputValue);
 
-  validateWords = (inputValue) => {
-    inputValue = inputValue.trim().toLowerCase();
-    return inputValue !== "latitude" && inputValue !== "longitude";
-  };
+  validateWords = (inputValue) => true;
 
   validateDate = (inputValue) =>
     /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/.test(inputValue);
