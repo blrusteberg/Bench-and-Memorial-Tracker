@@ -4,9 +4,29 @@ const Error = require("../error/error");
 
 const Type = require("../models/Type");
 
+router.post("/", async (req, res) => {
+  try {
+    const type = await Type.query().insert({
+      Name: req.body.Name,
+    });
+    res.status(201).json(type);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const types = await Type.query();
+    res.status(200).json(types);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
+router.get("/attributes", async (req, res) => {
+  try {
+    const types = await Type.query().withGraphFetched("Attributes");
     res.status(200).json(types);
   } catch (err) {
     Error.errorHandler(err, res);
@@ -24,22 +44,11 @@ router.get("/:id/attributes", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  try {
-    const type = await Type.query().insert({
-      Name: req.body.Name,
-    });
-    res.status(201).json(type);
-  } catch (err) {
-    Error.errorHandler(err, res);
-  }
-});
-
-router.put("/:Id/attributes", async (req, res) => {
+router.put("/:id/attributes", async (req, res) => {
   try {
     const graph = await Type.query().upsertGraph(
       {
-        Id: req.params.Id,
+        Id: req.params.id,
         Attributes: req.body.Attributes,
       },
       {
@@ -55,7 +64,7 @@ router.put("/:Id/attributes", async (req, res) => {
 
 router.put("/", async (req, res) => {
   try {
-    const numUpdated = await Type.query().findById(req.body.Id).patch({
+    const numUpdated = await Type.query().findById(req.body.id).patch({
       Name: req.body.Name,
     });
     const s = numUpdated === 1 ? "" : "s";

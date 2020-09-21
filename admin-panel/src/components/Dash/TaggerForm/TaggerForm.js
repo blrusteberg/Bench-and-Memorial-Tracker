@@ -1,101 +1,123 @@
 import React from "react";
 import axios from "axios";
+import lodash from "lodash";
 
 import styles from "./TaggerForm.module.css";
 import AttributeForm from "./AttributeForm/AttributeForm";
-import attributes from "../MemorialTypes/Attributes/Attributes";
 
 class TaggerForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      Types: [
-        {
-          Name: "",
-          Id: "",
-        },
-      ],
-      MemorialData: {
-        Memorial: {
-          Name: "",
-        },
-        Values: [
+  state = {
+    Types: [
+      {
+        Id: "",
+        Name: "",
+        Attributes: [
           {
+            Id: "",
+            Name: "",
+            ValueType: "",
+            Required: null,
             Value: "",
-            AttributeId: "",
           },
         ],
       },
-      typeSelectedIndex: null,
-      error: null,
-      isLoaded: false,
-      selectedFile: null,
-    };
-  }
+    ],
+    Memorial: {
+      Name: "",
+      TypeId: "",
+      Attributes: [
+        {
+          Id: "",
+          Name: "",
+          ValueType: "",
+          Required: null,
+          Value: "",
+        },
+      ],
+    },
+    typeSelectedIndex: null,
+    error: null,
+    isLoading: true,
+    selectedFile: null,
+  };
 
   componentDidMount() {
-    axios.get("http://localhost:1337/types").then(
+    axios.get("http://localhost:1337/types/attributes").then(
       (res) => {
         this.setState({
           Types: res.data,
-          isLoaded: true,
+          isLoading: false,
         });
       },
       (error) => {
         this.setState({
           isLoaded: true,
-          error: error,
+          error: false,
         });
       }
     );
   }
 
-  dropDownChange = (event) => {
+  onTypeSelect = (typeIndex) => {
+    const attributes = lodash.cloneDeep(this.state.Types[typeIndex].Attributes);
+    attributes.forEach((attribute) => (attribute.Value = ""));
     this.setState({
-      typeSelectedIndex: event.target.value,
-      latitude: "",
-      longitude: "",
-    });
-  };
-
-  getLocationHandler = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.setCoordinates);
-    } else {
-      alert("Geolocation is not supportd by this browser");
-    }
-  };
-
-  setCoordinates = (position) => {
-    this.setState({
-      longitude: position.coords.longitude,
-      latitude: position.coords.latitude,
-    });
-  };
-
-  setMemorialValues = (Values) => {
-    this.setState({
-      MemorialData: {
-        Values: [Values],
+      Memorial: {
+        Name: "",
+        TypeId: this.state.Types[typeIndex].Id,
+        Attributes: attributes,
       },
+      typeSelectedIndex: typeIndex,
     });
   };
 
-  inputChange = (event, index) => {
-    const memorials = [...this.state.memorials];
-    memorials[0].attributes[index].value = event.target.value;
-
-    this.setState({ memorials: memorials });
+  onMemorialNameChange = (event) => {
+    const memorial = { ...this.state.Memorial };
+    memorial.Name = event.target.value;
+    this.setState({
+      Memorial: memorial,
+    });
   };
 
-  saveMemorialHandlerSubmitHandler = () => {
-    // trigger on save memorial button click
-    // loop through this.state.memorialAttributes, check if all isValid are true
-    // also check if all required attributes have values
+  onValueChange = (attributeId, value) => {
+    const memorial = { ...this.state.Memorial };
+    memorial.Attributes.forEach((attribute) => {
+      if (attribute.Id === attributeId) {
+        attribute.Value = value;
+      }
+    });
+    this.setState({
+      Memorial: memorial,
+    });
   };
 
-  saveMemorialHandler = () => {
-    console.log("SAVING MEMORIAL...");
+  onFillCoordinatesClick = () => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      if (pos) {
+        const latitude = pos.coords.latitude;
+        const longitude = pos.coords.longitude;
+        const memorial = { ...this.state.Memorial };
+        memorial.Attributes.forEach((attribute) => {
+          if (attribute.Name.toLowerCase() === "latitude") {
+            attribute.Value = latitude;
+          }
+          if (attribute.Name.toLowerCase() === "longitude") {
+            attribute.Value = longitude;
+          }
+          this.setState({
+            latitude: latitude,
+            longitude: longitude,
+            Memorial: memorial,
+          });
+        });
+      } else {
+        alert("Unable to get geolocation..");
+      }
+    });
+  };
+
+  onSaveMemorialClick = () => {
+    axios.post("http://localhost:1337/memorials/values", this.state.Memorial);
   };
 
   imageButtonHandler = (event) => {
@@ -109,19 +131,20 @@ class TaggerForm extends React.Component {
     // fd.append('image', this.state.selectedFile, this.state.selectedFile.name)
     // axios.post("http://localhost:1337/memorials", fd)
     //   .then(res => {
-    //     console.log(res);
     //   });
   };
 
   render() {
-    return (
+    return this.state.isLoading ? (
+      <div className={styles.loadingTitle}>Loading...</div>
+    ) : (
       <div className={styles.container}>
         <div className={styles.dropDownWrapper}>
-          <label>Memorial Types</label>
+          <div>Memorial Type</div>
           <select
             name="Memorial-Types"
             id="Memorial-Types"
-            onChange={(event) => this.dropDownChange(event)}
+            onChange={(event) => this.onTypeSelect(event.target.value)}
           >
             {!this.state.typeSelectedIndex ? (
               <option>Select a type</option>
@@ -139,41 +162,48 @@ class TaggerForm extends React.Component {
           ""
         ) : (
           <div>
+            <div className={styles.memorialNameWrapper}>
+              <div className={styles.memorialName}>Memorial Name</div>
+              <input
+                className={styles.memorialNameInput}
+                type="text"
+                onChange={this.onMemorialNameChange}
+              />
+            </div>
             <div className={styles.attributesWrapper}>
               <AttributeForm
-                TypeId={this.state.Types[this.state.typeSelectedIndex].Id}
-                Name={this.state.Name}
                 key={this.state.Types[this.state.typeSelectedIndex].Id}
-                setMemorialValues={this.setMemorialValues}
+                Attributes={
+                  this.state.Types[this.state.typeSelectedIndex].Attributes
+                }
+                onValueChange={this.onValueChange}
                 latitude={this.state.latitude}
                 longitude={this.state.longitude}
               />
             </div>
-            <br />
             <div className={styles.buttonsWrapper}>
               <button
-                className={styles.autoGenerateButton}
-                variant="primary"
-                type="submit"
-                onClick={this.getLocationHandler}
+                className={styles.fillCoordinatesButton}
+                onClick={this.onFillCoordinatesClick}
               >
-                Auto Generate Lat and Long
+                Fill Coordinates
               </button>
-              <div className={styles.uploadButtonDiv}>
-                <input style={{ display: "none" }} type="file" />
-                <button onClick={() => this.fileUploadHandler}>
-                  Upload/Capture Image
-                </button>
-              </div>
+              <input style={{ display: "none" }} type="file" />
+              <button
+                onClick={() => this.fileUploadHandler}
+                className={styles.uploadButton}
+              >
+                Upload/Capture Image
+              </button>
             </div>
-            <button
-              className={styles.saveMemorialButton}
-              variant="primary"
-              type="submit"
-              onClick={this.saveMemorialHandler}
-            >
-              Save Memorial
-            </button>
+            <div className={styles.saveButtonWrapper}>
+              <button
+                className={styles.saveMemorialButton}
+                onClick={this.onSaveMemorialClick}
+              >
+                Save Memorial
+              </button>
+            </div>
           </div>
         )}
       </div>

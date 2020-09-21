@@ -1,3 +1,6 @@
+.attribute {
+}
+
 .inputLabel {
   text-align: left;
   font-size: 12px;
@@ -6,6 +9,7 @@
 
 .valueInput {
   font-family: "Ranchers", cursive;
+  width: 100%;
 }
 
 .valueInputDisabled {
@@ -16,8 +20,9 @@
   background: salmon;
 }
 
-
-
+.yesNoInput {
+  width: 100%;
+}
 
 .invalidInput {
   border-color: red;
@@ -40,8 +45,15 @@
   background-color: white;
 }
 
-.valueTypeTextBox {
-  width: 100px;
+.valueTypeInput {
+  width: 75%;
+  background-color: #dddddd;
+}
+
+.valueTypeInputCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .noError {
@@ -50,5 +62,5 @@
 
 .error {
   color: red;
-  font: bold;
+  font-size: 10px;
 }

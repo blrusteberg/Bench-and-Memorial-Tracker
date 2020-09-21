@@ -1,6 +1,6 @@
 .tableHeader {
   font-size: 16px;
-  text-align: left;
+  text-align: center;
 }
 
 .tableHeaderDiv {
@@ -9,4 +9,7 @@
 
 .autoGenerateButton {
   margin-top: 15px;
+}
+
+.attributeForm {
 }

@@ -43,10 +43,41 @@
   width: 10%;
 }
 
-.dropDown {
-  width: 25%;
-  position: absolute;
-  left: 37%;
+.memorialNameWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  margin-bottom: 20px;
+}
+
+.memorialName {
+  font-size: 12px;
+}
+
+.memorialNameInput {
+  width: 65%;
+}
+
+.buttonsWrapper {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.fillCoordinatesButton {
+  width: 40%;
+}
+
+.uploadButton {
+  width: 40%;
+}
+.saveButtonWrapper {
+  text-align: center;
 }
 
 .saveMemorialButton {
@@ -58,8 +89,4 @@
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-}
-
-.uploadButtonDiv {
-  margin-bottom: 15px;
 }

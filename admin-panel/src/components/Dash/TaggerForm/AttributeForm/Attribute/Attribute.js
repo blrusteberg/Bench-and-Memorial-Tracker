@@ -7,55 +7,64 @@ class Attribute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      inputFocus: false,
       isValid: true,
-      longitude: "",
-      latitude: "",
-      inputValue: "",
+      Value: "",
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.Value !== this.props.Value) {
+      this.setState({ isValid: this.state.isValid, Value: this.props.Value });
+    }
+  }
+
+  validateInput = (value) => {
+    if (this.props.ValueType === "Yes/No") {
+      return this.validateYesNo(value);
+    }
+    return this[`validate${this.props.ValueType}`](value);
+  };
+
   validateNumber = (inputValue) => /^(\d|-)?(\d|,)*\.?\d*$/.test(inputValue);
 
-  validateWords = (inputValue) => true;
+  validateWords = (inputValue) => {
+    inputValue = inputValue.trim().toLowerCase();
+    return inputValue !== "latitude" && inputValue !== "longitude";
+  };
 
   validateDate = (inputValue) =>
     /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/.test(inputValue);
 
-  validateYesNo = (inputValue) => /^(?:Yes|No)$/.test(inputValue);
+  validateYesNo = (inputValue) => true;
 
-  handleInputChange = (event) => {
-    const inputValue = event.target.value;
+  onValueChange = (event) => {
+    const value = event.target.value;
+    const isValid = this.validateInput(value);
     this.setState({
-      inputValue: inputValue,
-    });
-    this.props.onValueInput(this.props.Id, inputValue);
-  };
-
-  handleInputValidation = (event) => {
-    // Blur Function
-    const type = this.props.ValueType;
-    const validateFunctionName = `validate${
-      type.charAt(0).toUpperCase() + type.slice(1)
-    }`;
-
-    const isValid = this[validateFunctionName](event.target.value);
-
-    this.setState({
-      inputValue: event.target.value,
+      inputFocus: true,
       isValid: isValid,
+      Value: value,
+    });
+    this.props.onValueChange(this.props.Id, value);
+  };
+
+  onValueInputBlur = (event) => {
+    this.setState({
+      inputFocus: false,
     });
   };
 
-  getErrorMessage = (type) => {
+  getErrorMessage = (valueType) => {
     const errorMessages = {
-      date: "Invalid. Try MM/DD/YYYY.",
-      number: "Your number is invalid.",
-      words: "Everything is a word.",
+      Date: "Dates must be in the form: MM/DD/YYYY.",
+      Number: "Invalid number",
+      Words: "Invalid input",
     };
-    return errorMessages[type];
+    return errorMessages[valueType];
   };
 
-  inputDisabled = () => {
+  isInputDisabled = () => {
     const attributeName = this.props.Name.toLowerCase();
     return attributeName === "latitude" || attributeName === "longitude";
   };
@@ -70,10 +79,34 @@ class Attribute extends React.Component {
     }
   };
 
+  getInputField = () => {
+    return this.props.ValueType === "Yes/No" ? (
+      <select className={styles.yesNoInput} onChange={this.onValueChange}>
+        {this.state.Value === "" ? <option>Select a value</option> : null}
+        <option value={true}>Yes</option>
+        <option value={false}>No</option>
+      </select>
+    ) : (
+      <input
+        className={cx(styles.valueInput, {
+          [styles.valueInputDisabled]: this.isInputDisabled(),
+          [styles.valueInputInvalid]:
+            !this.state.isValid && !this.state.inputFocus,
+        })}
+        type="text"
+        name="attributeTextBox"
+        id={this.props.Id}
+        value={this.state.Value}
+        readOnly={this.props.readOnly}
+        onChange={this.onValueChange}
+        onBlur={this.onValueInputBlur}
+      />
+    );
+  };
+
   render() {
-    const inputDisabled = this.inputDisabled();
     return [
-      <tr key={"attributeName"}>
+      <tr key={"attributeName"} className={styles.attribute}>
         <td></td>
         <td>
           <div className={styles.inputLabel}>{this.props.Name}</div>
@@ -86,28 +119,10 @@ class Attribute extends React.Component {
         >
           *
         </td>
-        <td>
+        <td>{this.getInputField()}</td>
+        <td className={styles.valueTypeInputCell}>
           <input
-            className={cx(styles.valueInput, {
-              [styles.valueInputDisabled]: inputDisabled,
-              [styles.valueInputInvalid]: !this.state.isValid,
-            })}
-            type="text"
-            name="attributeTextBox"
-            id={this.props.Id}
-            value={
-              inputDisabled
-                ? this.getDisabledInputValue()
-                : this.state.inputValue
-            }
-            readOnly={inputDisabled}
-            onChange={this.handleInputChange}
-            onBlur={this.handleInputValidation}
-          />
-        </td>
-        <td>
-          <input
-            className={styles.valueTypeTextBox}
+            className={styles.valueTypeInput}
             type="text"
             name="valueTypeTextBox"
             readOnly
@@ -118,9 +133,11 @@ class Attribute extends React.Component {
       <tr key={"errorMessage"}>
         <td></td>
         <td>
-          <span className={this.state.isValid ? styles.noError : styles.error}>
-            {this.getErrorMessage(this.props.ValueType)}
-          </span>
+          {!this.state.isValid && !this.state.inputFocus ? (
+            <div className={styles.error}>
+              {() => this.getErrorMessage(this.props.ValueType)}
+            </div>
+          ) : null}
         </td>
         <td></td>
       </tr>,
