@@ -52,13 +52,13 @@ class Attribute extends React.Component {
     });
   };
 
-  getErrorMessage = (valueType) => {
+  getErrorMessage = () => {
     const errorMessages = {
-      Date: "Dates must be in the form: MM/DD/YYYY.",
+      Date: "Dates Format: MM/DD/YYYY.",
       Number: "Invalid number",
       Words: "Invalid input",
     };
-    return errorMessages[valueType];
+    return errorMessages[this.props.ValueType];
   };
 
   isInputDisabled = () => {
@@ -130,11 +130,15 @@ class Attribute extends React.Component {
       <tr key={"errorMessage"}>
         <td></td>
         <td>
-          {!this.state.isValid && !this.state.inputFocus ? (
-            <div className={styles.error}>
-              {() => this.getErrorMessage(this.props.ValueType)}
-            </div>
-          ) : null}
+          <div
+            className={
+              !this.state.isValid && !this.state.inputFocus
+                ? styles.error
+                : styles.noError
+            }
+          >
+            {this.getErrorMessage()}
+          </div>
         </td>
         <td></td>
       </tr>,

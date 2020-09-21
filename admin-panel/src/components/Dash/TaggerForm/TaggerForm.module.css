@@ -4,13 +4,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
+}
+
+.title {
+  font-size: 16px;
+  margin: 16px;
 }
 
 .dropDownWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 3%;
+  margin: 10px;
 }
 .inputLabelsWrapper {
   display: inline-block;
@@ -69,13 +75,19 @@
   margin: 10px;
 }
 
+.fillCoordinatesButtonWrapper {
+  margin: 10px;
+}
 .fillCoordinatesButton {
-  width: 40%;
+  width: 100%;
+}
+.uploadButtonWrapper {
+  margin: 10px;
+}
+.uploadButton {
+  width: 100%;
 }
 
-.uploadButton {
-  width: 40%;
-}
 .saveButtonWrapper {
   text-align: center;
 }
@@ -84,9 +96,12 @@
   background-color: #4caf50; /* Green */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 5px 10px;
+  margin: 20px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 16px;
+}
+.disabledButton{
+  background-color: #dddddd;
 }
