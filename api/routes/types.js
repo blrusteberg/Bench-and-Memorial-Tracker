@@ -75,7 +75,6 @@ router.put("/:Id/attributes", async (req, res) => {
   }
 });
 
-ls
 router.put("/:Id", async (req, res) => {
   try {
     const numUpdated = await Type.query().findById(req.params.Id).patch({
