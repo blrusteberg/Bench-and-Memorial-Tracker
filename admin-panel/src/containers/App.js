@@ -10,7 +10,6 @@ class App extends React.Component {
     page: "Accounts",
   };
   handleNavigationClick = (e) => {
-    console.log(e);
     const page = e.target.id;
     if (page) {
       this.changePage(page);
@@ -29,9 +28,7 @@ class App extends React.Component {
     return (
       <div className={styles.App}>
         <SideBar handleNavigationClick={this.handleNavigationClick} />
-        <div className="Content">
-          <Dash page={this.state.page} />
-        </div>
+        <Dash page={this.state.page} />
       </div>
     );
   }
