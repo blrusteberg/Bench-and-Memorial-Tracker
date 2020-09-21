@@ -57,7 +57,8 @@
 }
 
 .noError {
-  display: none;
+  visibility: hidden;
+  font-size: 10px;
 }
 
 .error {

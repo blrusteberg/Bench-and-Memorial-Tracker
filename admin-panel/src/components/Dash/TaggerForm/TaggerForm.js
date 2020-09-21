@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import lodash from "lodash";
+import cx from "classnames";
 
 import styles from "./TaggerForm.module.css";
 import AttributeForm from "./AttributeForm/AttributeForm";
@@ -38,6 +39,7 @@ class TaggerForm extends React.Component {
     typeSelectedIndex: null,
     error: null,
     isLoading: true,
+    isSaving: false,
     selectedFile: null,
   };
 
@@ -117,7 +119,12 @@ class TaggerForm extends React.Component {
   };
 
   onSaveMemorialClick = () => {
-    axios.post("http://localhost:1337/memorials/values", this.state.Memorial);
+    this.setState({
+      isSave: true,
+    });
+    axios
+      .post("http://localhost:1337/memorials/values", this.state.Memorial)
+      .then(() => window.location.reload());
   };
 
   imageButtonHandler = (event) => {
@@ -139,6 +146,7 @@ class TaggerForm extends React.Component {
       <div className={styles.loadingTitle}>Loading...</div>
     ) : (
       <div className={styles.container}>
+        <div className={styles.title}>Tagger Form</div>
         <div className={styles.dropDownWrapper}>
           <div>Memorial Type</div>
           <select
@@ -182,23 +190,29 @@ class TaggerForm extends React.Component {
               />
             </div>
             <div className={styles.buttonsWrapper}>
-              <button
-                className={styles.fillCoordinatesButton}
-                onClick={this.onFillCoordinatesClick}
-              >
-                Fill Coordinates
-              </button>
-              <input style={{ display: "none" }} type="file" />
-              <button
-                onClick={() => this.fileUploadHandler}
-                className={styles.uploadButton}
-              >
-                Upload/Capture Image
-              </button>
+              <div className={styles.fillCoordinatesButtonWrapper}>
+                <button
+                  className={styles.fillCoordinatesButton}
+                  onClick={this.onFillCoordinatesClick}
+                >
+                  Fill Coordinates
+                </button>
+              </div>
+              <div className={styles.uploadButtonWrapper}>
+                <input style={{ display: "none" }} type="file" />
+                <button
+                  onClick={() => this.fileUploadHandler}
+                  className={styles.uploadButton}
+                >
+                  Upload/Capture Image
+                </button>
+              </div>
             </div>
             <div className={styles.saveButtonWrapper}>
               <button
-                className={styles.saveMemorialButton}
+                className={cx(styles.saveMemorialButton, {
+                  [styles.disabledButton]: this.state.isSaving,
+                })}
                 onClick={this.onSaveMemorialClick}
               >
                 Save Memorial
