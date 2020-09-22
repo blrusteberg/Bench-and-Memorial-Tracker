@@ -171,7 +171,7 @@ class attributes extends React.Component {
         .catch((error) => {
           console.log(error);
         });
-      window.location.reload(true);
+      // window.location.reload(true);
     }
   }
 
