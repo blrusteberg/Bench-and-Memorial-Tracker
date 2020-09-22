@@ -3,6 +3,7 @@ const router = express.Router();
 const Error = require("../error/error");
 
 const Type = require("../models/Type");
+const Memorial = require("../models/Memorial");
 
 router.post("/", async (req, res) => {
   try {
@@ -83,9 +84,9 @@ router.put("/:id/attributes", async (req, res) => {
   }
 });
 
-router.put("/:Id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const numUpdated = await Type.query().findById(req.body.id).patch({
+    const numUpdated = await Type.query().findById(req.params.id).patch({
       Name: req.body.Name,
     });
     const s = numUpdated === 1 ? "" : "s";
@@ -97,6 +98,7 @@ router.put("/:Id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
+    await Memorial.query().delete().where("TypeId", req.params.id);
     await Type.relatedQuery("Attributes").for(req.params.id).unrelate();
     await Type.query().deleteById(req.params.id);
     res.status(200).json({ message: `1 type deleted.` });

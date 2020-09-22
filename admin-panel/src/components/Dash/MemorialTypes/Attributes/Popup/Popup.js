@@ -1,6 +1,6 @@
 import React from 'react';  
 import styles from "./Popup.module.css";
-import closeWindow from "../../../../assets/closeWindow.png"
+import closeWindow from "../../../../../assets/closeWindow.png"
 
 class Popup extends React.Component {  
     render() {  
@@ -11,8 +11,8 @@ class Popup extends React.Component {
                     <br />
                     <br />
                     <h1>
-                        You are about to add {this.props.addedAttributes} new attributes 
-                        and delete {this.props.deletedAttributes} attributes.
+                        {this.props.oldTypeName !== this.props.newTypeName && <div>You are about to change "{this.props.oldTypeName}" to "{this.props.newTypeName}"</div>}
+                        {this.props.deletedAttributeCount > 0 && <div>You are about to delete {this.props.deletedAttributeCount} attributes </div>}
                     </h1>  
                     <br />
                     <h2>Do you want to continue?</h2>

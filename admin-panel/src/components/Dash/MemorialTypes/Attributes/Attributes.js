@@ -3,18 +3,22 @@ import axios from "axios";
 import lodash, { filter, update, difference } from "lodash";
 import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../../assets/deleteAttribute.png"
+import Popup from "./Popup/Popup"
 
 class attributes extends React.Component {
   constructor(props){
     super(props);
 
     this.state = {
+      oldAttributes: [],
       selectedAttributes: [],
       allAttributes: [],
       showAttributes: false,
       searchAttribute: "",
       showSaveButton: false,
-      isSaving: false
+      isSaving: false,
+      showPopup: false,
+      deletedAttributeCount: 0
     };
   }
 
@@ -35,6 +39,7 @@ class attributes extends React.Component {
                     : selectedAttributes.push(response.data[index]);
                 });
                 this.setState({
+                  oldAttributes: response.data,
                   selectedAttributes: selectedAttributes
                 }); 
             
@@ -171,7 +176,7 @@ class attributes extends React.Component {
         .catch((error) => {
           console.log(error);
         });
-      // window.location.reload(true);
+      window.location.reload(true);
     }
   }
 
@@ -189,12 +194,44 @@ class attributes extends React.Component {
     window.location.reload(true);
   }
 
+  togglePopup = () => {
+    if(this.state.showPopup === false){
+      this.calculateDeletedAttributes();
+    }
+
+    this.setState({
+      showPopup: !this.state.showPopup
+    })
+  }
+
+  calculateDeletedAttributes = () => {
+    let oldAttributes = [...this.state.oldAttributes];
+    let selectedAttributes = [...this.state.selectedAttributes];
+    let remainingAttributeCount = 0;
+    let attributeIds = [];
+
+    for(let i=0;i<selectedAttributes.length;i++){
+      attributeIds[i] = selectedAttributes[i].Id;
+    }
+    for(let i=0;i<oldAttributes.length;i++){
+      if(attributeIds.includes(oldAttributes[i].Id)){
+        remainingAttributeCount++;
+      }
+    }
+
+    let deletedAttributeCount = oldAttributes.length - remainingAttributeCount;
+    this.setState({
+      deletedAttributeCount: deletedAttributeCount
+    })
+  }
+
   render(){
 
     const showSaveButton = this.state.showSaveButton || this.props.isTypeNameChanged;
     const showAttributes = this.state.showAttributes;
     const isExistingType = this.props.selectedTypeId;
     const isSaving = this.state.isSaving;
+    const showPopup = this.state.showPopup;
 
     let selectedAttributes = this.state.selectedAttributes;
     let filteredAttributes = this.state.allAttributes.filter(attribute => {
@@ -230,7 +267,7 @@ class attributes extends React.Component {
               <div>
                 <input type="text" key={item.Id} value={item.Name} disabled="disabled"/>
                 <input type="text" value={item.ValueType} disabled="disabled"/> 
-                <input type="checkbox" checked="true" disabled="disabled"/>
+                <input type="checkbox" checked={true} disabled="disabled"/>
                 <br />
               </div>
               :
@@ -250,11 +287,28 @@ class attributes extends React.Component {
             </div>
           )}
           {
-            showSaveButton &&
+            showSaveButton && isExistingType &&
+            <button onClick={() => this.togglePopup()} disabled={isSaving}>
+              Save Type
+            </button>
+          }
+          {
+            !isExistingType &&
             <button onClick={() => this.saveAttributes()} disabled={isSaving}>
               Save Type
             </button>
           }
+          {
+            showPopup &&  
+            <Popup  
+                text='Click "Cancel" to hide popup' 
+                saveAttributes={this.saveAttributes}
+                deletedAttributeCount={this.state.deletedAttributeCount}
+                oldTypeName={this.props.oldTypeName}
+                newTypeName={this.props.typeName}
+                closePopup={this.togglePopup}
+            />   
+          }  
           <br />
           {(isExistingType ? (
             <button onClick={() => this.deleteType()} disabled={isSaving}>Delete Type</button>)
