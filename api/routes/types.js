@@ -3,6 +3,8 @@ const router = express.Router();
 const Error = require("../error/error");
 
 const Type = require("../models/Type");
+const Memorial = require("../models/Memorial");
+const Value = require("../models/Value");
 
 router.post("/", async (req, res) => {
   try {
@@ -97,6 +99,13 @@ router.put("/:Id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
+    await Value.query()
+      .delete()
+      .whereIn(
+        "MemorialId",
+        Memorial.query().select("Id").where("TypeId", req.params.id)
+      );
+    await Memorial.query().delete().where("TypeId", req.params.id);
     await Type.relatedQuery("Attributes").for(req.params.id).unrelate();
     await Type.query().deleteById(req.params.id);
     res.status(200).json({ message: `1 type deleted.` });
