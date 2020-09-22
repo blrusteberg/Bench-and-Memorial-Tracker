@@ -144,26 +144,32 @@ class attributes extends React.Component {
       if(this.props.typeName != this.props.oldTypeName){
         const newTypeName = { Name: this.props.typeName }
         axios.put('http://localhost:1337/types/' + this.props.selectedTypeId, newTypeName)
-        .then((res) => { console.log(res.data) })
+        .then((res) => { 
+          console.log(res.data);
+        })
         .catch((error) => {
           console.log(error);
         });
       }
       const newMemorialTypesObject = { Attributes: this.state.selectedAttributes };
       axios.put('http://localhost:1337/types/'+ this.props.selectedTypeId + "/attributes", newMemorialTypesObject)
-        .then((res) => { console.log(res.data) })
+        .then((res) => { 
+          console.log(res.data);
+          window.location.reload(true);
+        })
         .catch((error) => {
           console.log(error);
         });
-      window.location.reload(true);
     } else {
       const newMemorialTypesObject = { Type: { Name: this.props.typeName }, Attributes: this.state.selectedAttributes };
       axios.post('http://localhost:1337/types/attributes', newMemorialTypesObject)
-        .then((res) => { console.log(res.data) })
+        .then((res) => { 
+          console.log(res.data);
+          window.location.reload(true);
+        })
         .catch((error) => {
           console.log(error);
         });
-      window.location.reload(true);
     }
   }
 
@@ -174,11 +180,13 @@ class attributes extends React.Component {
     })
 
     axios.delete('http://localhost:1337/types/'+ this.props.selectedTypeId)
-      .then((res) => { console.log(res.data) })
+      .then((res) => { 
+        console.log(res.data) ;
+        window.location.reload(true);
+      })
       .catch((error) => {
         console.log(error);
       });
-    window.location.reload(true);
   }
 
   togglePopup = () => {
