@@ -2,8 +2,10 @@ import React from "react";
 import axios from "axios";
 import lodash, { filter, update, difference } from "lodash";
 import styles from "./Attributes.module.css";
-import deleteAttributeButton from "../../../../assets/deleteAttribute.png"
-import Popup from "./Popup/Popup"
+import deleteAttributeButton from "../../../../assets/deleteAttribute.png";
+import Popup from "./Popup/Popup";
+import 'semantic-ui-css/semantic.min.css';
+import { Dropdown } from 'semantic-ui-react';
 
 class attributes extends React.Component {
   constructor(props){
@@ -13,8 +15,6 @@ class attributes extends React.Component {
       oldAttributes: [],
       selectedAttributes: [],
       allAttributes: [],
-      showAttributes: false,
-      searchAttribute: "",
       showSaveButton: false,
       isSaving: false,
       showPopup: false,
@@ -87,19 +87,6 @@ class attributes extends React.Component {
       showSaveButton: true
     });
   };
-
-  setAttributeDropdownShown = (shown) => {
-    this.setState({
-      showAttributes: shown
-    })
-  }
-
-  updateSearch = (event) => {
-    let searchText = event.target.value;
-    this.setState({
-      searchAttribute: searchText
-    })
-  }
 
   addAttribute = (attributeId) => {
     let allAttributes = [...this.state.allAttributes];
@@ -228,31 +215,23 @@ class attributes extends React.Component {
   render(){
 
     const showSaveButton = this.state.showSaveButton || this.props.isTypeNameChanged;
-    const showAttributes = this.state.showAttributes;
     const isExistingType = this.props.selectedTypeId;
     const isSaving = this.state.isSaving;
     const showPopup = this.state.showPopup;
 
     let selectedAttributes = this.state.selectedAttributes;
-    let filteredAttributes = this.state.allAttributes.filter(attribute => {
-      return attribute.Name.toLowerCase().indexOf(this.state.searchAttribute.toLowerCase()) !== -1;
-    })
 
+    const attributeOptions = this.state.allAttributes.map(item => ({
+      key: item.Id,
+      text: item.Name,
+      value: item.Name,
+      onClick: () =>this.addAttribute(item.Id)
+    }))
+    
     return (
       <div>
         <br />
-        <div class={styles.dropdown} onMouseEnter={()=>this.setAttributeDropdownShown(true)} onMouseLeave={()=>this.setAttributeDropdownShown(false)}>
-          <input type="text" placeholder="Add an Attribute.." value={this.state.searchAttribute} onChange={(event)=>this.updateSearch(event)} autoComplete="off" />
-          {showAttributes && (
-            <ul class={styles.dropdownContent}>
-              {Object.values(filteredAttributes).map(list => (
-                <div key={list.Id} value={list.Name} onClick={() =>this.addAttribute(list.Id)}>
-                  {list.Name}
-                </div>
-              ))}
-            </ul>
-          )}
-        </div>
+        <Dropdown placeholder='Add an Attribute..' search selection options={attributeOptions}/>
         <br />
         <br />
         <div>
