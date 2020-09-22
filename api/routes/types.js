@@ -97,9 +97,9 @@ router.put("/:Id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const numDeleted = await Type.query().deleteById(req.params.id);
-    const s = numDeleted === 1 ? "" : "s";
-    res.status(200).json({ message: `${numDeleted} type${s} deleted.` });
+    await Type.relatedQuery("Attributes").for(req.params.id).unrelate();
+    await Type.query().deleteById(req.params.id);
+    res.status(200).json({ message: `1 type deleted.` });
   } catch (err) {
     Error.errorHandler(err, res);
   }
