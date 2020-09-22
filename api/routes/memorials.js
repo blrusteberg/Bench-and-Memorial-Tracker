@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const uuid = require("uuid");
 const Error = require("../error/error");
 
 const Memorial = require("../models/Memorial");
@@ -35,23 +34,28 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/types/:TypeId/attributes/values", async (req, res) => {
+router.post("/values", async (req, res) => {
   try {
     const memorial = await Memorial.query().insert({
-      Name: req.body.Memorial.Name,
-      TypeId: req.params.TypeId,
+      Name: req.body.Name,
+      TypeId: req.body.TypeId,
     });
-
     const insertValuePromises = [];
-    req.body.Values.forEach((value) => {
-      const insertPromise = Value.query().insert({
-        Value: value.Value,
-        AttributeId: value.AttributeId,
+    req.body.Attributes.forEach((attribute) => {
+      if (attribute.ValueType === "Yes/No") {
+        attribute.Value = attribute.Value === "true";
+      }
+      attribute.Value = JSON.stringify(attribute.Value);
+      const insertValuePromise = Value.query().insert({
+        Value: attribute.Value,
+        AttributeId: attribute.Id,
         MemorialId: memorial.Id,
       });
-      insertValuePromises.push(insertPromise);
+      insertValuePromises.push(insertValuePromise);
     });
-    Promise.all(insertValuePromises).then((data) => res.status(201).json(data));
+    Promise.all(insertValuePromises).then((data) => {
+      res.status(201).json(data);
+    });
   } catch (err) {
     Error.errorHandler(err, res);
   }

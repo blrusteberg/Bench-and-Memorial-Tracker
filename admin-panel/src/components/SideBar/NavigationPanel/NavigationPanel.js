@@ -6,53 +6,73 @@ const navigationPanel = (props) => {
     <div className={styles.NavigationPanel}>
       <ul onClick={props.handleNavigationClick}>
         <li>
-          <div className={styles.nav} id="Accounts">
-            Accounts
-            <img
-              className={styles.img}
-              alt="account icon"
-              src="./images/accountImg.png"
-            />
+          <div className={styles.navWrapper}>
+            <div className={styles.iconWrapper}>
+              <img
+                className={styles.img}
+                alt="account icon"
+                src="./images/accountImg.png"
+              />
+            </div>
+            <div className={styles.nav} id="Accounts">
+              Accounts
+            </div>
           </div>
         </li>
         <li>
-          <div className={styles.nav} id="Tagger Form">
-            Tagger Form
-            <img
-              className={styles.img}
-              alt="tagger form icon"
-              src="./images/taggerForm.png"
-            />
+          <div className={styles.navWrapper}>
+            <div className={styles.iconWrapper}>
+              <img
+                className={styles.img}
+                alt="tagger form icon"
+                src="./images/taggerForm.png"
+              />
+            </div>
+            <div className={styles.nav} id="Tagger Form">
+              Tagger Form
+            </div>
           </div>
         </li>
         <li>
-          <div className={styles.nav} id="Memorials">
-            Memorials
-            <img
-              className={styles.img}
-              alt="account icon"
-              src="./images/memorialImg.png"
-            />
+          <div className={styles.navWrapper}>
+            <div className={styles.iconWrapper}>
+              <img
+                className={styles.img}
+                alt="account icon"
+                src="./images/memorialImg.png"
+              />
+            </div>
+            <div className={styles.nav} id="Memorials">
+              Memorials
+            </div>
           </div>
         </li>
         <li>
-          <div className={styles.nav} id="Memorial Types">
-            Memorial Types
-            <img
-              className={styles.img}
-              alt="account icon"
-              src="./images/typesImg.png"
-            />
+          <div className={styles.navWrapper}>
+            <div className={styles.iconWrapper}>
+              <img
+                className={styles.img}
+                alt="account icon"
+                src="./images/typesImg.png"
+              />
+            </div>
+            <div className={styles.nav} id="Memorial Types">
+              Types
+            </div>
           </div>
         </li>
         <li>
-          <div className={styles.nav} id="Settings">
-            Settings
-            <img
-              className={styles.img}
-              alt="account icon"
-              src="./images/settingsImg.png"
-            />
+          <div className={styles.navWrapper}>
+            <div className={styles.iconWrapper}>
+              <img
+                className={styles.img}
+                alt="account icon"
+                src="./images/settingsImg.png"
+              />
+            </div>
+            <div className={styles.nav} id="">
+              Attributes
+            </div>
           </div>
         </li>
       </ul>

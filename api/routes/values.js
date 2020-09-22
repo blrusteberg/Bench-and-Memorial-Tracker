@@ -4,19 +4,6 @@ const Error = require("../error/error");
 
 const Value = require("../models/Value");
 
-router.get("/", async (req, res) => {
-  try {
-    const values = await Value.query();
-    const parsedValues = values.map((value) => {
-      value.Value = JSON.parse(value.Value);
-      return value;
-    });
-    res.status(200).json(parsedValues);
-  } catch (err) {
-    Error.errorHandler(err, res);
-  }
-});
-
 router.post("/", async (req, res) => {
   try {
     const createPromises = [];
@@ -30,6 +17,19 @@ router.post("/", async (req, res) => {
       );
     });
     Promise.all(createPromises).then((values) => res.status(201).json(values));
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const values = await Value.query();
+    const parsedValues = values.map((value) => {
+      value.Value = JSON.parse(value.Value);
+      return value;
+    });
+    res.status(200).json(parsedValues);
   } catch (err) {
     Error.errorHandler(err, res);
   }

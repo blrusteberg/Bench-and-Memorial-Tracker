@@ -4,15 +4,6 @@ const Error = require("../error/error");
 
 const Attribute = require("../models/Attribute");
 
-router.get("/", async (req, res) => {
-  try {
-    const attributes = await Attribute.query();
-    res.status(200).json(attributes);
-  } catch (err) {
-    Error.errorHandler(err, res);
-  }
-});
-
 router.post("/", async (req, res) => {
   try {
     const type = await Attribute.query().insert({
@@ -20,6 +11,15 @@ router.post("/", async (req, res) => {
       ValueType: req.body.ValueType,
     });
     res.status(201).json(type);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const attributes = await Attribute.query();
+    res.status(200).json(attributes);
   } catch (err) {
     Error.errorHandler(err, res);
   }
