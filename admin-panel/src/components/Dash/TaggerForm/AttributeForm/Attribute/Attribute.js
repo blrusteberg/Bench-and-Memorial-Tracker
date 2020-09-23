@@ -23,6 +23,7 @@ class Attribute extends React.Component {
     if (this.props.ValueType === "Yes/No") {
       return this.validateYesNo(value);
     }
+
     return this[`validate${this.props.ValueType}`](value);
   };
 
@@ -37,13 +38,13 @@ class Attribute extends React.Component {
 
   onValueChange = (event) => {
     const value = event.target.value;
-    const isValid = this.validateInput(value);
+    const isValid = this.validateInput(value.trim());
     this.setState({
       inputFocus: true,
       isValid: isValid,
       Value: value,
     });
-    this.props.onValueChange(this.props.Id, value);
+    this.props.onValueChange(this.props.Id, value.trim(), isValid);
   };
 
   onValueInputBlur = (event) => {
@@ -54,9 +55,8 @@ class Attribute extends React.Component {
 
   getErrorMessage = () => {
     const errorMessages = {
-      Date: "Dates Format: MM/DD/YYYY.",
-      Number: "Invalid number",
-      Words: "Invalid input",
+      Date: "Date Format: MM/DD/YYYY.",
+      Number: "Invalid number.",
     };
     return errorMessages[this.props.ValueType];
   };
@@ -97,6 +97,7 @@ class Attribute extends React.Component {
         readOnly={this.props.readOnly}
         onChange={this.onValueChange}
         onBlur={this.onValueInputBlur}
+        maxLength={248}
       />
     );
   };

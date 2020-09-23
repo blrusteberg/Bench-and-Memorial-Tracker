@@ -1,6 +1,3 @@
-.attribute {
-}
-
 .inputLabel {
   text-align: left;
   font-size: 12px;
@@ -31,6 +28,8 @@
 }
 
 .required {
+  font-size: 12px;
+  padding: 5px;
   color: red;
 }
 
