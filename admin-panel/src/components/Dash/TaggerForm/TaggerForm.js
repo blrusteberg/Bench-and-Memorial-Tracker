@@ -33,6 +33,7 @@ class TaggerForm extends React.Component {
           ValueType: "",
           Required: null,
           Value: "",
+          isValid: true,
         },
       ],
     },
@@ -40,6 +41,8 @@ class TaggerForm extends React.Component {
     error: null,
     isLoading: true,
     isSaving: false,
+    areCoordsValid: true,
+    isMemorialNameValid: true,
     selectedFile: null,
   };
 
@@ -76,16 +79,19 @@ class TaggerForm extends React.Component {
   onMemorialNameChange = (event) => {
     const memorial = { ...this.state.Memorial };
     memorial.Name = event.target.value;
+
     this.setState({
       Memorial: memorial,
+      isMemorialNameValid: true,
     });
   };
 
-  onValueChange = (attributeId, value) => {
+  onValueChange = (attributeId, value, isValid) => {
     const memorial = { ...this.state.Memorial };
     memorial.Attributes.forEach((attribute) => {
       if (attribute.Id === attributeId) {
         attribute.Value = value;
+        attribute.isValid = isValid;
       }
     });
     this.setState({
@@ -110,6 +116,7 @@ class TaggerForm extends React.Component {
             latitude: latitude,
             longitude: longitude,
             Memorial: memorial,
+            areCoordsValid: true,
           });
         });
       } else {
@@ -120,11 +127,36 @@ class TaggerForm extends React.Component {
 
   onSaveMemorialClick = () => {
     this.setState({
-      isSave: true,
+      isSaving: true,
     });
-    axios
-      .post("http://localhost:1337/memorials/values", this.state.Memorial)
-      .then(() => window.location.reload());
+    let areCoordsValid = true;
+    let isValid = true;
+    let isMemorialNameValid = this.state.Memorial.Name;
+
+    this.state.Memorial.Attributes.forEach((attribute) => {
+      if (attribute.isValid === false) {
+        isValid = false;
+      }
+      if (attribute.Name.toLowerCase() === "latitude" && !attribute.Value) {
+        areCoordsValid = false;
+      }
+      if (attribute.Name.toLowerCase() === "longitude" && !attribute.Value) {
+        areCoordsValid = false;
+      }
+    });
+
+    if (isValid && areCoordsValid && isMemorialNameValid) {
+      axios
+        .post("http://localhost:1337/memorials/values", this.state.Memorial)
+        .then(() => window.location.reload());
+    } else {
+      this.setState({
+        areCoordsValid: areCoordsValid,
+        isSaving: false,
+        isMemorialNameValid: isMemorialNameValid,
+      });
+      alert("Please fix Errors before saving!");
+    }
   };
 
   imageButtonHandler = (event) => {
@@ -176,7 +208,19 @@ class TaggerForm extends React.Component {
                 className={styles.memorialNameInput}
                 type="text"
                 onChange={this.onMemorialNameChange}
+                maxLength={50}
               />
+              {this.state.isMemorialNameValid ? null : (
+                <div
+                  className={
+                    this.state.isMemorialNameValid
+                      ? styles.noMemorialNameError
+                      : styles.memorialNameError
+                  }
+                >
+                  Memorial Name can't be empty.
+                </div>
+              )}
             </div>
             <div className={styles.attributesWrapper}>
               <AttributeForm
@@ -187,8 +231,20 @@ class TaggerForm extends React.Component {
                 onValueChange={this.onValueChange}
                 latitude={this.state.latitude}
                 longitude={this.state.longitude}
+                memorialName={this.state.Memorial.Name}
               />
             </div>
+            {this.state.areCoordsValid ? null : (
+              <div
+                className={
+                  this.state.areCoordsValid
+                    ? styles.noCoordsError
+                    : styles.coordsError
+                }
+              >
+                Coordinates can't be empty.
+              </div>
+            )}
             <div className={styles.buttonsWrapper}>
               <div className={styles.fillCoordinatesButtonWrapper}>
                 <button
@@ -208,6 +264,7 @@ class TaggerForm extends React.Component {
                 </button>
               </div>
             </div>
+
             <div className={styles.saveButtonWrapper}>
               <button
                 className={cx(styles.saveMemorialButton, {
@@ -215,7 +272,11 @@ class TaggerForm extends React.Component {
                 })}
                 onClick={this.onSaveMemorialClick}
               >
-                Save Memorial
+                {this.state.isSaving ? (
+                  <div>Saving... </div>
+                ) : (
+                  <div>Save Memorial</div>
+                )}
               </button>
             </div>
           </div>

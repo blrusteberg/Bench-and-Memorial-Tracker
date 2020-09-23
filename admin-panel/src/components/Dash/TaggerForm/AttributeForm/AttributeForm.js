@@ -35,9 +35,6 @@ class AttributeForm extends React.Component {
     this.setState({ sortedAttributes: sortedAttributes });
   }
 
-  onValueChange = (attributeId, value) =>
-    this.props.onValueChange(attributeId, value);
-
   render() {
     return (
       <div className={styles.divBox}>
@@ -58,9 +55,10 @@ class AttributeForm extends React.Component {
                     Name={attribute.Name}
                     ValueType={attribute.ValueType}
                     Required={attribute.Required}
-                    onValueChange={this.onValueChange}
+                    onValueChange={this.props.onValueChange}
                     readOnly={true}
                     Value={this.props.latitude}
+                  
                   />
                 );
               }
@@ -73,7 +71,7 @@ class AttributeForm extends React.Component {
                     Name={attribute.Name}
                     ValueType={attribute.ValueType}
                     Required={attribute.Required}
-                    onValueChange={this.onValueChange}
+                    onValueChange={this.props.onValueChange}
                     readOnly={true}
                     Value={this.props.longitude}
                   />
@@ -87,7 +85,7 @@ class AttributeForm extends React.Component {
                   Name={attribute.Name}
                   ValueType={attribute.ValueType}
                   Required={attribute.Required}
-                  onValueChange={this.onValueChange}
+                  onValueChange={this.props.onValueChange}
                   Value={""}
                 />
               );

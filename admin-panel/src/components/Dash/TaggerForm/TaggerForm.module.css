@@ -33,6 +33,7 @@
 .attributesWrapper {
   display: flex;
   flex-direction: column;
+  display: center;
 }
 
 .attributeName {
@@ -66,6 +67,18 @@
   width: 65%;
 }
 
+
+.noMemorialNameError {
+  visibility: hidden;
+  font-size: 10px;
+}
+
+.memorialNameError {
+  color: red;
+  font-size: 10px;
+  text-align: center;
+}
+
 .buttonsWrapper {
   display: flex;
   flex-direction: row;
@@ -80,12 +93,59 @@
 }
 .fillCoordinatesButton {
   width: 100%;
+  background-color: #a9a9a9; 
+	border-radius:10px;
+	cursor:pointer;
+	color:#ffffff;
+  font-family:Arial;
+  padding: 5px 10px;
+  width: 100%;
+  border: none;
+  
 }
+.fillCoordinatesButton:hover {
+	background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	background-color:#0688fa;
+}
+.fillCoordinatesButton:active {
+	position:relative;
+	top:1px;
+}
+
+.noCoordsError {
+  visibility: hidden;
+  font-size: 10px;
+}
+
+.coordsError {
+  color: red;
+  font-size: 10px;
+  text-align: center;
+}
+
+
 .uploadButtonWrapper {
   margin: 10px;
 }
 .uploadButton {
   width: 100%;
+  background-color: #a9a9a9; 
+	border-radius:10px;
+	cursor:pointer;
+	color:white;
+  font-family:Arial;
+  padding: 5px 10px;
+  width: 100%;
+  border: none;
+}
+
+.uploadButton:hover {
+	background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	background-color:#0688fa;
+}
+.uploadButton:active {
+	position:relative;
+	top:1px;
 }
 
 .saveButtonWrapper {
@@ -93,15 +153,26 @@
 }
 
 .saveMemorialButton {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50; 
   border: none;
   color: white;
   padding: 5px 10px;
-  margin: 20px;
+  margin-bottom: 20px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
+  border-radius:10px;
 }
+
+.saveMemorialButton:hover {
+	background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	background-color:#0688fa;
+}
+.saveMemorialButton:active {
+	position:relative;
+	top:1px;
+}
+
 .disabledButton{
-  background-color: #dddddd;
+  background-color: red;
 }
