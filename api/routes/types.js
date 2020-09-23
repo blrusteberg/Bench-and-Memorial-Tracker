@@ -85,9 +85,9 @@ router.put("/:id/attributes", async (req, res) => {
   }
 });
 
-router.put("/:Id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const numUpdated = await Type.query().findById(req.body.id).patch({
+    const numUpdated = await Type.query().findById(req.params.id).patch({
       Name: req.body.Name,
     });
     const s = numUpdated === 1 ? "" : "s";
