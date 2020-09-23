@@ -1,40 +1,54 @@
 import React from "react";
-import "./App.css";
+import axios from "axios";
+
 import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
-import axios from "axios";
+import styles from "./App.module.css";
+
+export const MapCenterContext = React.createContext();
 
 class App extends React.Component {
   state = {
-    memorials: [
+    Memorials: [
       {
-        id: 0,
-        type: "tree",
-        donator: "Jane Doe",
-        latitude: 38.806649,
-        longitude: -89.938928,
+        Id: "",
+        Type: {
+          Id: "",
+          Name: "",
+          Attributes: [
+            {
+              Id: "",
+              Name: "",
+              ValueType: "",
+              Required: null,
+              Value: "",
+            },
+          ],
+        },
       },
     ],
     error: null,
-    isLoaded: false,
-    currentLocation: { lat: 38.812203, lng: -89.957655 },
+    isLoading: true,
+    mapCenter: { lat: 0, lng: 0 },
   };
 
   componentDidMount() {
-    axios.get("http://localhost:1337/memorials").then(
+    axios.get("http://localhost:1337/memorials/types/attributes/values").then(
       (result) => {
-        result.data.memorials.map((m) => {
-          m.hideIcon = false;
-          m.hideBubble = true;
-        });
+        console.log("DATA", result.data);
         this.setState({
-          memorials: result.data.memorials,
-          isLoaded: true,
+          Memorials: result.data.map((memorial) => {
+            memorial.hideIcon = false;
+            memorial.hideBubble = true;
+            return memorial;
+          }),
+          isLoading: false,
+          mapCenter: this.getUserLocation(),
         });
       },
       (error) => {
         this.setState({
-          isLoaded: true,
+          isLoading: false,
           error: error,
         });
       }
@@ -42,72 +56,79 @@ class App extends React.Component {
   }
 
   searchHandler = (searchText) => {
-    const memorials = [...this.state.memorials];
-    memorials.forEach((m) => {
+    const memorials = [...this.state.Memorials];
+    memorials.forEach((memorial) => {
       let hideIcon = true;
-      m.attributes.forEach((a) => {
-        if (
-          a.value.toString().toLowerCase().includes(searchText.toLowerCase())
-        ) {
-          hideIcon = false;
-        }
-        m.hideIcon = hideIcon;
-      });
-      if (m.hideIcon === true) {
-        m.hideBubble = true;
+      if (
+        memorial.Name.toLowerCase().includes(searchText.trim().toLowerCase())
+      ) {
+        hideIcon = false;
+      }
+      memorial.hideIcon = hideIcon;
+      if (memorial.hideIcon) {
+        memorial.hideBubble = true;
       }
     });
-    this.setState({ memorials: memorials });
+    this.setState({ Memorials: memorials });
   };
 
-  iconClickHandler = (uuid) => {
-    const memorials = [...this.state.memorials];
-    memorials.map((m) => {
-      m.hideBubble = true;
-      if (uuid === m.uuid) {
-        m.hideBubble = false;
+  onIconClick = (id) => {
+    const memorials = [...this.state.Memorials];
+    memorials.forEach((memorial) => {
+      memorial.hideBubble = true;
+      if (memorial.Id === id) {
+        memorial.hideBubble = false;
       }
     });
-    this.setState({ memorials: memorials });
+    this.setState({ Memorials: memorials });
   };
 
   bubbleCloseClickHandler = () => {
-    const memorials = [...this.state.memorials];
-    memorials.map((m) => {
-      m.hideBubble = true;
+    const memorials = [...this.state.Memorials];
+    memorials.map((memorial) => {
+      memorial.hideBubble = true;
     });
-    this.setState({ memorials: memorials });
+    this.setState({ Memorials: memorials });
   };
 
-  googleMapsClickHandler = (lat, lng) => {
-    var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${lat},${lng}&travelmode=driving`;
-    var win = window.open(url, '_blank');
-    win.focus(window);
+  getUserLocation = () => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      if (pos) {
+        this.setState({
+          mapCenter: {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          },
+        });
+      } else {
+        alert("Unable to get geolocation..");
+      }
+    });
   };
+
+  updateMapCenter = (coordinates) => this.setState({ mapCenter: coordinates });
 
   render() {
     const content = this.state.error ? (
-      <div className="error">
-        <p>Error: {this.state.error.message}</p>
-        <br />
-        <p>Do you have the API runnning?</p>
+      <div className={styles.error}>Oops, something's not right here...</div>
+    ) : !this.state.isLoading ? (
+      <div className={styles.App}>
+        <MapCenterContext.Provider value={this.state.mapCenter}>
+          <Map
+            Memorials={this.state.Memorials}
+            currentLocation={this.state.currentLocation}
+            onIconClick={this.onIconClick}
+            bubbleCloseClick={this.bubbleCloseClickHandler}
+          />
+          <Sidebar
+            Memorials={this.state.Memorials}
+            searchHandler={this.searchHandler}
+            onSidebarClick={this.updateMapCenter}
+          />
+        </MapCenterContext.Provider>
       </div>
-    ) : !this.state.isLoaded ? (
-      <h1 className="loadingMessage">Loading...</h1>
     ) : (
-      <div className="App">
-        <Map
-          memorials={this.state.memorials}
-          currentLocation={this.state.currentLocation}
-          iconClicked={this.iconClickHandler}
-          bubbleCloseClick={this.bubbleCloseClickHandler}
-          googleMapsButtonClick = {this.googleMapsClickHandler}
-        />
-        <Sidebar
-          memorials={this.state.memorials}
-          searchHandler={this.searchHandler}
-        />
-      </div>
+      <h1 className={styles.loadingMessage}>Loading...</h1>
     );
     return content;
   }

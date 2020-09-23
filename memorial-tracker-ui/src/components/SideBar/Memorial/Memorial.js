@@ -9,40 +9,18 @@ const memorial = (props) => {
     assignedStyles.push(styles.Memorial);
   }
 
-  let type = "";
-  switch (props.type.toLowerCase()) {
-    case "tree":
-      type = "tree";
-      break;
-    case "bench":
-      type = "bench";
-      break;
-    case "art":
-      type = "art";
-      break;
-    default:
-      type = "memorial";
-  }
   return (
-    <div className={assignedStyles.join(" ")}>
+    <div
+      className={assignedStyles.join(" ")}
+      onClick={() => props.onSidebarClick(props.Id)}
+    >
       <img
-        className={styles.Icon}
-        src={`./icons/${type}.png`}
+        className={styles.icon}
+        src={`./icons/memorial.png`}
         alt="memorial type icon"
       />
-      <div className={styles.MemorialInfo}>
-        {props.attributes.slice(2).map((a) => {
-          return (
-            <p>
-              {a.name}:{" "}
-              {typeof a.value === "boolean"
-                ? a.value
-                  ? "Yes"
-                  : "No"
-                : a.value}
-            </p>
-          );
-        })}
+      <div className={styles.memorialInfo}>
+        <div>{props.Name}</div>
       </div>
     </div>
   );

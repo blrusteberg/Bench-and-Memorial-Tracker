@@ -2,6 +2,12 @@ import React from "react";
 import styles from "./Icon.module.css";
 import InfoBubble from "./InfoBubble/InfoBubble";
 
+const onDirectionsClick = (lat, lng) => {
+  const url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${lat},${lng}&travelmode=driving`;
+  const win = window.open(url, "_blank");
+  win.focus(window);
+};
+
 const icon = (props) => {
   const assignedStyles = [];
 
@@ -33,15 +39,16 @@ const icon = (props) => {
     <div className={styles.icon}>
       <img
         className={assignedStyles.join(" ")}
-        src={`./icons/${type}.png`}
+        src={`./icons/memorial.png`}
         alt="memorial icon"
-        onClick={props.clicked}
+        onClick={props.onIconClick}
       />
       <InfoBubble
-        attributes={props.attributes}
+        Type={props.Type}
+        Name={props.Name}
         closeBubbleClick={props.closeBubbleClick}
         hideBubble={props.hideBubble}
-        googleMapsClick={props.googleMapsClick}
+        onDirectionsClick={onDirectionsClick}
         type={props.type}
       />
     </div>
