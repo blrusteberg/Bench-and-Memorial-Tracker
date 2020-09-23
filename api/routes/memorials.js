@@ -14,6 +14,54 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/types/attributes/values", async (req, res) => {
+  try {
+    const memorials = await Memorial.query().withGraphFetched(
+      "[Type.[Attributes], Values]"
+    );
+    const formattedMemorials = [];
+    memorials.forEach((memorial) => {
+      const formattedAttributes = [];
+      memorial.Type.Attributes.forEach((attribute) => {
+        let attributePushed = false;
+        memorial.Values.forEach((value) => {
+          if (value.AttributeId === attribute.Id) {
+            formattedAttributes.push({
+              Id: attribute.Id,
+              Name: attribute.Name,
+              ValueType: attribute.ValueType,
+              Required: attribute.Required,
+              Value: JSON.parse(value.Value),
+            });
+            attributePushed = true;
+          }
+        });
+        if (!attributePushed) {
+          formattedAttributes.push({
+            Id: attribute.Id,
+            Name: attribute.Name,
+            ValueType: attribute.ValueType,
+            Required: attribute.Required,
+            Value: "",
+          });
+        }
+      });
+      formattedMemorials.push({
+        Id: memorial.Id,
+        Name: memorial.Name,
+        Type: {
+          Id: memorial.Type.Id,
+          Name: memorial.Type.Name,
+          Attributes: formattedAttributes,
+        },
+      });
+    });
+    res.status(200).json(formattedMemorials);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
 router.get("/:id/types", async (req, res) => {
   try {
     const memorialType = await Memorial.relatedQuery("Type").for(req.params.id);

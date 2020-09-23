@@ -3,6 +3,8 @@ const router = express.Router();
 const Error = require("../error/error");
 
 const Type = require("../models/Type");
+const Memorial = require("../models/Memorial");
+const Value = require("../models/Value");
 
 router.post("/", async (req, res) => {
   try {
@@ -10,6 +12,27 @@ router.post("/", async (req, res) => {
       Name: req.body.Name,
     });
     res.status(201).json(type);
+  } catch (err) {
+    Error.errorHandler(err, res);
+  }
+});
+
+router.post("/attributes", async (req, res) => {
+  try {
+    const type = await Type.query().insert({
+      Name: req.body.Type.Name,
+    });
+    const relatePromises = [];
+    req.body.Attributes.forEach((attribute) => {
+      const relatePromise = type.$relatedQuery("Attributes").relate({
+        Id: attribute.Id,
+        Required: attribute.Required,
+      });
+      relatePromises.push(relatePromise);
+    });
+    Promise.all(relatePromises).then((data) => {
+      res.status(201).json(type);
+    });
   } catch (err) {
     Error.errorHandler(err, res);
   }
@@ -62,9 +85,9 @@ router.put("/:id/attributes", async (req, res) => {
   }
 });
 
-router.put("/:Id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const numUpdated = await Type.query().findById(req.body.id).patch({
+    const numUpdated = await Type.query().findById(req.params.id).patch({
       Name: req.body.Name,
     });
     const s = numUpdated === 1 ? "" : "s";
@@ -76,9 +99,16 @@ router.put("/:Id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const numDeleted = await Type.query().deleteById(req.params.id);
-    const s = numDeleted === 1 ? "" : "s";
-    res.status(200).json({ message: `${numDeleted} type${s} deleted.` });
+    await Value.query()
+      .delete()
+      .whereIn(
+        "MemorialId",
+        Memorial.query().select("Id").where("TypeId", req.params.id)
+      );
+    await Memorial.query().delete().where("TypeId", req.params.id);
+    await Type.relatedQuery("Attributes").for(req.params.id).unrelate();
+    await Type.query().deleteById(req.params.id);
+    res.status(200).json({ message: `1 type deleted.` });
   } catch (err) {
     Error.errorHandler(err, res);
   }
