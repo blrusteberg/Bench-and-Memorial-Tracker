@@ -4,5 +4,4 @@
         ".vscode{,/**}"
     ],
     "appService.deploySubpath": ".",
-    "appService.defaultWebAppToDeploy": "/subscriptions/5fc16f2d-b38c-4b4b-9756-957b9fc0e594/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/memorial-tracker-ui"
 }
