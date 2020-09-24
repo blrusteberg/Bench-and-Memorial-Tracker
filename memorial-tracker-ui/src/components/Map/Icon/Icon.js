@@ -17,23 +17,7 @@ const icon = (props) => {
     assignedStyles.push(styles.IconImage);
   }
 
-  let type = "";
-  switch (props.type) {
-    case "Tree":
-      type = "Tree";
-      break;
-    case "Bench":
-      type = "Bench";
-      break;
-    case "Art":
-      type = "Art";
-      break;
-    case "Historical Building":
-      type = "Building";
-      break;
-    default:
-      type = "Memorial";
-  }
+  let type = "Memorial";
 
   return (
     <div className={styles.icon}>
