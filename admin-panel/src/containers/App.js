@@ -6,7 +6,7 @@ import Dash from "../components/Dash/Dash";
 
 class App extends React.Component {
   state = {
-    page: "Accounts",
+    page: "Memorials",
   };
   handleNavigationClick = (e) => {
     const page = e.target.id;
