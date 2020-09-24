@@ -29,7 +29,7 @@ const infoBubble = (props) => {
           className={styles.directionsButton}
           onClick={props.onDirectionsClick}
         >
-          Directions
+          Take me here
         </button>
       </div>
     </div>

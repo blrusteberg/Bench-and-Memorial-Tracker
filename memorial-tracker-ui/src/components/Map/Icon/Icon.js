@@ -32,7 +32,7 @@ const icon = (props) => {
         Name={props.Name}
         closeBubbleClick={props.closeBubbleClick}
         hideBubble={props.hideBubble}
-        onDirectionsClick={onDirectionsClick}
+        onDirectionsClick={() => onDirectionsClick(props.lat, props.lng)}
         type={props.type}
       />
     </div>
