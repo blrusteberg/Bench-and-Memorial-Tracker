@@ -1,15 +1,114 @@
-.container {
-    display: flex; /* or inline-flex */
+.attributes {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center
 }
 
-.firstLabel {
-    margin-right: 90px;
+.attributeDropdownWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.secondLabel {
-    margin-right: 50px;
+.deleteAttributeWrapper {
+    max-width: 10%;
+    height:5%
 }
 
-.thirdLabel {
-    margin-right: 50px;
+.deleteAttributeButton {
+    cursor: pointer;
+    width: 15px;
+}
+
+.hiddenDeleteAttributeButton {
+    cursor: pointer;
+    width: 15px;
+    display: none;
+}
+
+.valueTypeInput {
+    width: 75%;
+    background-color: #dddddd;
+}
+
+.valueTypeInputCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requiredCheckBox {
+    text-align: center
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.saveButtonWrapper {
+    text-align: center;
+}
+  
+.saveButton {
+    background-color: #4caf50; 
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius:10px;
+}
+
+.disabledSaveButton{ 
+    background-color: #dddddd; 
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius:10px;}
+
+.saveButton:hover {
+    background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+    background-color:#0688fa;
+}
+.saveButton:active {
+    position:relative;
+    top:1px;
+}
+
+.deleteButtonWrapper {
+    text-align: center;
+}
+  
+.deleteButton {
+    background-color: #da0000; 
+    border: none;
+    color: white;
+    margin-top: 80%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius:10px;
+}
+
+.deleteButton:hover {
+    background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+    background-color:#0688fa;
+}
+.deleteButton:active {
+    position:relative;
+    top:1px;
+}
+
+th, td {
+    padding: 2%;
 }

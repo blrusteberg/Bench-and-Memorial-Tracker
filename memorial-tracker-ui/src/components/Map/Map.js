@@ -1,33 +1,45 @@
 import React from "react";
-import GoogleMapReact from "google-map-react";
+import GoogleMap from "google-map-react";
+
+import { MapCenterContext } from "../../containers/App";
+import { getCoordinatesOfMemorial } from "../../utils/utils";
 import Icon from "./Icon/Icon";
 import styles from "./Map.module.css";
 
-const map = (props) => {
-  return (
-    <div className={styles.Map}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: "" }} //key:AIzaSyDrtzpv9c0WNdx6RDzrvijV76YoiUuKNf
-        defaultCenter={props.currentLocation}
-        defaultZoom={14}
-      >
-        {props.memorials.map((m) => (
-          <Icon
-            lat={m.attributes[1].value}
-            lng={m.attributes[0].value}
-            type={m.type}
-            guid={m.guid}
-            attributes={m.attributes}
-            hideIcon={m.hideIcon}
-            hideBubble={m.hideBubble}
-            clicked={() => props.iconClicked(m.uuid)}
-            closeBubbleClick={() => props.bubbleCloseClick()}
-            googleMapsClick={() => props.googleMapsButtonClick(m.attributes[1].value, m.attributes[0].value)}
-          />
-        ))}
-      </GoogleMapReact>
-    </div>
-  );
-};
+class Map extends React.Component {
+  render() {
+    return (
+      <div className={styles.Map}>
+        <MapCenterContext.Consumer>
+          {(mapCenter) => (
+            <GoogleMap
+              bootstrapURLKeys={{ key: "" }}
+              center={mapCenter}
+              defaultZoom={14}
+            >
+              {this.props.Memorials.map((memorial) => {
+                const coordinates = getCoordinatesOfMemorial(memorial);
+                return (
+                  <Icon
+                    key={memorial.Id}
+                    lat={coordinates.lat}
+                    lng={coordinates.lng}
+                    typeName={memorial.Type.Name}
+                    Type={memorial.Type}
+                    Name={memorial.Name}
+                    hideIcon={memorial.hideIcon}
+                    hideBubble={memorial.hideBubble}
+                    onIconClick={() => this.props.onIconClick(memorial.Id)}
+                    closeBubbleClick={() => this.props.bubbleCloseClick()}
+                  />
+                );
+              })}
+            </GoogleMap>
+          )}
+        </MapCenterContext.Consumer>
+      </div>
+    );
+  }
+}
 
-export default map;
+export default Map;

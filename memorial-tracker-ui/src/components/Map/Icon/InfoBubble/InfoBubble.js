@@ -19,15 +19,15 @@ const infoBubble = (props) => {
         </button>
       </div>
       <div className={styles.popUpText}>
-        {props.attributes.slice(2).map((a) => (
-          <div className = {styles.attributesClass}>
-            {a.name}:{" "} 
-            {typeof a.value === "boolean" ? (a.value ? "Yes" : "No") : a.value} 
+        <div className={styles.memorialName}>{props.Name}</div>
+        {props.Type.Attributes.map((attribute) => (
+          <div className={styles.attributesClass} key={attribute.Id}>
+            {attribute.Name}: {attribute.Value}
           </div>
-        ))} 
+        ))}
         <button
-          className={styles.googleMapsButton}
-          onClick={props.googleMapsClick}
+          className={styles.directionsButton}
+          onClick={props.onDirectionsClick}
         >
           Directions
         </button>

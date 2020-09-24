@@ -3,7 +3,12 @@
   height: 100%;
   outline: none;
 }
-
+.navWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
 .NavigationPanel li {
   width: 100%;
   font-size: 1em;
@@ -17,18 +22,26 @@
 }
 
 .nav {
+  margin-left: 2%;
   cursor: pointer;
   color: white;
   font-family: Verdana;
-  font-size: large;
+  font-size: 16px;
+}
+
+.navWrapper {
+  width: 100%;
 }
 
 .nav:hover {
-  background-color: 	#1E90FF;
+  background-color: #1e90ff;
 }
-
+.iconWrapper {
+  text-align: left;
+  margin: 0 2.5%;
+  width: 15%;
+}
 .img {
-  width: 10%;
+  text-align: left;
+  width: 100%;
 }
-
-

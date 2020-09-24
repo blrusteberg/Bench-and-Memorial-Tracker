@@ -1,23 +1,44 @@
-.mainContainer {
-  position: absolute;
-  right: 650px;
-  width: 400px;
-  top: 100px;
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
 }
 
-.newType {
-  margin-top: 20px;
+.title {
+  font-size: 16px;
+  margin: 16px;
 }
 
-.notification-container {
-  font-size: 14px;
-  box-sizing: border-box;
-  position: fixed;
+.dropDownWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
 }
 
-.top-right {
-  top: 12px;
-  right: 12px;
-  transition: transform .6s ease-in-out;
-  animation: toast-in-right .7s;
+.memorialTypeNameWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  margin-bottom: 20px;
 }
+
+.memorialTypeName {
+  font-size: 12px;
+}
+
+.memorialTypeNameInput {
+  width: 50%;
+}
+
+.attributesWrapper {
+  display: flex;
+  flex-direction: column;
+  display: center;
+}
+

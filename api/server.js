@@ -1,18 +1,20 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
-const port = process.env.PORT || 1337;
+const port = process.env.PORT;
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
 const swaggerDocument = YAML.load("./docs/swagger.yaml");
 const memorialRoutes = require("./routes/memorials.js");
-const memorialTypeRoutes = require("./routes/memorialTypes.js");
+const typeRoutes = require("./routes/types.js");
+const attributeRoutes = require("./routes/attributes.js");
+const valueRoutes = require("./routes/values.js");
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -32,23 +34,16 @@ app.get("/", (req, res) => {
   res.redirect("/api/docs");
 });
 
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/memorials", memorialRoutes);
-app.use("/memorials/types", memorialTypeRoutes);
+app.use("/types", typeRoutes);
+app.use("/attributes", attributeRoutes);
+app.use("/values", valueRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
   error.status = 404;
   next(error);
-});
-
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-    },
-  });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));

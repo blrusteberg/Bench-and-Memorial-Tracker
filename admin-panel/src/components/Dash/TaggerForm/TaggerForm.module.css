@@ -1,23 +1,178 @@
-.required:after {
-  content: " *";
-  color: red;
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+}
+
+.title {
+  font-size: 16px;
+  margin: 16px;
+}
+
+.dropDownWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+.inputLabelsWrapper {
+  display: inline-block;
+}
+
+.valueType {
+  text-align: right;
+}
+
+.value {
+  text-align: left;
+}
+
+.attributesWrapper {
+  display: flex;
+  flex-direction: column;
+  display: center;
+}
+
+.attributeName {
+  align-content: center;
 }
 
 .TaggerForm {
   text-align: center;
 }
+
 .mainContainer {
   position: absolute;
   right: 13%;
   width: 10%;
 }
 
-.dropDown {
-  width: 25%;
-  position: absolute;
-  left: 37%;
+.memorialNameWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  margin-bottom: 20px;
 }
 
-.submitMessage {
-  font-size: 1rem;
+.memorialName {
+  font-size: 12px;
+}
+
+.memorialNameInput {
+  width: 65%;
+}
+
+
+.noMemorialNameError {
+  visibility: hidden;
+  font-size: 10px;
+}
+
+.memorialNameError {
+  color: red;
+  font-size: 10px;
+  text-align: center;
+}
+
+.buttonsWrapper {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.fillCoordinatesButtonWrapper {
+  margin: 10px;
+}
+.fillCoordinatesButton {
+  width: 100%;
+  background-color: #a9a9a9; 
+	border-radius:10px;
+	cursor:pointer;
+	color:#ffffff;
+  font-family:Arial;
+  padding: 5px 10px;
+  width: 100%;
+  border: none;
+  
+}
+.fillCoordinatesButton:hover {
+	background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	background-color:#0688fa;
+}
+.fillCoordinatesButton:active {
+	position:relative;
+	top:1px;
+}
+
+.noCoordsError {
+  visibility: hidden;
+  font-size: 10px;
+}
+
+.coordsError {
+  color: red;
+  font-size: 10px;
+  text-align: center;
+}
+
+
+.uploadButtonWrapper {
+  margin: 10px;
+}
+.uploadButton {
+  width: 100%;
+  background-color: #a9a9a9; 
+	border-radius:10px;
+	cursor:pointer;
+	color:white;
+  font-family:Arial;
+  padding: 5px 10px;
+  width: 100%;
+  border: none;
+}
+
+.uploadButton:hover {
+	background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	background-color:#0688fa;
+}
+.uploadButton:active {
+	position:relative;
+	top:1px;
+}
+
+.saveButtonWrapper {
+  text-align: center;
+}
+
+.saveMemorialButton {
+  background-color: #4caf50; 
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius:10px;
+}
+
+.saveMemorialButton:hover {
+	background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	background-color:#0688fa;
+}
+.saveMemorialButton:active {
+	position:relative;
+	top:1px;
+}
+
+.disabledButton{
+  background-color: red;
 }
