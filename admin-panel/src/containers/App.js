@@ -3,7 +3,6 @@ import React from "react";
 import styles from "./App.module.css";
 import SideBar from "../components/SideBar/SideBar";
 import Dash from "../components/Dash/Dash";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 class App extends React.Component {
   state = {

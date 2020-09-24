@@ -7,7 +7,7 @@ import Settings from "./Settings/Settings";
 import TaggerForm from "./TaggerForm/TaggerForm";
 
 import styles from "./Dash.module.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const dash = (props) => {
   let dashView = null;

@@ -1,6 +1,4 @@
-import React from "react";
-import styles from "./Dropdown.module.css";
-import { FormControl } from "react-bootstrap";
+import React from "react"
 
 const dropdown = (props) => {
   return (

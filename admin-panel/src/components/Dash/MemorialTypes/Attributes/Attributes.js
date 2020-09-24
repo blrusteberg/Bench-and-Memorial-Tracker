@@ -1,11 +1,9 @@
 import React from "react";
 import axios from "axios";
-import lodash, { filter, update, difference } from "lodash";
+import lodash from "lodash";
 import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../../assets/deleteAttribute.png";
 import Popup from "./Popup/Popup";
-import "semantic-ui-css/semantic.min.css";
-import { Dropdown } from "semantic-ui-react";
 
 class attributes extends React.Component {
   constructor(props) {
@@ -19,7 +17,7 @@ class attributes extends React.Component {
       isSaving: false,
       showPopup: false,
       deletedAttributeCount: 0,
-      deletedAttributes: []
+      deletedAttributes: [],
     };
   }
 
@@ -241,7 +239,7 @@ class attributes extends React.Component {
     let oldAttributes = [...this.state.oldAttributes];
     let selectedAttributes = [...this.state.selectedAttributes];
     let remainingAttributeCount = 0;
-    let deletedAttributes = []
+    let deletedAttributes = [];
     let attributeIds = [];
 
     for (let i = 0; i < selectedAttributes.length; i++) {
@@ -250,18 +248,15 @@ class attributes extends React.Component {
     for (let i = 0; i < oldAttributes.length; i++) {
       if (attributeIds.includes(oldAttributes[i].Id)) {
         remainingAttributeCount++;
-      }
-      else {
+      } else {
         deletedAttributes.push(oldAttributes[i].Name);
       }
     }
 
-
-
     let deletedAttributeCount = oldAttributes.length - remainingAttributeCount;
     this.setState({
       deletedAttributeCount: deletedAttributeCount,
-      deletedAttributes: deletedAttributes
+      deletedAttributes: deletedAttributes,
     });
   };
 
@@ -284,6 +279,7 @@ class attributes extends React.Component {
     return (
       <div className={styles.attributes}>
         <div className={styles.attributeDropdownWrapper}>
+          {/*
           <Dropdown
             placeholder="Add an Attribute.."
             search
@@ -291,6 +287,7 @@ class attributes extends React.Component {
             options={attributeOptions}
             selectOnBlur={false}
           />
+      */}
         </div>
         <table>
           <tbody>
@@ -305,10 +302,12 @@ class attributes extends React.Component {
                 {item.Name.toLowerCase() == "longitude" ||
                 item.Name.toLowerCase() == "latitude"
                   ? [
-                      <td><img
-                      className={styles.hiddenDeleteAttributeButton}
-                      src={deleteAttributeButton}
-                    /></td>,
+                      <td>
+                        <img
+                          className={styles.hiddenDeleteAttributeButton}
+                          src={deleteAttributeButton}
+                        />
+                      </td>,
                       <td>
                         <input
                           type="text"
@@ -370,53 +369,52 @@ class attributes extends React.Component {
             ))}
           </tbody>
         </table>
-            <div className={styles.buttonsWrapper}>
-              <div className={styles.saveButtonWrapper}>
-                {showSaveButton && isExistingType && (
-                  <button
-                    className={styles.saveButton}
-                    onClick={() => this.togglePopup()}
-                    disabled={isSaving}
-                  >
-                    Save Type
-                  </button>
-                )}
-              </div>
-              <div className={styles.saveButtonWrapper}>
-                {!isExistingType && (
-                  <button
-                    className={styles.saveButton}
-                    onClick={() => this.saveAttributes()}
-                    disabled={isSaving}
-                  >
-                    Save Type
-                  </button>
-                )}
-              </div>
-              <div className={styles.deleteButtonWrapper}>
-                {isExistingType ? (
-                  <button
-                    className={styles.deleteButton}
-                    onClick={() => this.deleteType()}
-                    disabled={isSaving}
-                  >
-                    Delete Type
-                  </button>
-                ) : null}
-              </div>
-            </div>
-            {showPopup && (
-              <Popup
-                text='Click "Cancel" to hide popup'
-                saveAttributes={this.saveAttributes}
-                deletedAttributeCount={this.state.deletedAttributeCount}
-                deletedAttributes={this.state.deletedAttributes}
-                oldTypeName={this.props.oldTypeName}
-                newTypeName={this.props.typeName}
-                closePopup={this.togglePopup}
-              />
+        <div className={styles.buttonsWrapper}>
+          <div className={styles.saveButtonWrapper}>
+            {showSaveButton && isExistingType && (
+              <button
+                className={styles.saveButton}
+                onClick={() => this.togglePopup()}
+                disabled={isSaving}
+              >
+                Save Type
+              </button>
             )}
-          
+          </div>
+          <div className={styles.saveButtonWrapper}>
+            {!isExistingType && (
+              <button
+                className={styles.saveButton}
+                onClick={() => this.saveAttributes()}
+                disabled={isSaving}
+              >
+                Save Type
+              </button>
+            )}
+          </div>
+          <div className={styles.deleteButtonWrapper}>
+            {isExistingType ? (
+              <button
+                className={styles.deleteButton}
+                onClick={() => this.deleteType()}
+                disabled={isSaving}
+              >
+                Delete Type
+              </button>
+            ) : null}
+          </div>
+        </div>
+        {showPopup && (
+          <Popup
+            text='Click "Cancel" to hide popup'
+            saveAttributes={this.saveAttributes}
+            deletedAttributeCount={this.state.deletedAttributeCount}
+            deletedAttributes={this.state.deletedAttributes}
+            oldTypeName={this.props.oldTypeName}
+            newTypeName={this.props.typeName}
+            closePopup={this.togglePopup}
+          />
+        )}
       </div>
     );
   }
