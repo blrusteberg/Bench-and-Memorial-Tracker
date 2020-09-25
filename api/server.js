@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env.PORT, 10) || 3000;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const swaggerDocument = YAML.load("./docs/swagger.yaml");
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.status(308);
-  res.redirect("/api/docs");
+  res.redirect("/api-docs");
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
