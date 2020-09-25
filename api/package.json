@@ -8,7 +8,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "if [$NODE_ENV == 'staging']; then node server.js; else nodemon app.js; fi",
+    "start": "index.js",
+    "dev": "nodemon index.js",
     "build": ""
   },
   "keywords": [],
