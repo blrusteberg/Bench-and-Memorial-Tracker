@@ -84,7 +84,7 @@ const navigationPanel = (props) => {
           </li>
       ]}
       </ul>
-      <label>Choose permissions:</label>
+      <label>Choose role:</label>
       <select onChange={(event) => props.handlePermissionChange(event)} id="roles">
         <option value="admin">Admin</option>
         <option value="clerk">Clerk</option>
