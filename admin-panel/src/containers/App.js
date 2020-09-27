@@ -39,9 +39,9 @@ class App extends React.Component {
           {/* <Dash page={this.state.page} /> */}
           <Switch>
             <Route exact path='/' component={Accounts} />
-            <Route exact path='/taggerForm' component={Memorials} />
-            <Route exact path='/memorials' component={MemorialTypes} />
-            <Route exact path='/memorialTypes' component={TaggerForm} />
+            <Route exact path='/taggerForm' component={TaggerForm} />
+            <Route exact path='/memorials' component={Memorials} />
+            <Route exact path='/memorialTypes' component={MemorialTypes} />
             {/* <Route exact path='/attributes' component={Attributes} /> */}
           </Switch>
       </BrowserRouter>
