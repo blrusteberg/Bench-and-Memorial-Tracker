@@ -7,7 +7,7 @@ const sidePanel = (props) => {
   return (
     <div className={styles.SideBar}>
       <div>{props.accountType}</div>
-      <NavigationPanel handleNavigationClick={props.handleNavigationClick} />
+      <NavigationPanel handleNavigationClick={props.handleNavigationClick} handlePermissionChange={props.handlePermissionChange} roles={props.roles}/>
     </div>
   );
 };
