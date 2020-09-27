@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./NavigationPanel.module.css";
+import { Link } from 'react-router-dom';
 
 const navigationPanel = (props) => {
   return (
@@ -14,9 +15,9 @@ const navigationPanel = (props) => {
                 src="./images/accountImg.png"
               />
             </div>
-            <div className={styles.nav} id="Accounts">
+            <Link to="/" className={styles.nav} id="Accounts">
               Accounts
-            </div>
+            </Link>
           </div>
         </li>
         <li>
@@ -28,9 +29,9 @@ const navigationPanel = (props) => {
                 src="./images/taggerForm.png"
               />
             </div>
-            <div className={styles.nav} id="Tagger Form">
+            <Link to="taggerForm" className={styles.nav} id="Tagger Form">
               Tagger Form
-            </div>
+            </Link>
           </div>
         </li>
         <li>
@@ -42,9 +43,9 @@ const navigationPanel = (props) => {
                 src="./images/memorialImg.png"
               />
             </div>
-            <div className={styles.nav} id="Memorials">
+            <Link to="memorials" className={styles.nav} id="Memorials">
               Memorials
-            </div>
+            </Link>
           </div>
         </li>
         <li>
@@ -56,9 +57,9 @@ const navigationPanel = (props) => {
                 src="./images/typesImg.png"
               />
             </div>
-            <div className={styles.nav} id="Memorial Types">
+            <Link to="memorialTypes" className={styles.nav} id="Memorial Types">
               Types
-            </div>
+            </Link>
           </div>
         </li>
         <li>
