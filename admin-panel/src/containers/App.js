@@ -7,6 +7,7 @@ import Dash from "../components/Dash/Dash";
 class App extends React.Component {
   state = {
     page: "Memorials",
+    sideBarCollapse: false,
   };
   handleNavigationClick = (e) => {
     const page = e.target.id;
@@ -23,11 +24,26 @@ class App extends React.Component {
     }
   };
 
+  sideBarCollapseHandler = (collapse) => {
+    this.setState({
+      sideBarCollapse: collapse,
+    });
+  };
+
   render() {
     return (
       <div className={styles.App}>
-        <SideBar handleNavigationClick={this.handleNavigationClick} />
-        <Dash page={this.state.page} />
+        {this.state.sideBarCollapse ? null : (
+          <SideBar
+            handleNavigationClick={this.handleNavigationClick}
+            sideBarCollapseHandler={() => this.sideBarCollapseHandler(true)}
+          />
+        )}
+        <Dash
+          page={this.state.page}
+          sideBarCollapseHandler={() => this.sideBarCollapseHandler(false)}
+          sideBarCollapse={this.state.sideBarCollapse}
+        />
       </div>
     );
   }

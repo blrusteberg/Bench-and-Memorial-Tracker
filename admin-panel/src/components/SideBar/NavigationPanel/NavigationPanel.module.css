@@ -9,6 +9,12 @@
   justify-content: left;
   align-items: center;
 }
+
+.navBarClose {
+  color: #30b7f5;
+  float: right;
+}
+
 .NavigationPanel li {
   width: 100%;
   font-size: 1em;
@@ -26,7 +32,7 @@
   cursor: pointer;
   color: white;
   font-family: Verdana;
-  font-size: 16px;
+  font-size: 0.75em;
 }
 
 .navWrapper {
@@ -34,8 +40,9 @@
 }
 
 .nav:hover {
-  background-color: #1e90ff;
+  background-color: #30b7f5;
 }
+
 .iconWrapper {
   text-align: left;
   margin: 0 2.5%;

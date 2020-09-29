@@ -1,9 +1,17 @@
 .SideBar {
   width: 15%;
   height: 100%;
-  background-color: #988F2A
+  background-color: #30b7f5;
 }
 
 img {
-  width: 50%;
+  width: 20px;
+  padding-top: 6%;
+}
+
+.hideNavButton {
+  color: black;
+  float: right;
+  margin: 5%;
+  
 }
