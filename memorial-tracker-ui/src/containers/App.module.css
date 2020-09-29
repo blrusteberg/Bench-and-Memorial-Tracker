@@ -14,3 +14,8 @@
 .error {
   font-size: 32px;
 }
+
+.modalWrapper {
+  position: absolute;
+  justify-content: center;
+}

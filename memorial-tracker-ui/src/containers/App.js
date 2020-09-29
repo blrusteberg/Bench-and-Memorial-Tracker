@@ -5,6 +5,9 @@ import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
 import styles from "./App.module.css";
 
+import { Modal, Button } from 'antd';
+import 'antd/dist/antd.css';
+
 export const MapCenterContext = React.createContext();
 
 class App extends React.Component {
@@ -30,6 +33,7 @@ class App extends React.Component {
     error: null,
     isLoading: true,
     mapCenter: { lat: 0, lng: 0 },
+    visible: false,
   };
 
   componentDidMount() {
@@ -108,6 +112,18 @@ class App extends React.Component {
 
   updateMapCenter = (coordinates) => this.setState({ mapCenter: coordinates });
 
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOkOrCancel = (e) => {
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
     const content = this.state.error ? (
       <div className={styles.error}>Oops, something's not right here...</div>
@@ -126,6 +142,17 @@ class App extends React.Component {
             onSidebarClick={this.updateMapCenter}
           />
         </MapCenterContext.Provider>
+        <div className={styles.modalWrapper}>
+          <Button type="primary" onClick={this.showModal}>Open blank modal</Button>
+        </div>
+        <Modal
+          title="Blank Modal"
+          visible={this.state.visible}
+          onOk={this.handleOkOrCancel}
+          onCancel={this.handleOkOrCancel}
+        >
+          <p>This is a blank modal!</p>
+        </Modal>
       </div>
     ) : (
       <h1 className={styles.loadingMessage}>Loading...</h1>
