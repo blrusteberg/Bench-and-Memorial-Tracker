@@ -187,7 +187,7 @@ class attributes extends React.Component {
         )
         .then((res) => {
           console.log(res.data);
-          window.location.reload(true);
+          window.location = "/memorialTypes";
         })
         .catch((error) => {
           console.log(error);
@@ -201,7 +201,7 @@ class attributes extends React.Component {
         .post("http://localhost:1337/types/attributes", newMemorialTypesObject)
         .then((res) => {
           console.log(res.data);
-          window.location.reload(true);
+          window.location = "/memorialTypes";
         })
         .catch((error) => {
           console.log(error);
@@ -218,7 +218,7 @@ class attributes extends React.Component {
       .delete("http://localhost:1337/types/" + this.props.selectedTypeId)
       .then((res) => {
         console.log(res.data);
-        window.location.reload(true);
+        window.location = "/memorialTypes";
       })
       .catch((error) => {
         console.log(error);
