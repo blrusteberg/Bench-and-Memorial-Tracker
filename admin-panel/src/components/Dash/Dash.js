@@ -8,28 +8,52 @@ import TaggerForm from "./TaggerForm/TaggerForm";
 
 import styles from "./Dash.module.css";
 
+class Dash extends React.Component {
+  state = {
+    sideBarOpenClick: false,
+  };
 
-const dash = (props) => {
-  let dashView = null;
-  switch (props.page) {
-    case "Accounts":
-      dashView = <Accounts />;
-      break;
-    case "Memorials":
-      dashView = <Memorials />;
-      break;
-    case "Memorial Types":
-      dashView = <MemorialTypes />;
-      break;
-    case "Settings":
-      dashView = <Settings />;
-      break;
-    case "Tagger Form":
-      dashView = <TaggerForm />;
-      break;
-    default:
-      dashView = <Accounts />;
+  changeDashView = () => {
+    switch (this.props.page) {
+      case "Accounts":
+        return <Accounts />;
+
+      case "Memorials":
+        return <Memorials />;
+
+      case "Memorial Types":
+        return <MemorialTypes />;
+
+      case "Settings":
+        return <Settings />;
+
+      case "Tagger Form":
+        return <TaggerForm />;
+
+      default:
+        return <Accounts />;
+    }
+  };
+
+  render() {
+    return (
+      <div className={styles.Dash}>
+        {this.changeDashView()}
+
+        {this.props.sideBarCollapse ? (
+          <button
+            className={styles.openSidePanel}
+            onClick={this.props.sideBarCollapseHandler}
+          >
+            <img
+              src="./images/arrowRight.png"
+              alt="arrow-right"
+              className={"arrowRight"}
+            ></img>
+          </button>
+        ) : null}
+      </div>
+    );
   }
-  return <div className={styles.Dash}>{dashView}</div>;
-};
-export default dash;
+}
+export default Dash;

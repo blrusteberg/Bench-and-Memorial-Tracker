@@ -1,18 +1,19 @@
 import React from "react";
+
 import styles from "./NavigationPanel.module.css";
-import { Link } from 'react-router-dom';
-import { hasRole } from '../../../services/auth';
+import { Link } from "react-router-dom";
+import { hasRole } from "../../../services/auth";
 
 const navigationPanel = (props) => {
   return (
     <div className={styles.NavigationPanel}>
       <ul onClick={props.handleNavigationClick}>
-        {hasRole(props.roles, ['Admin']) &&
+        {hasRole(props.roles, ["Admin"]) && (
           <li>
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                  className={styles.img}
+                   className={styles.navIcon}
                   alt="account icon"
                   src="./images/accountImg.png"
                 />
@@ -22,12 +23,12 @@ const navigationPanel = (props) => {
               </Link>
             </div>
           </li>
-        }
+        )}
         <li>
           <div className={styles.navWrapper}>
             <div className={styles.iconWrapper}>
               <img
-                className={styles.img}
+                className={styles.navIcon}
                 alt="tagger form icon"
                 src="./images/taggerForm.png"
               />
@@ -37,12 +38,12 @@ const navigationPanel = (props) => {
             </Link>
           </div>
         </li>
-        {hasRole(props.roles, ['Clerk']) && [
+        {hasRole(props.roles, ["Clerk"]) && [
           <li>
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                  className={styles.img}
+                   className={styles.navIcon}
                   alt="account icon"
                   src="./images/memorialImg.png"
                 />
@@ -51,28 +52,30 @@ const navigationPanel = (props) => {
                 Memorials
               </Link>
             </div>
-          </li>
-          ,
+          </li>,
           <li>
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                  className={styles.img}
+                   className={styles.navIcon}
                   alt="account icon"
                   src="./images/typesImg.png"
                 />
               </div>
-              <Link to="memorialTypes" className={styles.nav} id="Memorial Types">
+              <Link
+                to="memorialTypes"
+                className={styles.nav}
+                id="Memorial Types"
+              >
                 Types
               </Link>
             </div>
-          </li>
-          ,
+          </li>,
           <li>
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                  className={styles.img}
+                   className={styles.navIcon}
                   alt="account icon"
                   src="./images/settingsImg.png"
                 />
@@ -81,11 +84,14 @@ const navigationPanel = (props) => {
                 Attributes
               </div>
             </div>
-          </li>
-      ]}
+          </li>,
+        ]}
       </ul>
       <label>Choose role:</label>
-      <select onChange={(event) => props.handlePermissionChange(event)} id="roles">
+      <select
+        onChange={(event) => props.handlePermissionChange(event)}
+        id="roles"
+      >
         <option value="admin">Admin</option>
         <option value="clerk">Clerk</option>
         <option value="tagger">Tagger</option>

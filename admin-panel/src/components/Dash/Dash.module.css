@@ -1,8 +1,17 @@
 .Dash {
   font-size: 10px;
   height: 100%;
-  width: 85%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+.openSidePanel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: .75%;
+}
+
+

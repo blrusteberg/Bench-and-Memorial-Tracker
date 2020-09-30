@@ -1,6 +1,6 @@
 .NavigationPanel {
-  background-color: #30b7f5;
   height: 100%;
+  width: 100%;
   outline: none;
 }
 .navWrapper {
@@ -9,39 +9,31 @@
   justify-content: left;
   align-items: center;
 }
+
 .NavigationPanel li {
-  width: 100%;
-  font-size: 1em;
-  list-style-type: none;
-  padding: 20px 10px;
+  margin: 0;
 }
 
 .NavigationPanel ul {
-  padding: 0;
   list-style-type: none;
 }
 
 .nav {
-  margin-left: 2%;
-  cursor: pointer;
   color: white;
-  font-family: Verdana;
-  font-size: 16px;
+  font-size: 1rem;
+  width: 85%;
+  text-align: left;
 }
 
-.navWrapper {
-  width: 100%;
+.navIcon {
+  width: 2em;
 }
 
-.nav:hover {
-  background-color: #1e90ff;
+li:hover {
+  background-color: #278ebe;
 }
+
 .iconWrapper {
   text-align: left;
-  margin: 0 2.5%;
   width: 15%;
-}
-.img {
-  text-align: left;
-  width: 100%;
 }

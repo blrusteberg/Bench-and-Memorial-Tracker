@@ -5,3 +5,31 @@
   height: 100vh;
   width: 100vw;
 }
+
+.DashWrapper {
+  font-size: 10px;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.Dash {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.SidebarWrapper {
+  height: 100%;
+  width: 20%;
+}
+
+.openSidePanelIcon {
+  position: absolute;
+  font-size: 2rem;
+  left: 0;
+  top: 0;
+  margin: 1rem;
+}
