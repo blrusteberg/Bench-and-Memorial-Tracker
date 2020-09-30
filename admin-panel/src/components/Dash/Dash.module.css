@@ -7,13 +7,6 @@
   align-items: center;
 }
 
-.openSidePanelDiv {
-  position: absolute;
-  width: 85%;
-  height: 100%;
-  display: inline-block;
-}
-
 .openSidePanel {
   position: absolute;
   left: 0;

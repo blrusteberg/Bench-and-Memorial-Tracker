@@ -1,17 +1,42 @@
 .SideBar {
-  width: 15%;
+  width: 100%;
   height: 100%;
   background-color: #30b7f5;
+  display: flex;
+  flex-direction: column;
+}
+ul {
+  width: 100%;
+  padding: 0;
 }
 
-img {
-  width: 20px;
-  padding-top: 6%;
+.headerWrapper {
+  height: 5%;
+  margin: 1rem;
 }
 
-.hideNavButton {
+.headerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.accountName {
   color: black;
-  float: right;
-  margin: 5%;
-  
+}
+
+.closeSideBarIcon {
+  font-size: 2rem;
+  color: black;
+}
+
+.closeSideBarIconWrapper {
+  text-align: right;
+  width: 10%;
+}
+
+.NavigationPanelWrapper {
+  height: 85%;
+  width: 100%;
 }
