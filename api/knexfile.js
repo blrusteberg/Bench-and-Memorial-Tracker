@@ -7,7 +7,7 @@ module.exports = {
       user: process.env.SQL_SERVER_USER,
       password: process.env.SQL_SERVER_PASSWORD,
       server: process.env.SQL_SERVER,
-      port: process.env.SQL_SERVER_PORT,
+      port: parseInt(process.env.SQL_SERVER_PORT, 10),
       database: process.env.SQL_DATABASE,
     },
   },

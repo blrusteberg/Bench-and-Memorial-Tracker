@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.status(308);
-  res.redirect("/api/docs");
+  res.redirect("/api-docs");
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
