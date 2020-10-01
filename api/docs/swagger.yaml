@@ -7,7 +7,7 @@ info:
     name: MIT
 
 servers:
-  - url: http:localhost:1337/api
+  - url: server/api
 
 paths:
   /memorials:

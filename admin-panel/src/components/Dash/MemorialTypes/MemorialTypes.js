@@ -20,7 +20,7 @@ class memorialTypes extends React.Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:1337/types")
+      .get(`${process.env.REACT_APP_API_BASE_URL}/types`)
       .then((response) => {
         let memorialTypes = [];
         if(response.data.length > 0){

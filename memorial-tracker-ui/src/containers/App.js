@@ -37,7 +37,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    axios.get("http://localhost:1337/memorials/types/attributes/values").then(
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/memorials/types/attributes/values`).then(
       (result) => {
         console.log("DATA", result.data);
         this.setState({

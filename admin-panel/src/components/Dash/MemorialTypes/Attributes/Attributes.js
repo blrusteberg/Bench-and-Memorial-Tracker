@@ -23,14 +23,12 @@ class attributes extends React.Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:1337/attributes")
+      .get(`${process.env.REACT_APP_API_BASE_URL}/attributes`)
       .then((res) => {
         if (this.props.selectedTypeId) {
           axios
             .get(
-              "http://localhost:1337/types/" +
-                this.props.selectedTypeId +
-                "/attributes"
+              `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}/attributes`
             )
             .then((response) => {
               let selectedAttributes = [];
@@ -165,7 +163,9 @@ class attributes extends React.Component {
         const newTypeName = { Name: this.props.typeName };
         axios
           .put(
-            "http://localhost:1337/types/" + this.props.selectedTypeId,
+            process.env.REACT_APP_API_BASE_URL +
+              "/types/" +
+              this.props.selectedTypeId,
             newTypeName
           )
           .then((res) => {
@@ -180,9 +180,7 @@ class attributes extends React.Component {
       };
       axios
         .put(
-          "http://localhost:1337/types/" +
-            this.props.selectedTypeId +
-            "/attributes",
+          `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}/attributes`,
           newMemorialTypesObject
         )
         .then((res) => {
@@ -198,7 +196,10 @@ class attributes extends React.Component {
         Attributes: this.state.selectedAttributes,
       };
       axios
-        .post("http://localhost:1337/types/attributes", newMemorialTypesObject)
+        .post(
+          `${process.env.REACT_APP_API_BASE_URL}/types/attributes`,
+          newMemorialTypesObject
+        )
         .then((res) => {
           console.log(res.data);
           window.location = "/memorialTypes";
@@ -215,7 +216,7 @@ class attributes extends React.Component {
     });
 
     axios
-      .delete("http://localhost:1337/types/" + this.props.selectedTypeId)
+      .delete(`${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`)
       .then((res) => {
         console.log(res.data);
         window.location = "/memorialTypes";

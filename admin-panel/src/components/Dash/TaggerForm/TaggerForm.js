@@ -47,7 +47,7 @@ class TaggerForm extends React.Component {
   };
 
   componentDidMount() {
-    axios.get("http://localhost:1337/types/attributes").then(
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`).then(
       (res) => {
         this.setState({
           Types: res.data,
@@ -147,7 +147,7 @@ class TaggerForm extends React.Component {
 
     if (isValid && areCoordsValid && isMemorialNameValid) {
       axios
-        .post("http://localhost:1337/memorials/values", this.state.Memorial)
+        .post(`${process.env.REACT_APP_API_BASE_URL}/memorials/values`, this.state.Memorial)
         .then(() => window.location = "/taggerForm");
     } else {
       this.setState({
