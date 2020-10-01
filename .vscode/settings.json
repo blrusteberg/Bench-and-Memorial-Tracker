@@ -3,5 +3,6 @@
         "node_modules{,/**}",
         ".vscode{,/**}"
     ],
-    "appService.deploySubpath": "api"
+    "appService.deploySubpath": "api",
+    "appService.defaultWebAppToDeploy": "/subscriptions/5fc16f2d-b38c-4b4b-9756-957b9fc0e594/resourceGroups/edwardsville-memorial-tracker/providers/Microsoft.Web/sites/memorial-tracker-api"
 }

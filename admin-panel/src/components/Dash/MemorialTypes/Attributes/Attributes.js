@@ -4,6 +4,9 @@ import lodash from "lodash";
 import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../../assets/deleteAttribute.png";
 import Popup from "./Popup/Popup";
+// remove later
+import { Dropdown } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
 
 class attributes extends React.Component {
   constructor(props) {
@@ -280,7 +283,7 @@ class attributes extends React.Component {
     return (
       <div className={styles.attributes}>
         <div className={styles.attributeDropdownWrapper}>
-          {/*
+          {
           <Dropdown
             placeholder="Add an Attribute.."
             search
@@ -288,7 +291,7 @@ class attributes extends React.Component {
             options={attributeOptions}
             selectOnBlur={false}
           />
-      */}
+      }
         </div>
         <table>
           <tbody>
