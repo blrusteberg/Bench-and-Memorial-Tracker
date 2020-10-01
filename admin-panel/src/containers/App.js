@@ -1,6 +1,7 @@
 import React from "react";
 import { Router, Switch, Route, BrowserRouter } from "react-router-dom";
 import { CaretRightOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
 
 import styles from "./App.module.css";
 import SideBar from "../components/SideBar/SideBar";
