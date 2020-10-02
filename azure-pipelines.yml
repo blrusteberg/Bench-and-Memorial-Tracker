@@ -5,6 +5,20 @@
 
 name: 'API-CI' 
 
+variables:
+- name: NODE_ENV
+  value: staging
+- name: SQL_SERVER
+  value: edwardsville-memorial-tracker-sql-server.database.windows.net
+- name: SQL_SERVER_PORT
+  value: 1433
+- name: SQL_SERVER_USER
+  value: benchwarmers_admin
+- name: SQL_SERVER_PASSWORD
+  value: edp3V8EU*%mCm7j$
+- name: SQL_DATABASE
+  value: EdwardsvilleMemorialTracker
+
 trigger:
   branches:
     include: ['develop']
