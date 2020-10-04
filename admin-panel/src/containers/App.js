@@ -75,6 +75,7 @@ class App extends React.Component {
 
     const onFinish = (values) => {
       if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
+        localStorage.setItem('isLoggedIn', true);
         this.setState({
           isLoggedIn: true
         })
@@ -116,7 +117,7 @@ class App extends React.Component {
 
   render() {
     let roles = this.state.roles;
-    let isLoggedIn = this.state.isLoggedIn;
+    let isLoggedIn = localStorage.getItem('isLoggedIn');
     return (
       isLoggedIn ?
       <div className={styles.App}>
