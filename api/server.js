@@ -11,6 +11,7 @@ const memorialRoutes = require("./routes/memorials.js");
 const typeRoutes = require("./routes/types.js");
 const attributeRoutes = require("./routes/attributes.js");
 const valueRoutes = require("./routes/values.js");
+const Error = require("./error/error");
 
 app.use(cors());
 app.use(bodyParser.json());
