@@ -1,7 +1,6 @@
 import React from "react";
 import { Router, Switch, Route, BrowserRouter } from "react-router-dom";
 import { CaretRightOutlined } from "@ant-design/icons";
-import dotenv from "dotenv";
 import "antd/dist/antd.css";
 
 import styles from "./App.module.css";
@@ -13,6 +12,7 @@ import TaggerForm from "../components/Dash/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
 import { Form, Input, Button } from 'antd';
+require('dotenv').config()
 
 class App extends React.Component {
   state = {
@@ -74,7 +74,7 @@ class App extends React.Component {
     };
 
     const onFinish = (values) => {
-      if(values.password.toUpperCase() === "KEVIN"){
+      if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
         this.setState({
           isLoggedIn: true
         })
