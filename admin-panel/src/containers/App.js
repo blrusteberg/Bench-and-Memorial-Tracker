@@ -12,11 +12,14 @@ import MemorialTypes from "../components/Dash/MemorialTypes/MemorialTypes";
 import TaggerForm from "../components/Dash/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
+import { Form, Input, Button } from 'antd';
+
 class App extends React.Component {
   state = {
     page: "Memorials",
     sideBarCollapse: false,
     roles: ["User", "Admin", "Clerk", "Tagger"],
+    isLoggedIn: false
   };
   handleNavigationClick = (e) => {
     const page = e.target.id;
@@ -54,9 +57,68 @@ class App extends React.Component {
     });
   };
 
+  createFormForInitialLogin = () => {
+    const layout = {
+      labelCol: {
+        span: 8,
+      },
+      wrapperCol: {
+        span: 16,
+      },
+    };
+    const tailLayout = {
+      wrapperCol: {
+        offset: 8,
+        span: 16,
+      },
+    };
+
+    const onFinish = (values) => {
+      if(values.password.toUpperCase() === "KEVIN"){
+        this.setState({
+          isLoggedIn: true
+        })
+      }
+    };
+  
+    const onFinishFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+    };
+
+    return (<Form
+      {...layout}
+      name="basic"
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input password to enter application!',
+          },
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+      <Form.Item {...tailLayout}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>)
+  }
+
   render() {
     let roles = this.state.roles;
+    let isLoggedIn = this.state.isLoggedIn;
     return (
+      isLoggedIn ?
       <div className={styles.App}>
         <BrowserRouter>
           {this.state.sideBarCollapse ? null : (
@@ -100,7 +162,9 @@ class App extends React.Component {
             </div>
           </div>
         </BrowserRouter>
-      </div>
+      </div> 
+      :
+      this.createFormForInitialLogin()
     );
   }
 }
