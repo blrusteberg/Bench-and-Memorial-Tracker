@@ -11,7 +11,6 @@ trigger:
   paths:
     include: ['api']
 
-
 pool:
   vmImage: 'vs2017-win2016'
 
