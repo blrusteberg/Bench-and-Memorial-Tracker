@@ -1,101 +1,75 @@
 import React from "react";
+import { Menu } from "antd";
+import {
+  TeamOutlined,
+  BankOutlined,
+  TagsOutlined,
+  AppstoreAddOutlined,
+  SolutionOutlined,
+} from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 import styles from "./NavigationPanel.module.css";
-import { Link } from "react-router-dom";
 import { hasRole } from "../../../services/auth";
 
 const navigationPanel = (props) => {
   return (
-    <div className={styles.NavigationPanel}>
-      <ul onClick={props.handleNavigationClick}>
-        {hasRole(props.roles, ["Admin"]) && (
-          <li>
-            <div className={styles.navWrapper}>
-              <div className={styles.iconWrapper}>
-                <img
-                   className={styles.navIcon}
-                  alt="account icon"
-                  src="./images/accountImg.png"
-                />
-              </div>
-              <Link to="/" className={styles.nav} id="Accounts">
-                Accounts
-              </Link>
-            </div>
-          </li>
-        )}
-        <li>
-          <div className={styles.navWrapper}>
-            <div className={styles.iconWrapper}>
-              <img
-                className={styles.navIcon}
-                alt="tagger form icon"
-                src="./images/taggerForm.png"
-              />
-            </div>
-            <Link to="taggerForm" className={styles.nav} id="Tagger Form">
-              Tagger Form
-            </Link>
-          </div>
-        </li>
-        {hasRole(props.roles, ["Clerk"]) && [
-          <li>
-            <div className={styles.navWrapper}>
-              <div className={styles.iconWrapper}>
-                <img
-                   className={styles.navIcon}
-                  alt="account icon"
-                  src="./images/memorialImg.png"
-                />
-              </div>
-              <Link to="memorials" className={styles.nav} id="Memorials">
-                Memorials
-              </Link>
-            </div>
-          </li>,
-          <li>
-            <div className={styles.navWrapper}>
-              <div className={styles.iconWrapper}>
-                <img
-                   className={styles.navIcon}
-                  alt="account icon"
-                  src="./images/typesImg.png"
-                />
-              </div>
-              <Link
-                to="memorialTypes"
-                className={styles.nav}
-                id="Memorial Types"
-              >
-                Types
-              </Link>
-            </div>
-          </li>,
-          <li>
-            <div className={styles.navWrapper}>
-              <div className={styles.iconWrapper}>
-                <img
-                   className={styles.navIcon}
-                  alt="account icon"
-                  src="./images/settingsImg.png"
-                />
-              </div>
-              <div className={styles.nav} id="">
-                Attributes
-              </div>
-            </div>
-          </li>,
-        ]}
-      </ul>
-      <label>Choose role:</label>
-      <select
-        onChange={(event) => props.handlePermissionChange(event)}
-        id="roles"
+    <div className={styles.navigationPanelWrapper}>
+      <Menu
+        mode="vertical"
+        className={styles.NavigationPanel}
+        onClick={props.handleNavigationClick}
       >
-        <option value="admin">Admin</option>
-        <option value="clerk">Clerk</option>
-        <option value="tagger">Tagger</option>
-      </select>
+        {hasRole(props.roles, ["Admin"]) && (
+          <Menu.Item
+            className={styles.MenuItem}
+            key="accounts"
+            icon={<TeamOutlined className={styles.menuItemIcon} />}
+          >
+            <Link to="/accounts" className={styles.nav}>
+              Accounts
+            </Link>
+          </Menu.Item>
+        )}
+        {hasRole(props.roles, ["Clerk"]) && [
+          <Menu.Item
+            className={styles.MenuItem}
+            key="memorials"
+            icon={<BankOutlined />}
+          >
+            <Link to="memorials" className={styles.nav}>
+              Memorials
+            </Link>
+          </Menu.Item>,
+          <Menu.Item
+            className={styles.MenuItem}
+            key="types"
+            icon={<TagsOutlined className={styles.menuItemIcon} />}
+          >
+            <Link to="types" className={styles.nav}>
+              Types
+            </Link>
+          </Menu.Item>,
+          <Menu.Item
+            className={styles.MenuItem}
+            key="attributes"
+            icon={<AppstoreAddOutlined className={styles.menuItemIcon} />}
+          >
+            <Link to="attributes" className={styles.nav}>
+              Attributes
+            </Link>
+          </Menu.Item>,
+        ]}
+        <Menu.Item
+          className={styles.MenuItem}
+          key="taggerForm"
+          icon={<SolutionOutlined className={styles.menuItemIcon} />}
+        >
+          <Link to="tagger-form" className={styles.nav}>
+            Tagger Form
+          </Link>
+        </Menu.Item>
+      </Menu>
     </div>
   );
 };

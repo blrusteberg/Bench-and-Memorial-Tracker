@@ -2,32 +2,29 @@ import React from "react";
 import axios from "axios";
 import lodash from "lodash";
 
-import styles from "./MemorialTypes.module.css";
+import styles from "./Types.module.css";
 import Dropdown from "./Dropdown/Dropdown";
 import Attributes from "./Attributes/Attributes";
 
-class memorialTypes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      initialTypes: [],
-      selected: [],
-      selectedTypeIndex: 0,
-      newTypeName: "",
-      isTypeNameChanged: false
-    };
-  }
+class Types extends React.Component {
+  state = {
+    initialTypes: [],
+    selected: [],
+    selectedTypeIndex: 0,
+    newTypeName: "",
+    isTypeNameChanged: false,
+  };
 
   componentDidMount() {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/types`)
       .then((response) => {
         let memorialTypes = [];
-        if(response.data.length > 0){
-          memorialTypes = response.data
+        if (response.data.length > 0) {
+          memorialTypes = response.data;
         }
         const addType = {
-          Name: " + New Type"
+          Name: " + New Type",
         };
         memorialTypes.unshift(addType);
         this.setState({
@@ -47,23 +44,22 @@ class memorialTypes extends React.Component {
       selected: selectedType,
       selectedTypeIndex: event.target.value,
       newTypeName: selectedType.Id ? selectedType.Name : "",
-      isTypeNameChanged: false
+      isTypeNameChanged: false,
     });
   };
 
   handleNewTypeNameChange = (event) => {
-    this.setState({ 
+    this.setState({
       newTypeName: event.target.value,
-      isTypeNameChanged: true 
+      isTypeNameChanged: true,
     });
   };
 
   togglePopup = () => {
-    this.setState({  
-      showPopup: !this.state.showPopup  
-    });  
-
-  }
+    this.setState({
+      showPopup: !this.state.showPopup,
+    });
+  };
 
   render() {
     return (
@@ -77,10 +73,10 @@ class memorialTypes extends React.Component {
             dropdownChange={this.dropdownChange}
           />
         </div>
-        {(this.state.selectedTypeIndex ? (
+        {this.state.selectedTypeIndex ? (
           <div>
             <div className={styles.memorialTypeNameWrapper}>
-            <div className={styles.memorialTypeName}>Memorial Type Name</div>
+              <div className={styles.memorialTypeName}>Memorial Type Name</div>
               <input
                 className={styles.memorialTypeNameInput}
                 type="text"
@@ -99,12 +95,11 @@ class memorialTypes extends React.Component {
                 isTypeNameChanged={this.state.isTypeNameChanged}
               />
             </div>
-          </div>)
-          : null
-        )}
+          </div>
+        ) : null}
       </div>
     );
   }
 }
 
-export default memorialTypes;
+export default Types;

@@ -1,15 +1,16 @@
 import React from "react";
-import { Router, Switch, Route, BrowserRouter } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import { CaretRightOutlined } from "@ant-design/icons";
-import dotenv from "dotenv";
+import { Layout } from "antd";
 import "antd/dist/antd.css";
 
 import styles from "./App.module.css";
 import SideBar from "../components/SideBar/SideBar";
-import Accounts from "../components/Dash/Accounts/Accounts";
-import Memorials from "../components/Dash/Memorials/Memorials";
-import MemorialTypes from "../components/Dash/MemorialTypes/MemorialTypes";
-import TaggerForm from "../components/Dash/TaggerForm/TaggerForm";
+import Accounts from "../components/Accounts/Accounts";
+import Attributes from "../components/Attributes/Attributes";
+import Memorials from "../components/Memorials/Memorials";
+import Types from "../components/Types/Types";
+import TaggerForm from "../components/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
 class App extends React.Component {
@@ -18,11 +19,8 @@ class App extends React.Component {
     sideBarCollapse: false,
     roles: ["User", "Admin", "Clerk", "Tagger"],
   };
-  handleNavigationClick = (e) => {
-    const page = e.target.id;
-    if (page) {
-      this.changePage(page);
-    }
+  handleNavigationClick = (event) => {
+    this.changePage(event.key);
   };
 
   changePage = (newPage) => {
@@ -55,51 +53,58 @@ class App extends React.Component {
   };
 
   render() {
+    const { Header, Sider, Content } = Layout;
     let roles = this.state.roles;
     return (
       <div className={styles.App}>
-        <BrowserRouter>
-          {this.state.sideBarCollapse ? null : (
-            <div className={styles.SidebarWrapper}>
-              <SideBar
-                handleNavigationClick={this.handleNavigationClick}
-                sideBarCollapseHandler={() => this.sideBarCollapseHandler(true)}
-                handlePermissionChange={this.handlePermissionChange}
-                roles={roles}
-              />
-            </div>
-          )}
-
-          <div className={styles.DashWrapper}>
-            {this.state.sideBarCollapse ? (
-              <CaretRightOutlined
-                className={styles.openSidePanelIcon}
-                onClick={() => this.sideBarCollapseHandler(false)}
-              />
-            ) : null}
-            <div className={styles.Dash}>
-              <Switch>
-                {hasRole(roles, ["Admin"]) && (
-                  <Route exact path="/" component={Accounts} />
-                )}
-                {hasRole(roles, ["Tagger", "Clerk"]) && (
-                  <Route exact path="/taggerForm" component={TaggerForm} />
-                )}
-                {hasRole(roles, ["Clerk"]) && (
-                  <Route exact path="/memorials" component={Memorials} />
-                )}
-                {hasRole(roles, ["Clerk"]) && (
-                  <Route
-                    exact
-                    path="/memorialTypes"
-                    component={MemorialTypes}
+        <Layout>
+          <Layout>
+            <BrowserRouter>
+              {this.state.sideBarCollapse ? null : (
+                <Sider className={styles.SidebarWrapper}>
+                  <SideBar
+                    handleNavigationClick={this.handleNavigationClick}
+                    sideBarCollapseHandler={() =>
+                      this.sideBarCollapseHandler(true)
+                    }
+                    handlePermissionChange={this.handlePermissionChange}
+                    roles={roles}
                   />
-                )}
-                {/* <Route exact path='/attributes' component={Attributes} /> */}
-              </Switch>
-            </div>
-          </div>
-        </BrowserRouter>
+                </Sider>
+              )}
+
+              <Content className={styles.dashWrapper}>
+                <Header className={styles.dashHeader}>
+                  {this.state.sideBarCollapse ? (
+                    <CaretRightOutlined
+                      className={styles.openSidePanelIcon}
+                      onClick={() => this.sideBarCollapseHandler(false)}
+                    />
+                  ) : null}
+                </Header>
+                <div className={styles.dashContent}>
+                  <Switch>
+                    {hasRole(roles, ["Admin"]) && (
+                      <Route exact path="/accounts" component={Accounts} />
+                    )}
+                    {hasRole(roles, ["Tagger", "Clerk"]) && (
+                      <Route exact path="/tagger-form" component={TaggerForm} />
+                    )}
+                    {hasRole(roles, ["Clerk"]) && (
+                      <Route exact path="/memorials" component={Memorials} />
+                    )}
+                    {hasRole(roles, ["Clerk"]) && (
+                      <Route exact path="/types" component={Types} />
+                    )}
+                    {hasRole(roles, ["Clerk"]) && (
+                      <Route exact path="/attributes" component={Attributes} />
+                    )}
+                  </Switch>
+                </div>
+              </Content>
+            </BrowserRouter>
+          </Layout>
+        </Layout>
       </div>
     );
   }
