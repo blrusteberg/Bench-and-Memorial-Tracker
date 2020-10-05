@@ -13,7 +13,7 @@ const navigationPanel = (props) => {
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                   className={styles.navIcon}
+                  className={styles.navIcon}
                   alt="account icon"
                   src="./images/accountImg.png"
                 />
@@ -43,7 +43,7 @@ const navigationPanel = (props) => {
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                   className={styles.navIcon}
+                  className={styles.navIcon}
                   alt="account icon"
                   src="./images/memorialImg.png"
                 />
@@ -57,7 +57,7 @@ const navigationPanel = (props) => {
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                   className={styles.navIcon}
+                  className={styles.navIcon}
                   alt="account icon"
                   src="./images/typesImg.png"
                 />
@@ -75,14 +75,14 @@ const navigationPanel = (props) => {
             <div className={styles.navWrapper}>
               <div className={styles.iconWrapper}>
                 <img
-                   className={styles.navIcon}
+                  className={styles.navIcon}
                   alt="account icon"
                   src="./images/settingsImg.png"
                 />
               </div>
-              <div className={styles.nav} id="">
+              <Link to="Attributes" className={styles.nav} id="Attributes">
                 Attributes
-              </div>
+              </Link>
             </div>
           </li>,
         ]}

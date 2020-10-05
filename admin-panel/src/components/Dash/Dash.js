@@ -3,7 +3,7 @@ import React from "react";
 import Accounts from "./Accounts/Accounts";
 import Memorials from "./Memorials/Memorials";
 import MemorialTypes from "./MemorialTypes/MemorialTypes";
-import Settings from "./Settings/Settings";
+import Attributes from "./Attributes/Attributes";
 import TaggerForm from "./TaggerForm/TaggerForm";
 
 import styles from "./Dash.module.css";
@@ -24,8 +24,8 @@ class Dash extends React.Component {
       case "Memorial Types":
         return <MemorialTypes />;
 
-      case "Settings":
-        return <Settings />;
+      case "Attributes":
+        return <Attributes />;
 
       case "Tagger Form":
         return <TaggerForm />;
