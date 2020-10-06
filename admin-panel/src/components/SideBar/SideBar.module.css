@@ -4,10 +4,7 @@
   background-color: #30b7f5;
   display: flex;
   flex-direction: column;
-}
-ul {
-  width: 100%;
-  padding: 0;
+  position: relative;
 }
 
 .headerWrapper {
@@ -15,28 +12,22 @@ ul {
   margin: 1rem;
 }
 
-.headerContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-
 .accountName {
   color: black;
 }
 
 .closeSideBarIcon {
+  position: relative;
   font-size: 2rem;
+  float: right;
   color: black;
 }
 
-.closeSideBarIconWrapper {
-  text-align: right;
-  width: 10%;
-}
-
-.NavigationPanelWrapper {
+.navigationPanelWrapper {
   height: 85%;
+  background-color: #30b7f5;
   width: 100%;
+}
+.roleSelect {
+
 }

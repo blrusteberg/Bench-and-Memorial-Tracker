@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 import { CaretRightOutlined } from "@ant-design/icons";
+import { Layout } from "antd";
 import "antd/dist/antd.css";
 
 import styles from "./App.module.css";
@@ -119,51 +120,58 @@ class App extends React.Component {
 
   render() {
     let isLoggedIn = localStorage.getItem('isLoggedIn');
+    const { Header, Sider, Content } = Layout;
     return (
       <div className={styles.App}>
       {isLoggedIn ? (
-        <BrowserRouter>
-          {this.state.sideBarCollapse ? null : (
-            <div className={styles.SidebarWrapper}>
-              <SideBar
-                handleNavigationClick={this.handleNavigationClick}
-                sideBarCollapseHandler={() => this.sideBarCollapseHandler(true)}
-                handlePermissionChange={this.handlePermissionChange}
-                roles={this.state.roles}
-              />
-            </div>
-          )}
-
-          <div className={styles.DashWrapper}>
-            {this.state.sideBarCollapse ? (
-              <CaretRightOutlined
-                className={styles.openSidePanelIcon}
-                onClick={() => this.sideBarCollapseHandler(false)}
-              />
-            ) : null}
-            <div className={styles.Dash}>
-              <Switch>
-                {hasRole(this.state.roles, ["Admin"]) && (
-                  <Route exact path="/" component={Accounts} />
-                )}
-                {hasRole(this.state.roles, ["Tagger", "Clerk"]) && (
-                  <Route exact path="/taggerForm" component={TaggerForm} />
-                )}
-                {hasRole(this.state.roles, ["Clerk"]) && (
-                  <Route exact path="/memorials" component={Memorials} />
-                )}
-                {hasRole(this.state.roles, ["Clerk"]) && (
-                  <Route
-                    exact
-                    path="/memorialTypes"
-                    component={MemorialTypes}
+        <Layout>
+          <Layout>
+            <BrowserRouter>
+              {this.state.sideBarCollapse ? null : (
+                <Sider className={styles.SidebarWrapper}>
+                  <SideBar
+                    handleNavigationClick={this.handleNavigationClick}
+                    sideBarCollapseHandler={() =>
+                      this.sideBarCollapseHandler(true)
+                    }
+                    handlePermissionChange={this.handlePermissionChange}
+                    roles={this.state.roles}
                   />
-                )}
-                {/* <Route exact path='/attributes' component={Attributes} /> */}
-              </Switch>
-            </div>
-          </div>
-        </BrowserRouter>)
+                </Sider>
+              )}
+
+              <Content className={styles.dashWrapper}>
+                <Header className={styles.dashHeader}>
+                  {this.state.sideBarCollapse ? (
+                    <CaretRightOutlined
+                      className={styles.openSidePanelIcon}
+                      onClick={() => this.sideBarCollapseHandler(false)}
+                    />
+                  ) : null}
+                </Header>
+                <div className={styles.dashContent}>
+                  <Switch>
+                    {hasRole(this.state.roles, ["Admin"]) && (
+                      <Route exact path="/accounts" component={Accounts} />
+                    )}
+                    {hasRole(this.state.roles, ["Tagger", "Clerk"]) && (
+                      <Route exact path="/tagger-form" component={TaggerForm} />
+                    )}
+                    {hasRole(this.state.roles, ["Clerk"]) && (
+                      <Route exact path="/memorials" component={Memorials} />
+                    )}
+                    {hasRole(this.state.roles, ["Clerk"]) && (
+                      <Route exact path="/types" component={Types} />
+                    )}
+                    {hasRole(this.state.roles, ["Clerk"]) && (
+                      <Route exact path="/attributes" component={Attributes} />
+                    )}
+                  </Switch>
+                </div>
+              </Content>
+            </BrowserRouter>
+          </Layout>
+        </Layout>)
         :
         this.createFormForInitialLogin()
       }

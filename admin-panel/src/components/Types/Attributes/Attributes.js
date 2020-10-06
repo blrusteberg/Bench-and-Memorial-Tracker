@@ -2,13 +2,12 @@ import React from "react";
 import axios from "axios";
 import lodash from "lodash";
 import styles from "./Attributes.module.css";
-import deleteAttributeButton from "../../../../assets/deleteAttribute.png";
+import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import Popup from "./Popup/Popup";
-// remove later
-import { Dropdown } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
+import { Dropdown } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 
-class attributes extends React.Component {
+class Attributes extends React.Component {
   constructor(props) {
     super(props);
 
@@ -219,7 +218,9 @@ class attributes extends React.Component {
     });
 
     axios
-      .delete(`${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`)
+      .delete(
+        `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`
+      )
       .then((res) => {
         console.log(res.data);
         window.location = "/memorialTypes";
@@ -284,14 +285,14 @@ class attributes extends React.Component {
       <div className={styles.attributes}>
         <div className={styles.attributeDropdownWrapper}>
           {
-          <Dropdown
-            placeholder="Add an Attribute.."
-            search
-            selection
-            options={attributeOptions}
-            selectOnBlur={false}
-          />
-      }
+            <Dropdown
+              placeholder="Add an Attribute.."
+              search
+              selection
+              options={attributeOptions}
+              selectOnBlur={false}
+            />
+          }
         </div>
         <table>
           <tbody>
@@ -424,4 +425,4 @@ class attributes extends React.Component {
   }
 }
 
-export default attributes;
+export default Attributes;
