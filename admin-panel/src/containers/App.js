@@ -1,14 +1,15 @@
 import React from "react";
-import { Router, Switch, Route, BrowserRouter } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import { CaretRightOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 
 import styles from "./App.module.css";
 import SideBar from "../components/SideBar/SideBar";
-import Accounts from "../components/Dash/Accounts/Accounts";
-import Memorials from "../components/Dash/Memorials/Memorials";
-import MemorialTypes from "../components/Dash/MemorialTypes/MemorialTypes";
-import TaggerForm from "../components/Dash/TaggerForm/TaggerForm";
+import Accounts from "../components/Accounts/Accounts";
+import Attributes from "../components/Attributes/Attributes";
+import Memorials from "../components/Memorials/Memorials";
+import Types from "../components/Types/Types";
+import TaggerForm from "../components/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
 import { Form, Input, Button } from 'antd';
@@ -21,11 +22,8 @@ class App extends React.Component {
     roles: ["User", "Admin", "Clerk", "Tagger"],
     isLoggedIn: false
   };
-  handleNavigationClick = (e) => {
-    const page = e.target.id;
-    if (page) {
-      this.changePage(page);
-    }
+  handleNavigationClick = (event) => {
+    this.changePage(event.key);
   };
 
   changePage = (newPage) => {
