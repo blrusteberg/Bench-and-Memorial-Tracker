@@ -120,8 +120,7 @@ class App extends React.Component {
   }
 
   render() {
-    // let isLoggedIn = localStorage.getItem('isLoggedIn');
-    let isLoggedIn = this.state.isLoggedIn;
+    let isLoggedIn = localStorage.getItem('isLoggedIn');
     return (
       <div className={styles.App}>
       {isLoggedIn ? (
