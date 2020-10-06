@@ -13,11 +13,15 @@ import Types from "../components/Types/Types";
 import TaggerForm from "../components/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
+import { Form, Input, Button } from 'antd';
+require('dotenv').config()
+
 class App extends React.Component {
   state = {
     page: "Memorials",
     sideBarCollapse: false,
     roles: ["User", "Admin", "Clerk", "Tagger"],
+    isLoggedIn: false
   };
   handleNavigationClick = (event) => {
     this.changePage(event.key);
@@ -52,11 +56,74 @@ class App extends React.Component {
     });
   };
 
+  createFormForInitialLogin = () => {
+    const layout = {
+      labelCol: {
+        span: 8,
+      },
+      wrapperCol: {
+        span: 16,
+      },
+    };
+    const tailLayout = {
+      wrapperCol: {
+        offset: 8,
+        span: 16,
+      },
+    };
+
+    const onFinish = (values) => {
+      if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
+        localStorage.setItem('isLoggedIn', true);
+        this.setState({
+          isLoggedIn: true
+        })
+      }
+    };
+  
+    const onFinishFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+    };
+
+    return (
+      <div className={styles.formWrapper}>
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input password to enter application!',
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    )
+  }
+
   render() {
+    let isLoggedIn = localStorage.getItem('isLoggedIn');
     const { Header, Sider, Content } = Layout;
-    let roles = this.state.roles;
     return (
       <div className={styles.App}>
+      {isLoggedIn ? (
         <Layout>
           <Layout>
             <BrowserRouter>
@@ -68,7 +135,7 @@ class App extends React.Component {
                       this.sideBarCollapseHandler(true)
                     }
                     handlePermissionChange={this.handlePermissionChange}
-                    roles={roles}
+                    roles={this.state.roles}
                   />
                 </Sider>
               )}
@@ -84,19 +151,19 @@ class App extends React.Component {
                 </Header>
                 <div className={styles.dashContent}>
                   <Switch>
-                    {hasRole(roles, ["Admin"]) && (
+                    {hasRole(this.state.roles, ["Admin"]) && (
                       <Route exact path="/accounts" component={Accounts} />
                     )}
-                    {hasRole(roles, ["Tagger", "Clerk"]) && (
+                    {hasRole(this.state.roles, ["Tagger", "Clerk"]) && (
                       <Route exact path="/tagger-form" component={TaggerForm} />
                     )}
-                    {hasRole(roles, ["Clerk"]) && (
+                    {hasRole(this.state.roles, ["Clerk"]) && (
                       <Route exact path="/memorials" component={Memorials} />
                     )}
-                    {hasRole(roles, ["Clerk"]) && (
+                    {hasRole(this.state.roles, ["Clerk"]) && (
                       <Route exact path="/types" component={Types} />
                     )}
-                    {hasRole(roles, ["Clerk"]) && (
+                    {hasRole(this.state.roles, ["Clerk"]) && (
                       <Route exact path="/attributes" component={Attributes} />
                     )}
                   </Switch>
@@ -104,8 +171,11 @@ class App extends React.Component {
               </Content>
             </BrowserRouter>
           </Layout>
-        </Layout>
-      </div>
+        </Layout>)
+        :
+        this.createFormForInitialLogin()
+      }
+      </div> 
     );
   }
 }
