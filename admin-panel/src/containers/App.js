@@ -116,7 +116,6 @@ class App extends React.Component {
   }
 
   render() {
-    let roles = this.state.roles;
     let isLoggedIn = localStorage.getItem('isLoggedIn');
     return (
       isLoggedIn ?
@@ -128,7 +127,7 @@ class App extends React.Component {
                 handleNavigationClick={this.handleNavigationClick}
                 sideBarCollapseHandler={() => this.sideBarCollapseHandler(true)}
                 handlePermissionChange={this.handlePermissionChange}
-                roles={roles}
+                roles={this.state.roles}
               />
             </div>
           )}
@@ -142,16 +141,16 @@ class App extends React.Component {
             ) : null}
             <div className={styles.Dash}>
               <Switch>
-                {hasRole(roles, ["Admin"]) && (
+                {hasRole(this.state.roles, ["Admin"]) && (
                   <Route exact path="/" component={Accounts} />
                 )}
-                {hasRole(roles, ["Tagger", "Clerk"]) && (
+                {hasRole(this.state.roles, ["Tagger", "Clerk"]) && (
                   <Route exact path="/taggerForm" component={TaggerForm} />
                 )}
-                {hasRole(roles, ["Clerk"]) && (
+                {hasRole(this.state.roles, ["Clerk"]) && (
                   <Route exact path="/memorials" component={Memorials} />
                 )}
-                {hasRole(roles, ["Clerk"]) && (
+                {hasRole(this.state.roles, ["Clerk"]) && (
                   <Route
                     exact
                     path="/memorialTypes"
