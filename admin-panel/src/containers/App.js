@@ -86,40 +86,45 @@ class App extends React.Component {
       console.log('Failed:', errorInfo);
     };
 
-    return (<Form
-      {...layout}
-      name="basic"
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input password to enter application!',
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>)
+    return (
+      <div className={styles.formWrapper}>
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input password to enter application!',
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    )
   }
 
   render() {
-    let isLoggedIn = localStorage.getItem('isLoggedIn');
+    // let isLoggedIn = localStorage.getItem('isLoggedIn');
+    let isLoggedIn = this.state.isLoggedIn;
     return (
-      isLoggedIn ?
       <div className={styles.App}>
+      {isLoggedIn ? (
         <BrowserRouter>
           {this.state.sideBarCollapse ? null : (
             <div className={styles.SidebarWrapper}>
@@ -161,10 +166,11 @@ class App extends React.Component {
               </Switch>
             </div>
           </div>
-        </BrowserRouter>
+        </BrowserRouter>)
+        :
+        this.createFormForInitialLogin()
+      }
       </div> 
-      :
-      this.createFormForInitialLogin()
     );
   }
 }

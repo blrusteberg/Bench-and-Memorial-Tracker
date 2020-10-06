@@ -33,3 +33,10 @@
   top: 0;
   margin: 1rem;
 }
+
+.formWrapper {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+}
