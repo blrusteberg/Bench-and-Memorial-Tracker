@@ -10,6 +10,8 @@ import Accounts from "../components/Dash/Accounts/Accounts";
 import Memorials from "../components/Dash/Memorials/Memorials";
 import MemorialTypes from "../components/Dash/MemorialTypes/MemorialTypes";
 import TaggerForm from "../components/Dash/TaggerForm/TaggerForm";
+import Attributes from "../components/Dash/Attributes/Attributes";
+
 import { hasRole } from "../services/auth";
 
 class App extends React.Component {
@@ -95,7 +97,7 @@ class App extends React.Component {
                     component={MemorialTypes}
                   />
                 )}
-                {/* <Route exact path='/attributes' component={Attributes} /> */}
+                {<Route exact path='/attributes' component={Attributes} />}
               </Switch>
             </div>
           </div>

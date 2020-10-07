@@ -80,7 +80,7 @@ const navigationPanel = (props) => {
                   src="./images/settingsImg.png"
                 />
               </div>
-              <Link to="Attributes" className={styles.nav} id="Attributes">
+              <Link to="attributes" className={styles.nav} id="Attributes">
                 Attributes
               </Link>
             </div>
