@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "email": "tagger@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "tagger"
+    },
+    {
+        "id": 2,
+        "email": "admin@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "admin"
+    },
+    {
+        "id": 3,
+        "email": "clerk@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "clerk"
+    },
+    {
+        "id": 4,
+        "email": "tagger@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "tagger"
+    },
+    {
+        "id": 5,
+        "email": "admin@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "admin"
+    },
+    {
+        "id": 6,
+        "email": "clerk@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "clerk"
+    },
+    {
+        "id": 7,
+        "email": "tagger@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "tagger"
+    },
+    {
+        "id": 8,
+        "email": "admin@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "admin"
+    },
+    {
+        "id": 9,
+        "email": "clerk@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "clerk"
+    },
+    {
+        "id": 10,
+        "email": "tagger@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "tagger"
+    },
+    {
+        "id": 11,
+        "email": "admin@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "admin"
+    },
+    {
+        "id": 12,
+        "email": "clerk@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "clerk"
+    },
+    {
+        "id": 13,
+        "email": "tagger@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "tagger"
+    },
+    {
+        "id": 14,
+        "email": "admin@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "admin"
+    },
+    {
+        "id": 15,
+        "email": "clerk@siue.edu",
+        "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
+        "accountType": "clerk"
+    }
+]

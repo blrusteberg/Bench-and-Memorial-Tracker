@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Space } from 'antd';
 import axios from "axios";
-import accounts from "../../../data/mockAccounts.json"
+import accounts from "../../data/mockAccounts.json"
 import styles from "./Accounts.module.css";
 import "antd/dist/antd.css";
 
