@@ -13,6 +13,11 @@
   height: 20%;
 }
 
+svg {
+  width: 1.5rem;
+  height: auto;
+}
+
 .MenuItem:hover {
   background-color: white;
 }

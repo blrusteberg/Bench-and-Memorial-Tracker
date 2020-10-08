@@ -1,6 +1,6 @@
 .inputLabel {
   text-align: left;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #6e6e6e;
 }
 
@@ -52,15 +52,16 @@
 .valueTypeInputCell {
   display: flex;
   align-items: center;
+  margin-top: 2.5%;
   justify-content: center;
 }
 
 .noError {
   visibility: hidden;
-  font-size: 10px;
+  font-size: 1.2rem;
 }
 
 .error {
   color: red;
-  font-size: 10px;
+  font-size: 1.2rem;
 }

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Table, Space, Form, Input } from "antd";
+import { Table, Space, Form, Input, Popconfirm } from "antd";
 
 import styles from "./Attributes.module.css";
 
@@ -15,25 +15,77 @@ class Attributes extends React.Component {
     ],
   };
 
+  EditableMemorialCell = ({
+    editing,
+    dataIndex,
+    title,
+    inputType,
+    record,
+    index,
+    children,
+    ...restProps
+  }) => {
+    console.log(
+      "editing: ",
+      editing,
+      "dataIndex",
+      dataIndex,
+      "title: ",
+      title,
+      "inputType: ",
+      inputType,
+      "record",
+      record,
+      "index",
+      index,
+      "children",
+      children,
+      "restProps",
+      restProps
+    );
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex}
+            rules={[
+              {
+                required: true,
+                message: `Please Input ${title}!`,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
+
   columns = [
     {
       title: "Name",
       dataIndex: "Name",
+      editable: true,
     },
     {
       title: "ValueType",
       dataIndex: "ValueType",
       align: "center",
+      editable: false,
     },
     {
       title: "Action",
       dataIndex: "operation",
-      render: (value, row, index) => (
-        <Space size="small" align="center">
+      render: (value, row, index) => {
+        return <Space size="small" align="center">
           <a onClick={this.onEditAttributeClick}>Edit</a>
           <a onClick={() => this.onDeleteAttributeClick(row.Id)}>Delete</a>
         </Space>
-      ),
+      },
+      
       align: "center",
     },
   ];
@@ -49,6 +101,7 @@ class Attributes extends React.Component {
 
   onDeleteAttributeClick = (id) => {
     this.deleteAttribute(id);
+    
   };
 
   deleteAttribute = (id) => {
@@ -57,10 +110,11 @@ class Attributes extends React.Component {
 
   onEditAttributeClick = (attribute) => {
     this.editAttribute(attribute);
+  
   };
 
   editAttribute = (attribute) => {
-    console.log("Editing Attribute: ", attribute);
+    console.log("Editing Attribute: ", attribute.Name);
   };
 
   formatAttributesForTable = () => {

@@ -178,7 +178,6 @@ class TaggerForm extends React.Component {
       <div className={styles.loadingTitle}>Loading...</div>
     ) : (
       <div className={styles.container}>
-        <div className={styles.title}>Tagger Form</div>
         <div className={styles.dropDownWrapper}>
           <div>Memorial Type</div>
           <select
