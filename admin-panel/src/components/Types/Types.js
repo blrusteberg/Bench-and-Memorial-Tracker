@@ -64,9 +64,8 @@ class Types extends React.Component {
   render() {
     return (
       <div className={styles.container}>
-        <div className={styles.title}>Memorial Types Form</div>
         <div className={styles.dropDownWrapper}>
-          <div>Memorial Types</div>
+          <div className={styles.memorialTypes}>Memorial Types</div>
           <Dropdown
             types={this.state.initialTypes}
             selectedTypeIndex={this.state.selectedTypeIndex}
