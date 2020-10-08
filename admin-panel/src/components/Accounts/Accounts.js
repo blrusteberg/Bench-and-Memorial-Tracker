@@ -64,7 +64,7 @@ class Accounts extends React.Component {
 
   render() {
     return (
-      <Table className={styles.accounts} dataSource={this.formatForTable()} pagination={false}>
+      <Table className={styles.accounts} dataSource={accounts} pagination={false}>
         <ColumnGroup title="Account Info">
           <Column title="Id" dataIndex="id" key="id" />
           <Column title="Email" dataIndex="email" key="email" />
