@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Table, Space, Form, Input } from "antd";
 
+import AttributesTable from "./AttributesTable/AttributesTable";
 import styles from "./Memorials.module.css";
 
 class Memorials extends React.Component {
@@ -55,7 +56,7 @@ class Memorials extends React.Component {
     children,
     ...restProps
   }) => {
-    
+    /*
     console.log(
       "editing: ",
       editing,
@@ -74,6 +75,7 @@ class Memorials extends React.Component {
       "restProps",
       restProps
     );
+    */
     return (
       <td {...restProps}>
         {editing ? (
@@ -102,7 +104,6 @@ class Memorials extends React.Component {
       )
       .then((res) => {
         this.setState({ Memorials: res.data });
-        console.log("STATE: ", this.state);
       });
   }
 
@@ -117,7 +118,6 @@ class Memorials extends React.Component {
   onEditMemorialClick = (memorial) => {
     this.editMemorial(memorial);
   };
-
 
   editMemorial = (memorial) => {
     console.log("Editing Memorial: ", memorial);
@@ -146,53 +146,6 @@ class Memorials extends React.Component {
     });
   };
 
-  getAttributesTable = (row) => {
-    let attributes = [];
-    for (let i = 0; i < this.state.Memorials.length; i++) {
-      if (this.state.Memorials[i].Id === row.Id) {
-        attributes = this.state.Memorials[i].Type.Attributes;
-        attributes = attributes.map((attribute) => {
-          attribute.key = attribute.Id;
-          return attribute;
-        });
-        break;
-      }
-    }
-    const columns = [
-      { title: "Name", dataIndex: "Name" },
-      { title: "Value Type", dataIndex: "ValueType", align: "center" },
-      { title: "Value", dataIndex: "Value", align: "center" },
-      {
-        title: "Required",
-        dataIndex: "Required",
-        render: (required) =>
-          required ? <div className={styles.Required}>*</div> : null,
-        align: "center",
-      },
-      {
-        title: "Action",
-        dataIndex: "operation",
-        key: "operation",
-        render: (value, row, index) => {
-          return (
-            <Space size="small" align="center">
-              <a onClick={() => this.onEditAttributeClick()}>Edit</a>
-              <a onClick={() => this.onDeleteAttributeClick(row.Id)}>Delete</a>
-            </Space>
-          );
-        },
-        align: "center",
-      },
-    ];
-
-    return (
-      <Table
-        className={styles.Attributes}
-        columns={columns}
-        dataSource={attributes}
-      />
-    );
-  };
 
   render() {
     return (
@@ -200,7 +153,9 @@ class Memorials extends React.Component {
         className={styles.Memorials}
         columns={this.columns}
         dataSource={this.formatMemorialsForTable()}
-        expandedRowRender={this.getAttributesTable}
+        expandedRowRender={(memorial) => (
+          <AttributesTable attributes={memorial.Type.Attributes} />
+        )}
         pagination={false}
         scroll={{ pagination: false }}
         components={{
