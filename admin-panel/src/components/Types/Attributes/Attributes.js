@@ -172,7 +172,6 @@ class Attributes extends React.Component {
             newTypeName
           )
           .then((res) => {
-            console.log(res.data);
           })
           .catch((error) => {
             console.log(error);
@@ -187,7 +186,6 @@ class Attributes extends React.Component {
           newMemorialTypesObject
         )
         .then((res) => {
-          console.log(res.data);
           window.location = "/memorialTypes";
         })
         .catch((error) => {
@@ -204,7 +202,6 @@ class Attributes extends React.Component {
           newMemorialTypesObject
         )
         .then((res) => {
-          console.log(res.data);
           window.location = "/memorialTypes";
         })
         .catch((error) => {
@@ -223,7 +220,6 @@ class Attributes extends React.Component {
         `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`
       )
       .then((res) => {
-        console.log(res.data);
         window.location = "/memorialTypes";
       })
       .catch((error) => {
