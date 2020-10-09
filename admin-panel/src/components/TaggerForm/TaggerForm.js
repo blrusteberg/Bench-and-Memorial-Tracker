@@ -147,8 +147,8 @@ class TaggerForm extends React.Component {
 
     if (isValid && areCoordsValid && isMemorialNameValid) {
       axios
-        .post(`${process.env.REACT_APP_API_BASE_URL}/memorials/values`, this.state.Memorial)
-        .then(() => window.location = "/taggerForm");
+      .post(`${process.env.REACT_APP_API_BASE_URL}/memorials/values`, this.state.Memorial)
+      .then(() => window.location = "/taggerForm");
     } else {
       this.setState({
         areCoordsValid: areCoordsValid,
