@@ -6,6 +6,8 @@ import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import Popup from "./Popup/Popup";
 import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import 'antd/dist/antd.css';
+import { Modal, Button } from 'antd';
 
 class Attributes extends React.Component {
   constructor(props) {
@@ -374,38 +376,37 @@ class Attributes extends React.Component {
             ))}
           </tbody>
         </table>
-        <div className={styles.buttonsWrapper}>
-          <div className={styles.saveButtonWrapper}>
+        <div>
             {showSaveButton && isExistingType && (
-              <button
-                className={styles.saveButton}
+              <Button
+                type="primary"
                 onClick={() => this.togglePopup()}
                 disabled={isSaving}
+                block
               >
                 Save Type
-              </button>
+              </Button>
             )}
-          </div>
-          <div className={styles.saveButtonWrapper}>
             {!isExistingType && (
-              <button
-                className={styles.saveButton}
+              <Button
+                type="primary"
                 onClick={() => this.saveAttributes()}
                 disabled={isSaving}
+                block
               >
                 Save Type
-              </button>
+              </Button>
             )}
-          </div>
           <div className={styles.deleteButtonWrapper}>
             {isExistingType ? (
-              <button
-                className={styles.deleteButton}
+              <Button
+                type="danger"
                 onClick={() => this.deleteType()}
                 disabled={isSaving}
+                block
               >
                 Delete Type
-              </button>
+              </Button>
             ) : null}
           </div>
         </div>
@@ -418,6 +419,7 @@ class Attributes extends React.Component {
             oldTypeName={this.props.oldTypeName}
             newTypeName={this.props.typeName}
             closePopup={this.togglePopup}
+            visible={showPopup}
           />
         )}
       </div>
