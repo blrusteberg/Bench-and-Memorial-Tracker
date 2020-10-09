@@ -21,12 +21,7 @@ class Accounts extends React.Component {
 
   columns = [
     {
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id'
-    },
-    {
-      title: 'Email',
+      title: 'Username',
       dataIndex: 'email',
       key: 'email'
     },
@@ -40,10 +35,16 @@ class Accounts extends React.Component {
       title: 'Account Type',
       dataIndex: 'accountType',
       key: 'accountType'
+    },
+    {
+      title: 'Delete Access',
+      dataIndex: 'delAccess',
+      key: 'delAccess'
     }
 
   ];
   
+  /*
   componentDidMount() {
     axios
       .get(
@@ -54,7 +55,7 @@ class Accounts extends React.Component {
         console.log("STATE: ", this.state);
       })
   }
-  
+  */
   formatForTable = () => {
     return this.state.Accounts.map((accounts) => {
       accounts.key = accounts.Id;
@@ -65,12 +66,10 @@ class Accounts extends React.Component {
   render() {
     return (
       <Table className={styles.accounts} dataSource={accounts} pagination={false}>
-        <ColumnGroup title="Account Info">
-          <Column title="Id" dataIndex="id" key="id" />
-          <Column title="Email" dataIndex="email" key="email" />
-          <Column title="Password" dataIndex="password" key="password" />
-        </ColumnGroup>
+        <Column title="Username" dataIndex="email" key="email" />
+        <Column title="Password" dataIndex="password" key="password" />
         <Column title="Role" dataIndex="accountType" key="accountType" />
+        <Column title="Delete Access" dataIndex="delAccess" key="delAccess" />
         <Column
           title="Actions"
           key="action"
