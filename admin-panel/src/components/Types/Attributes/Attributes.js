@@ -1,13 +1,13 @@
 import React from "react";
 import axios from "axios";
-import lodash from "lodash";
+import lodash, { set } from "lodash";
 import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import Popup from "./Popup/Popup";
 import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import 'antd/dist/antd.css';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 
 class Attributes extends React.Component {
   constructor(props) {
@@ -22,6 +22,9 @@ class Attributes extends React.Component {
       showPopup: false,
       deletedAttributeCount: 0,
       deletedAttributes: [],
+      showDeleteModal: false,
+      invalidTextInput: false,
+      deleteTypeInput: ""
     };
   }
 
@@ -210,22 +213,44 @@ class Attributes extends React.Component {
     }
   };
 
-  deleteType = () => {
+  toggleDeleteTypeModal = () => {
     this.setState({
-      isSaving: true,
-    });
+      showDeleteModal: !this.state.showDeleteModal,
+      deleteTypeInput: "",
+      invalidTextInput: false
+    })
+  }
 
-    axios
-      .delete(
-        `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`
-      )
-      .then((res) => {
-        window.location = "/types";
-      })
-      .catch((error) => {
-        console.log(error);
+  deleteType = () => {
+
+    if(this.props.oldTypeName.toLowerCase() === this.state.deleteTypeInput.toLowerCase()){
+      this.setState({
+        isSaving: true,
+        invalidTextInput: false
       });
+
+      axios
+        .delete(
+          `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`
+        )
+        .then((res) => {
+          window.location = "/types";
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      this.setState({
+        invalidTextInput: true
+      })
+    }
   };
+
+  handleDeleteTypeInput = (event) => {
+    this.setState({
+      deleteTypeInput: event.target.value,
+    });
+  }
 
   togglePopup = () => {
     if (this.state.showPopup === false) {
@@ -402,7 +427,7 @@ class Attributes extends React.Component {
             {isExistingType ? (
               <Button
                 type="danger"
-                onClick={() => this.deleteType()}
+                onClick={() => this.toggleDeleteTypeModal()}
                 disabled={isSaving}
                 block
               >
@@ -423,6 +448,20 @@ class Attributes extends React.Component {
             visible={showPopup}
           />
         )}
+        <Modal
+          className={styles.modal}
+          visible={this.state.showDeleteModal}
+          onOk={this.deleteType}
+          onCancel={this.toggleDeleteTypeModal}
+        >
+          <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
+          <input
+                  type="text"
+                  value={this.state.deleteTypeInput}
+                  onChange={this.handleDeleteTypeInput}
+          />
+          {this.state.invalidTextInput && <p className={styles.invalidTypeName}>Incorrect type name</p>}
+        </Modal>
       </div>
     );
   }

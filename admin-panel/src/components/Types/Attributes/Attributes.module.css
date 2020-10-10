@@ -56,3 +56,13 @@ td {
 .saveButtonWrapper {
   margin-top: 15%;
 }
+
+.modal {
+  text-align: center;
+}
+
+.invalidTypeName {
+  margin-top: 3%;
+  text-transform: uppercase;
+  color: rgb(211, 0, 0);
+}
