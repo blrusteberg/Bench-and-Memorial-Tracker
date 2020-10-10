@@ -24,13 +24,7 @@ const AttributesTable = (props) => {
       title: "Action",
       dataIndex: "operation",
       key: "operation",
-      render: (value, row, index) => {
-        return (
-          <Space size="small" align="center">
-            <a onClick={() => this.onEditAttributeClick(row)}>Edit</a>
-          </Space>
-        );
-      },
+      render: (value, row, index) => <a>Edit</a>,
       align: "center",
     },
   ];

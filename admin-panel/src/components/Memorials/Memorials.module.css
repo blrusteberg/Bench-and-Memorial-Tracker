@@ -1,6 +1,6 @@
-.Memorials {
-  width: 100%;
-  height: 100%;
-  margin: 2%;
-  overflow: auto;
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
 }

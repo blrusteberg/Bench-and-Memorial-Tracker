@@ -1,0 +1,11 @@
+.attribute {
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
+  padding: 1.25%;
+}
+
+.attributeName {
+  margin-right: 10px;
+  font-weight: bold;
+}

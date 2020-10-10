@@ -123,9 +123,9 @@ router.put("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
+    await Value.query().delete().where("MemorialId", req.params.id);
     const numDeleted = await Memorial.query().deleteById(req.params.id);
-    const s = numDeleted === 1 ? "" : "s";
-    res.status(200).json({ message: `${numDeleted} memorial${s} deleted.` });
+    res.status(200).json({ message: `${numDeleted} memorial deleted.` });
   } catch (err) {
     Error.errorHandler(err, res);
   }
