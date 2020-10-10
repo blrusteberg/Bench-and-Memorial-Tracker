@@ -375,24 +375,28 @@ class Attributes extends React.Component {
         </table>
         <div>
             {showSaveButton && isExistingType && (
-              <Button
-                type="primary"
-                onClick={() => this.togglePopup()}
-                disabled={isSaving}
-                block
-              >
-                Save Type
-              </Button>
+              <div className={styles.saveButtonWrapper}>
+                <Button
+                  type="primary"
+                  onClick={() => this.togglePopup()}
+                  disabled={isSaving}
+                  block
+                >
+                  Save Type
+                </Button>
+              </div>
             )}
             {!isExistingType && (
-              <Button
-                type="primary"
-                onClick={() => this.saveAttributes()}
-                disabled={isSaving}
-                block
-              >
-                Save Type
+              <div className={styles.saveButtonWrapper}>
+                <Button
+                  type="primary"
+                  onClick={() => this.saveAttributes()}
+                  disabled={isSaving}
+                  block
+                >
+                  Save Type
               </Button>
+              </div>
             )}
           <div className={styles.deleteButtonWrapper}>
             {isExistingType ? (
