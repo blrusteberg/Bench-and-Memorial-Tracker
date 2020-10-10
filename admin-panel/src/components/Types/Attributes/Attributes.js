@@ -7,7 +7,7 @@ import Popup from "./Popup/Popup";
 import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import 'antd/dist/antd.css';
-import { Button, Alert } from 'antd';
+import { Button } from 'antd';
 
 class Attributes extends React.Component {
   constructor(props) {
