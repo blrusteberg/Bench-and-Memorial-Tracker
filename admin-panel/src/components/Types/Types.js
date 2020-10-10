@@ -81,7 +81,7 @@ class Types extends React.Component {
             />
           </div>
           {this.state.selectedTypeIndex ? (
-            <div>
+            <>
               <div className={styles.memorialTypeNameWrapper}>
                 <div className={styles.memorialTypeName}>Memorial Type Name</div>
                 <input
@@ -102,7 +102,7 @@ class Types extends React.Component {
                   isTypeNameChanged={this.state.isTypeNameChanged}
                 />
               </div>
-            </div>
+            </>
           ) : null}
         </div>)
     );
