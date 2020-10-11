@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Spin, notification, Result } from "antd";
+import { Spin, Result, notification } from "antd";
 
 import styles from "./Memorials.module.css";
 import DeleteMemorialModal from "./Components/DeleteMemorialModal";
@@ -20,9 +20,10 @@ const Memorials = () => {
       },
     },
   ]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
+  const [savingError, setSavingError] = useState();
   const [loading, setLoading] = useState(true);
-  const [deletingMemorial, setDeletingMemorial] = useState(null);
+  const [deletingMemorial, setDeletingMemorial] = useState();
 
   useEffect(() => {
     axios
@@ -35,6 +36,22 @@ const Memorials = () => {
       })
       .catch((error) => setError(error));
   }, []);
+
+  const saveMemorial = (row, key, onSuccess, onFail) => {
+    axios
+      .put(`${process.env.REACT_APP_API_BASE_URL}/memorials/${key}`, {
+        Name: row.Name,
+      })
+      .then(() => {
+        saveLocalMemorial(row, key);
+        onSuccess();
+      })
+      .catch((error) => {
+        setSavingError(error);
+        openNotification("Unable to save memorial.", error.message, "error");
+        onFail();
+      });
+  };
 
   const deleteLocalMemorial = (key) => {
     const tempMemorials = [...memorials];
@@ -53,7 +70,34 @@ const Memorials = () => {
     setDeletingMemorial(null);
   };
 
+  const saveLocalMemorial = (row, key) => {
+    const newMemorials = [...memorials];
+    const index = newMemorials.findIndex((memorial) => key === memorial.key);
+    if (index > -1) {
+      const item = newMemorials[index];
+      newMemorials.splice(index, 1, { ...item, ...row });
+    } else {
+    }
+    setMemorials(newMemorials);
+  };
+
   const onDeleteClick = (memorial) => setDeletingMemorial(memorial);
+
+  const openNotification = (
+    message,
+    description,
+    type = null,
+    onClick = () => {},
+    onClose = () => {}
+  ) => {
+    notification.open({
+      message: message,
+      description: description,
+      type: type,
+      onClick: () => onClick(),
+      onClose: () => onClose(),
+    });
+  };
 
   return error ? (
     <Result status="500" subTitle="Sorry, something went wrong." />
@@ -68,7 +112,11 @@ const Memorials = () => {
           onCancelClick={() => setDeletingMemorial(null)}
         />
       ) : null}
-      <MemorialsTable memorials={memorials} onDeleteClick={onDeleteClick} />
+      <MemorialsTable
+        memorials={memorials}
+        onDeleteClick={onDeleteClick}
+        saveMemorial={saveMemorial}
+      />
     </>
   );
 };

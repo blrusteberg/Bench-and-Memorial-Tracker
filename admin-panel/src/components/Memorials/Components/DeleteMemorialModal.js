@@ -23,7 +23,7 @@ const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
   return (
     <Modal
       visible={visible}
-      title={"Are you sure ?"}
+      title={"Are you sure you want to delete this memorial?"}
       icon={<ExclamationCircleOutlined />}
       content="Add row details here..."
       okText="Delete"
@@ -36,16 +36,25 @@ const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
         setVisible(false);
       }}
     >
-      <Card title={memorial.Name}>
-        {memorial.Type.Attributes.map((attribute) => {
-          console.log("ATTRIBUTE: ", attribute);
-          return (
-            <div className={styles.attribute}>
-              <div className={styles.attributeName}>{attribute.Name}:</div>
-              <div>{attribute.Value}</div>
-            </div>
-          );
-        })}
+      <Card title={memorial.Name} size="large">
+        <div className={styles.cardBody}>
+          <div className={styles.attributes}>
+            {memorial.Type.Attributes.map((attribute) => {
+              return (
+                <div className={styles.attribute}>
+                  <div className={styles.attributeName}>{attribute.Name}:</div>
+                  <div>{attribute.Value}</div>
+                </div>
+              );
+            })}
+          </div>
+          <div className={styles.imageWrapper}>
+            <img
+              className={styles.memorialImage}
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQpQvu-Dgiig9gqnEazRVPss4UEyp-yUhMngw&usqp=CAU"
+            />
+          </div>
+        </div>
       </Card>
     </Modal>
   );

@@ -26,7 +26,7 @@ class Value extends Model {
 
   static get relationMappings() {
     const Attribute = require("./Attribute");
-    const Memorial = require("./Memorial");
+    const Memorial = require("./memorial");
 
     return {
       Attribute: {

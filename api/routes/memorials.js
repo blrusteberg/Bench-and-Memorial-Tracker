@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Error = require("../error/error");
 
-const Memorial = require("../models/Memorial");
+const Memorial = require("../models/memorial");
 const Value = require("../models/Value");
 
 router.get("/", async (req, res) => {
@@ -109,13 +109,12 @@ router.post("/values", async (req, res) => {
   }
 });
 
-router.put("/", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const numUpdated = await Memorial.query().findById(req.body.id).patch({
-      TypeId: req.body.typeId,
+    const numUpdated = await Memorial.query().findById(req.params.id).patch({
+      Name: req.body.Name,
     });
-    const s = numUpdated === 1 ? "" : "s";
-    res.status(204).json({ message: `Updated ${numUpdated} memorial${s}` });
+    res.status(204).json({ message: `Updated ${numUpdated} memorial` });
   } catch (err) {
     Error.errorHandler(err, res);
   }

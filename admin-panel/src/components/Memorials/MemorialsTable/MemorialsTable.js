@@ -6,21 +6,42 @@ import AttributesTable from "./AttributesTable/AttributesTable";
 import EditableCell from "../Components/EditableCell";
 import DeleteMemorialModal from "../Components/DeleteMemorialModal";
 
-const MemorialsTable = ({ memorials, onDeleteClick }) => {
+const MemorialsTable = ({ memorials, onDeleteClick, saveMemorial }) => {
   const [editingKey, setEditingKey] = useState("");
   const [form] = Form.useForm();
+  const [saving, setSaving] = useState(false);
 
   const isEditing = (record) => editingKey === record.key;
 
-  const onSaveMemorialClick = async (memorialId) => {
+  const onSaveClick = async (key) => {
+    setSaving(true);
     try {
-      const row = await new Form.validateFields();
-      const newData = [...memorials];
-      const index = newData.findIndex((memorial) => memorial.Id === memorialId);
+      const row = await form.validateFields();
+      saveMemorial(
+        row,
+        key,
+        () => {
+          setEditingKey("");
+          setSaving(false);
+        },
+        () => {
+          setSaving(false);
+        }
+      );
     } catch (error) {
-      console.log("Validation failed: ", error);
+      setSaving(false);
     }
   };
+
+  const onEditClick = (record) => {
+    form.setFieldsValue({
+      Name: "",
+      ...record,
+    });
+    setEditingKey(record.key);
+  };
+
+  const onCancelClick = () => setEditingKey("");
 
   const formatMemorialsForTable = () =>
     memorials.map((memorial) => {
@@ -48,12 +69,17 @@ const MemorialsTable = ({ memorials, onDeleteClick }) => {
       render: (_, record) => {
         return isEditing(record) ? (
           <Space size="small" align="center">
-            <a onClick={() => onSaveMemorialClick(record)}>Save</a>
-            <a onClick={() => setEditingKey("")}>Cancel</a>
+            {saving ? (
+              <p>Saving...</p>
+            ) : (
+              <a onClick={() => onSaveClick(record.key)}>Save</a>
+            )}
+
+            <a onClick={onCancelClick}>Cancel</a>
           </Space>
         ) : (
           <Space size="small" align="center">
-            <a onClick={() => setEditingKey(record.key)}>Edit</a>
+            <a onClick={() => onEditClick(record)}>Edit</a>
             <a onClick={() => onDeleteClick(record)}>Delete</a>
           </Space>
         );
@@ -66,6 +92,7 @@ const MemorialsTable = ({ memorials, onDeleteClick }) => {
       ? {
           ...col,
           onCell: (memorial) => ({
+            record: memorial,
             editing: isEditing(memorial),
             dataIndex: col.dataIndex,
             title: col.title,
@@ -76,7 +103,7 @@ const MemorialsTable = ({ memorials, onDeleteClick }) => {
   });
 
   return (
-    <Form component={false}>
+    <Form component={false} form={form}>
       <Table
         className={styles.Memorials}
         columns={mergedColumns}
@@ -84,6 +111,7 @@ const MemorialsTable = ({ memorials, onDeleteClick }) => {
         expandedRowRender={(memorial) => (
           <AttributesTable attributes={memorial.Type.Attributes} />
         )}
+        bordered
         components={{
           body: {
             cell: EditableCell,
