@@ -1,11 +1,13 @@
 import React from "react";
 import axios from "axios";
-import lodash from "lodash";
+import lodash, { set } from "lodash";
 import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import Popup from "./Popup/Popup";
 import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import 'antd/dist/antd.css';
+import { Button, Modal } from 'antd';
 
 class Attributes extends React.Component {
   constructor(props) {
@@ -20,6 +22,9 @@ class Attributes extends React.Component {
       showPopup: false,
       deletedAttributeCount: 0,
       deletedAttributes: [],
+      showDeleteModal: false,
+      invalidTextInput: false,
+      deleteTypeInput: ""
     };
   }
 
@@ -35,8 +40,8 @@ class Attributes extends React.Component {
             .then((response) => {
               let selectedAttributes = [];
               response.data.forEach((attribute, index) => {
-                attribute.Name.toLowerCase() == "longitude" ||
-                attribute.Name.toLowerCase() == "latitude"
+                attribute.Name.toLowerCase() === "longitude" ||
+                attribute.Name.toLowerCase() === "latitude"
                   ? selectedAttributes.unshift(response.data[index])
                   : selectedAttributes.push(response.data[index]);
               });
@@ -50,8 +55,8 @@ class Attributes extends React.Component {
               ) {
                 return (
                   response.data.filter(function (selectedAttributes) {
-                    return selectedAttributes.Id == allAttributes.Id;
-                  }).length == 0
+                    return selectedAttributes.Id === allAttributes.Id;
+                  }).length === 0
                 );
               });
               const sortedAttributes = filteredAttributes.sort((a, b) =>
@@ -66,18 +71,18 @@ class Attributes extends React.Component {
             });
         } else {
           const longitudeAttribute = res.data.find(
-            (item) => item.Name.toLowerCase() == "longitude"
+            (item) => item.Name.toLowerCase() === "longitude"
           );
           const latitudeAttribute = res.data.find(
-            (item) => item.Name.toLowerCase() == "latitude"
+            (item) => item.Name.toLowerCase() === "latitude"
           );
           const selectedAttributes = [longitudeAttribute, latitudeAttribute];
 
           let filteredAttributes = res.data.filter(function (allAttributes) {
             return (
               selectedAttributes.filter(function (selectedAttributes) {
-                return selectedAttributes.Id == allAttributes.Id;
-              }).length == 0
+                return selectedAttributes.Id === allAttributes.Id;
+              }).length === 0
             );
           });
 
@@ -85,7 +90,6 @@ class Attributes extends React.Component {
             a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1
           );
           this.setState({
-            selectedAttributes,
             selectedAttributes,
             allAttributes: [...sortedAttributes],
           });
@@ -116,7 +120,7 @@ class Attributes extends React.Component {
     selectedAttributes.push(filteredAttribute);
 
     allAttributes = allAttributes.filter(function (item) {
-      return item.Id != attributeId;
+      return item.Id !== attributeId;
     });
 
     this.setState({
@@ -136,7 +140,7 @@ class Attributes extends React.Component {
     allAttributes.push(filteredAttribute);
 
     selectedAttributes = selectedAttributes.filter(function (item) {
-      return item.Id != attributeId;
+      return item.Id !== attributeId;
     });
 
     const sortedAttributes = allAttributes.sort((a, b) =>
@@ -161,7 +165,7 @@ class Attributes extends React.Component {
     });
 
     if (this.props.selectedTypeId) {
-      if (this.props.typeName != this.props.oldTypeName) {
+      if (this.props.typeName !== this.props.oldTypeName) {
         const newTypeName = { Name: this.props.typeName };
         axios
           .put(
@@ -171,7 +175,6 @@ class Attributes extends React.Component {
             newTypeName
           )
           .then((res) => {
-            console.log(res.data);
           })
           .catch((error) => {
             console.log(error);
@@ -186,8 +189,7 @@ class Attributes extends React.Component {
           newMemorialTypesObject
         )
         .then((res) => {
-          console.log(res.data);
-          window.location = "/memorialTypes";
+          window.location = "/types";
         })
         .catch((error) => {
           console.log(error);
@@ -203,8 +205,7 @@ class Attributes extends React.Component {
           newMemorialTypesObject
         )
         .then((res) => {
-          console.log(res.data);
-          window.location = "/memorialTypes";
+          window.location = "/types";
         })
         .catch((error) => {
           console.log(error);
@@ -212,23 +213,44 @@ class Attributes extends React.Component {
     }
   };
 
-  deleteType = () => {
+  toggleDeleteTypeModal = () => {
     this.setState({
-      isSaving: true,
-    });
+      showDeleteModal: !this.state.showDeleteModal,
+      deleteTypeInput: "",
+      invalidTextInput: false
+    })
+  }
 
-    axios
-      .delete(
-        `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`
-      )
-      .then((res) => {
-        console.log(res.data);
-        window.location = "/memorialTypes";
-      })
-      .catch((error) => {
-        console.log(error);
+  deleteType = () => {
+
+    if(this.props.oldTypeName.toLowerCase() === this.state.deleteTypeInput.toLowerCase()){
+      this.setState({
+        isSaving: true,
+        invalidTextInput: false
       });
+
+      axios
+        .delete(
+          `${process.env.REACT_APP_API_BASE_URL}/types/${this.props.selectedTypeId}`
+        )
+        .then((res) => {
+          window.location = "/types";
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      this.setState({
+        invalidTextInput: true
+      })
+    }
   };
+
+  handleDeleteTypeInput = (event) => {
+    this.setState({
+      deleteTypeInput: event.target.value,
+    });
+  }
 
   togglePopup = () => {
     if (this.state.showPopup === false) {
@@ -304,11 +326,12 @@ class Attributes extends React.Component {
             </tr>
             {selectedAttributes.map((item, n) => (
               <tr>
-                {item.Name.toLowerCase() == "longitude" ||
-                item.Name.toLowerCase() == "latitude"
+                {item.Name.toLowerCase() === "longitude" ||
+                item.Name.toLowerCase() === "latitude"
                   ? [
                       <td>
                         <img
+                          alt=""
                           className={styles.hiddenDeleteAttributeButton}
                           src={deleteAttributeButton}
                         />
@@ -338,8 +361,9 @@ class Attributes extends React.Component {
                     ]
                   : [
                       <td>
-                        <div className={styles.deleteArributeWrapper}>
+                        <div className={styles.deleteAttributeWrapper}>
                           <img
+                            alt=""
                             className={styles.deleteAttributeButton}
                             src={deleteAttributeButton}
                             onClick={() => this.deleteAttribute(item.Id)}
@@ -374,38 +398,41 @@ class Attributes extends React.Component {
             ))}
           </tbody>
         </table>
-        <div className={styles.buttonsWrapper}>
-          <div className={styles.saveButtonWrapper}>
+        <div>
             {showSaveButton && isExistingType && (
-              <button
-                className={styles.saveButton}
-                onClick={() => this.togglePopup()}
-                disabled={isSaving}
-              >
-                Save Type
-              </button>
+              <div className={styles.saveButtonWrapper}>
+                <Button
+                  type="primary"
+                  onClick={() => this.togglePopup()}
+                  disabled={isSaving}
+                  block
+                >
+                  Save Type
+                </Button>
+              </div>
             )}
-          </div>
-          <div className={styles.saveButtonWrapper}>
             {!isExistingType && (
-              <button
-                className={styles.saveButton}
-                onClick={() => this.saveAttributes()}
-                disabled={isSaving}
-              >
-                Save Type
-              </button>
+              <div className={styles.saveButtonWrapper}>
+                <Button
+                  type="primary"
+                  onClick={() => this.saveAttributes()}
+                  disabled={isSaving}
+                  block
+                >
+                  Save Type
+              </Button>
+              </div>
             )}
-          </div>
           <div className={styles.deleteButtonWrapper}>
             {isExistingType ? (
-              <button
-                className={styles.deleteButton}
-                onClick={() => this.deleteType()}
+              <Button
+                type="danger"
+                onClick={() => this.toggleDeleteTypeModal()}
                 disabled={isSaving}
+                block
               >
                 Delete Type
-              </button>
+              </Button>
             ) : null}
           </div>
         </div>
@@ -418,8 +445,23 @@ class Attributes extends React.Component {
             oldTypeName={this.props.oldTypeName}
             newTypeName={this.props.typeName}
             closePopup={this.togglePopup}
+            visible={showPopup}
           />
         )}
+        <Modal
+          className={styles.modal}
+          visible={this.state.showDeleteModal}
+          onOk={this.deleteType}
+          onCancel={this.toggleDeleteTypeModal}
+        >
+          <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
+          <input
+                  type="text"
+                  value={this.state.deleteTypeInput}
+                  onChange={this.handleDeleteTypeInput}
+          />
+          {this.state.invalidTextInput && <p className={styles.invalidTypeName}>Incorrect type name</p>}
+        </Modal>
       </div>
     );
   }
