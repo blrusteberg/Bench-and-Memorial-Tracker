@@ -361,7 +361,7 @@ class Attributes extends React.Component {
                     ]
                   : [
                       <td>
-                        <div className={styles.deleteArributeWrapper}>
+                        <div className={styles.deleteAttributeWrapper}>
                           <img
                             alt=""
                             className={styles.deleteAttributeButton}
