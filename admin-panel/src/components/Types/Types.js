@@ -13,6 +13,7 @@ class Types extends React.Component {
     selectedTypeIndex: 0,
     newTypeName: "",
     isTypeNameChanged: false,
+    isLoading: true,
   };
 
   componentDidMount() {
@@ -29,9 +30,13 @@ class Types extends React.Component {
         memorialTypes.unshift(addType);
         this.setState({
           initialTypes: memorialTypes,
+          isLoading: false,
         });
       })
       .catch((error) => {
+        this.setState({
+          isLoading: true,
+        });
         console.log(error);
       });
   }
@@ -63,41 +68,43 @@ class Types extends React.Component {
 
   render() {
     return (
-      <div className={styles.container}>
-        <div className={styles.title}>Memorial Types Form</div>
-        <div className={styles.dropDownWrapper}>
-          <div>Memorial Types</div>
-          <Dropdown
-            types={this.state.initialTypes}
-            selectedTypeIndex={this.state.selectedTypeIndex}
-            dropdownChange={this.dropdownChange}
-          />
-        </div>
-        {this.state.selectedTypeIndex ? (
-          <div>
-            <div className={styles.memorialTypeNameWrapper}>
-              <div className={styles.memorialTypeName}>Memorial Type Name</div>
-              <input
-                className={styles.memorialTypeNameInput}
-                type="text"
-                value={this.state.newTypeName}
-                placeholder="Enter a name..."
-                onChange={this.handleNewTypeNameChange}
-                maxLength={50}
-              />
-            </div>
-            <div className={styles.attributesWrapper}>
-              <Attributes
-                key={this.state.selected.Id}
-                selectedTypeId={this.state.selected.Id}
-                oldTypeName={this.state.selected.Name}
-                typeName={this.state.newTypeName}
-                isTypeNameChanged={this.state.isTypeNameChanged}
-              />
-            </div>
+      this.state.isLoading ? (
+        <div className={styles.loadingTitle}>Loading....</div>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.dropDownWrapper}>
+            <div className={styles.memorialTypes}>Memorial Types</div>
+            <Dropdown
+              types={this.state.initialTypes}
+              selectedTypeIndex={this.state.selectedTypeIndex}
+              dropdownChange={this.dropdownChange}
+            />
           </div>
-        ) : null}
-      </div>
+          {this.state.selectedTypeIndex ? (
+            <>
+              <div className={styles.memorialTypeNameWrapper}>
+                <div className={styles.memorialTypeName}>Memorial Type Name</div>
+                <input
+                  className={styles.memorialTypeNameInput}
+                  type="text"
+                  value={this.state.newTypeName}
+                  placeholder="Enter a name..."
+                  onChange={this.handleNewTypeNameChange}
+                  maxLength={50}
+                />
+              </div>
+              <div className={styles.attributesWrapper}>
+                <Attributes
+                  key={this.state.selected.Id}
+                  selectedTypeId={this.state.selected.Id}
+                  oldTypeName={this.state.selected.Name}
+                  typeName={this.state.newTypeName}
+                  isTypeNameChanged={this.state.isTypeNameChanged}
+                />
+              </div>
+            </>
+          ) : null}
+        </div>)
     );
   }
 }
