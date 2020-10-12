@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Space } from 'antd';
+import { Table, Space, Checkbox } from 'antd';
 import axios from "axios";
 import accounts from "../../data/mockAccounts.json"
 import styles from "./Accounts.module.css";
@@ -12,7 +12,7 @@ class Accounts extends React.Component {
     Accounts: [
       {
         Id: "",
-        email: "",
+        username: "",
         password: "",
         accountType: ""
       }
@@ -22,8 +22,8 @@ class Accounts extends React.Component {
   columns = [
     {
       title: 'Username',
-      dataIndex: 'email',
-      key: 'email'
+      dataIndex: 'username',
+      key: 'username'
     },
     {
       title: 'Password',
@@ -39,7 +39,20 @@ class Accounts extends React.Component {
     {
       title: 'Delete Access',
       dataIndex: 'delAccess',
-      key: 'delAccess'
+      render: (hasDelete) =>
+        hasDelete ? <Checkbox checked={true} disabled={true}/>: <Checkbox checked={false} disabled={true}/>
+    },
+    {
+      title: "Action",
+      dataIndex: "operation",
+      key: "operation",
+      render: (text, record) => (
+        <Space size="middle">
+          <a>Edit</a>
+          <a>Delete</a>
+        </Space>
+        
+      )
     }
 
   ];
@@ -48,7 +61,7 @@ class Accounts extends React.Component {
   componentDidMount() {
     axios
       .get(
-        `localhost:1337/accounts`
+        `${process.env.REACT_APP_API_BASE_URL}/accounts`
       )
       .then((res) => {
         this.setState({ Accounts: res.data });
@@ -65,22 +78,7 @@ class Accounts extends React.Component {
 
   render() {
     return (
-      <Table className={styles.accounts} dataSource={accounts} pagination={false}>
-        <Column title="Username" dataIndex="email" key="email" />
-        <Column title="Password" dataIndex="password" key="password" />
-        <Column title="Role" dataIndex="accountType" key="accountType" />
-        <Column title="Delete Access" dataIndex="delAccess" key="delAccess" />
-        <Column
-          title="Actions"
-          key="action"
-          render={(text, record) => (
-            <Space size="middle">
-              <a>Delete</a>
-              <a>Edit</a>
-            </Space>
-          )}
-        />
-      </Table>
+      <Table className={styles.accounts} dataSource={accounts} pagination={false} columns={this.columns} />
     )
   }
 }

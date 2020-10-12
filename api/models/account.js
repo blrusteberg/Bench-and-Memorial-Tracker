@@ -18,11 +18,12 @@ class Accounts extends Model {
       required: ["Id"],
       properties: {
         Id: { type: "string" },
-        email: {type: "string"},
+        username: {type: "string"},
         password: {type: "string"},
         accountType: {
             type: "string",
-            enum: ["tagger", "clerk", "admin"]}
+            enum: ["tagger", "clerk", "admin"]},
+        delAccess: {type: "bit"}
       },
     };
   }

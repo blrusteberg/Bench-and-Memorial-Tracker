@@ -1,107 +1,107 @@
 [
     {
         "id": 1,
-        "email": "tagger@siue.edu",
+        "username": "tagger@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "tagger",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 2,
-        "email": "admin@siue.edu",
+        "username": "admin@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "admin",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 3,
-        "email": "clerk@siue.edu",
+        "username": "clerk@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "clerk",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 4,
-        "email": "tagger@siue.edu",
+        "username": "tagger@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "tagger",
-        "delAccess": "false"
+        "delAccess": 0
     },
     {
         "id": 5,
-        "email": "admin@siue.edu",
+        "username": "admin@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "admin",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 6,
-        "email": "clerk@siue.edu",
+        "username": "clerk@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "clerk",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 7,
-        "email": "tagger@siue.edu",
+        "username": "tagger@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "tagger",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 8,
-        "email": "admin@siue.edu",
+        "username": "admin@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "admin",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 9,
-        "email": "clerk@siue.edu",
+        "username": "clerk@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "clerk",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 10,
-        "email": "tagger@siue.edu",
+        "username": "tagger@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "tagger",
-        "delAccess": "false"
+        "delAccess": 0
     },
     {
         "id": 11,
-        "email": "admin@siue.edu",
+        "username": "admin@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "admin",
-        "delAccess": "true"
+        "delAccess": 0
     },
     {
         "id": 12,
-        "email": "clerk@siue.edu",
+        "username": "clerk@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "clerk",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 13,
-        "email": "tagger@siue.edu",
+        "username": "tagger@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "tagger",
-        "delAccess": "false"
+        "delAccess": 0
     },
     {
         "id": 14,
-        "email": "admin@siue.edu",
+        "username": "admin@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "admin",
-        "delAccess": "true"
+        "delAccess": 1
     },
     {
         "id": 15,
-        "email": "clerk@siue.edu",
+        "username": "clerk@siue.edu",
         "password": "$2a1010ABRexSV9EdB67JqlgTEMan78HW4JP6tvsuMqqjMq",
         "accountType": "clerk",
-        "delAccess": "false"
+        "delAccess": 0
     }
 ]
