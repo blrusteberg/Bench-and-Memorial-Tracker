@@ -15,7 +15,6 @@ class Accounts extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["Id"],
       properties: {
         Id: { type: "string" },
         username: {type: "string"},
