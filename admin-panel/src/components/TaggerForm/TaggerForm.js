@@ -5,6 +5,7 @@ import cx from "classnames";
 
 import styles from "./TaggerForm.module.css";
 import AttributeForm from "./AttributeForm/AttributeForm";
+import { Input, Button } from "antd";
 
 class TaggerForm extends React.Component {
   state = {
@@ -178,9 +179,8 @@ class TaggerForm extends React.Component {
       <div className={styles.loadingTitle}>Loading...</div>
     ) : (
       <div className={styles.container}>
-        <div className={styles.title}>Tagger Form</div>
         <div className={styles.dropDownWrapper}>
-          <div>Memorial Type</div>
+          <div className={styles.dropDownHeader}>Memorial Type</div>
           <select
             name="Memorial-Types"
             id="Memorial-Types"
@@ -204,7 +204,7 @@ class TaggerForm extends React.Component {
           <div>
             <div className={styles.memorialNameWrapper}>
               <div className={styles.memorialName}>Memorial Name</div>
-              <input
+              <Input
                 className={styles.memorialNameInput}
                 type="text"
                 onChange={this.onMemorialNameChange}
@@ -247,26 +247,30 @@ class TaggerForm extends React.Component {
             )}
             <div className={styles.buttonsWrapper}>
               <div className={styles.fillCoordinatesButtonWrapper}>
-                <button
+                <Button
+                  type="primary"
                   className={styles.fillCoordinatesButton}
                   onClick={this.onFillCoordinatesClick}
                 >
                   Fill Coordinates
-                </button>
+                </Button>
               </div>
               <div className={styles.uploadButtonWrapper}>
                 <input style={{ display: "none" }} type="file" />
-                <button
+                <Button
+                  type="primary"
                   onClick={() => this.fileUploadHandler}
                   className={styles.uploadButton}
                 >
                   Upload/Capture Image
-                </button>
+                </Button>
               </div>
             </div>
 
             <div className={styles.saveButtonWrapper}>
-              <button
+              <Button
+                type="primary"
+                style={{ background: "green", border: "green" }}
                 className={cx(styles.saveMemorialButton, {
                   [styles.disabledButton]: this.state.isSaving,
                 })}
@@ -277,7 +281,7 @@ class TaggerForm extends React.Component {
                 ) : (
                   <div>Save Memorial</div>
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         )}

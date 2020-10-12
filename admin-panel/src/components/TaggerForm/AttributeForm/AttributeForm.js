@@ -3,6 +3,7 @@ import axios from "axios";
 
 import styles from "./AttributeForm.module.css";
 import Attribute from "./Attribute/Attribute";
+import { Input } from "antd";
 
 class AttributeForm extends React.Component {
   constructor(props) {

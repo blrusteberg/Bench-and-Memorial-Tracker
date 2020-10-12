@@ -1,16 +1,31 @@
 .inputLabel {
   text-align: left;
-  font-size: 12px;
-  color: #6e6e6e;
+  font-size: 1.2rem;
+  color: black;
 }
 
 .valueInput {
-  font-family: "Ranchers", cursive;
+  font-family: "Lato", cursive;
+  font-size: 1.2rem;
   width: 100%;
 }
 
+.valueTypeInput {
+  width: 75%;
+  background-color: #d3d3d3;
+  font-size: 1.2rem;
+  color: #606060;
+}
+
+.valueTypeInputCell {
+  display: flex;
+  align-items: center;
+  margin-top: 2.4%;
+  justify-content: center;
+}
+
 .valueInputDisabled {
-  background: #dddddd;
+  background: #d3d3d3;
 }
 
 .valueInputInvalid {
@@ -28,7 +43,7 @@
 }
 
 .required {
-  font-size: 12px;
+  font-size: 1.5rem;
   padding: 5px;
   color: red;
 }
@@ -44,23 +59,12 @@
   background-color: white;
 }
 
-.valueTypeInput {
-  width: 75%;
-  background-color: #dddddd;
-}
-
-.valueTypeInputCell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .noError {
   visibility: hidden;
-  font-size: 10px;
+  font-size: 1.2rem;
 }
 
 .error {
   color: red;
-  font-size: 10px;
+  font-size: 1.1rem;
 }
