@@ -2,6 +2,7 @@ import React from "react";
 import cx from "classnames";
 
 import styles from "./Attribute.module.css";
+import { Input } from "antd";
 
 class Attribute extends React.Component {
   constructor(props) {
@@ -84,7 +85,7 @@ class Attribute extends React.Component {
         <option value={false}>No</option>
       </select>
     ) : (
-      <input
+      <Input
         className={cx(styles.valueInput, {
           [styles.valueInputDisabled]: this.isInputDisabled(),
           [styles.valueInputInvalid]:
@@ -119,12 +120,12 @@ class Attribute extends React.Component {
         </td>
         <td>{this.getInputField()}</td>
         <td className={styles.valueTypeInputCell}>
-          <input
+          <Input
             className={styles.valueTypeInput}
             type="text"
             name="valueTypeTextBox"
             readOnly
-            placeholder={this.props.ValueType}
+            value={this.props.ValueType}
           />
         </td>
       </tr>,
