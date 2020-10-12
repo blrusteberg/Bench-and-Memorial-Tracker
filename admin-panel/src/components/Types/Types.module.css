@@ -39,12 +39,16 @@
 
 .memorialTypeNameInput {
   margin-bottom: 2%;
-  width: 50%;
+  min-width: 50%;
 }
 
 .attributesWrapper {
   display: flex;
   flex-direction: column;
   display: center;
+  min-width: 100%;
 }
 
+.loadingTitle {
+  font-size: 2rem;
+}

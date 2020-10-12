@@ -44,75 +44,25 @@
   text-align: center;
 }
 
-.buttonsWrapper {
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-}
-
-.saveButtonWrapper {
-  text-align: center;
-}
-
-.saveButton {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 1.5rem;
-  border-radius: 10px;
-}
-
-.disabledSaveButton {
-  background-color: #dddddd;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 1.5rem;
-  border-radius: 10px;
-}
-
-.saveButton:hover {
-  background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
-  background-color: #0688fa;
-}
-.saveButton:active {
-  position: relative;
-  top: 1px;
-}
-
 .deleteButtonWrapper {
-  text-align: center;
-}
-
-.deleteButton {
-  background-color: #da0000;
-  border: none;
-  color: white;
-  margin-top: 80%;
-  text-align: center;
-  text-decoration: none;
-  font-size: 1.5rem;
-  border-radius: 10px;
-}
-
-.deleteButton:hover {
-  background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
-  background-color: #0688fa;
-}
-.deleteButton:active {
-  position: relative;
-  top: 1px;
+  margin-top: 55%;
 }
 
 th,
 td {
   padding: 2%;
+}
+
+.saveButtonWrapper {
+  margin-top: 15%;
+}
+
+.modal {
+  text-align: center;
+}
+
+.invalidTypeName {
+  margin-top: 3%;
+  text-transform: uppercase;
+  color: rgb(211, 0, 0);
 }

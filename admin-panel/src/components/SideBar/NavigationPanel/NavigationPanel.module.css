@@ -38,3 +38,8 @@ svg {
   text-align: center;
   font-size: 1.75rem;
 }
+
+svg {
+  width: 1.5rem;
+  height: auto;
+}
