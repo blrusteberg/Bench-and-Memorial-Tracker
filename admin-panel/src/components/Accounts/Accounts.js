@@ -14,7 +14,8 @@ class Accounts extends React.Component {
         Id: "",
         username: "",
         password: "",
-        accountType: ""
+        accountType: "",
+        delAccess: ""
       }
     ]
   };
@@ -51,13 +52,11 @@ class Accounts extends React.Component {
           <a>Edit</a>
           <a>Delete</a>
         </Space>
-        
       )
     }
-
   ];
   
-  /*
+  
   componentDidMount() {
     axios
       .get(
@@ -68,17 +67,17 @@ class Accounts extends React.Component {
         console.log("STATE: ", this.state);
       })
   }
-  */
+  
   formatForTable = () => {
-    return this.state.Accounts.map((accounts) => {
-      accounts.key = accounts.Id;
+    return this.state.Accounts.map((Accounts) => {
+      Accounts.key = Accounts.Id;
       return accounts;
     })
   }
 
   render() {
     return (
-      <Table className={styles.accounts} dataSource={accounts} pagination={false} columns={this.columns} />
+      <Table className={styles.accounts} dataSource={this.state.Accounts} pagination={false} columns={this.columns} />
     )
   }
 }

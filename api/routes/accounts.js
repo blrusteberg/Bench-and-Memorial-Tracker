@@ -14,3 +14,6 @@ router.get("/", async (req, res) => {
       Error.errorHandler(err, res);
     }
   });
+
+
+  module.exports = router;
