@@ -13,6 +13,10 @@
   margin: 2%;
 }
 
+.loadingTitle {
+  font-size: 1.5rem;
+}
+
 .dropDownWrapper {
   display: flex;
   flex-direction: column;
