@@ -1,145 +1,118 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Space, Form, Input, Popconfirm } from "antd";
+import { Table, Space, notification, Popconfirm, Spin, Result } from "antd";
 
 import styles from "./Attributes.module.css";
+import AttributesTable from "./AttributesTable/AttributesTable";
+import DeleteAttributeModal from "./Components/DeleteAttributeModal";
 
-class Attributes extends React.Component {
-  state = {
-    Attributes: [
-      {
-        Id: "",
-        Name: "",
-        ValueType: "",
-      },
-    ],
-  };
-
-  EditableMemorialCell = ({
-    editing,
-    dataIndex,
-    title,
-    inputType,
-    record,
-    index,
-    children,
-    ...restProps
-  }) => {
-    console.log(
-      "editing: ",
-      editing,
-      "dataIndex",
-      dataIndex,
-      "title: ",
-      title,
-      "inputType: ",
-      inputType,
-      "record",
-      record,
-      "index",
-      index,
-      "children",
-      children,
-      "restProps",
-      restProps
-    );
-    return (
-      <td {...restProps}>
-        {editing ? (
-          <Form.Item
-            name={dataIndex}
-            rules={[
-              {
-                required: true,
-                message: `Please Input ${title}!`,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-        ) : (
-          children
-        )}
-      </td>
-    );
-  };
-
-  columns = [
+const Attributes = () => {
+  const [attributes, setAttributes] = useState([
     {
-      title: "Name",
-      dataIndex: "Name",
-      editable: true,
+      Id: "",
+      Name: "",
+      ValueType: "",
     },
-    {
-      title: "ValueType",
-      dataIndex: "ValueType",
-      align: "center",
-      editable: false,
-    },
-    {
-      title: "Action",
-      dataIndex: "operation",
-      render: (value, row, index) => {
-        return <Space size="small" align="center">
-          <a onClick={this.onEditAttributeClick}>Edit</a>
-          <a onClick={() => this.onDeleteAttributeClick(row.Id)}>Delete</a>
-        </Space>
-      },
-      
-      align: "center",
-    },
-  ];
+  ]);
+  const [error, setError] = useState();
+  const [savingError, setSavingError] = useState();
+  const [loading, setLoading] = useState(true);
+  const [deletingAttribute, setDeletingAttribute] = useState();
 
-  componentDidMount() {
+  useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/attributes`)
       .then((res) => {
-        this.setState({ Attributes: res.data });
-        console.log("STATE: ", this.state);
+        setAttributes(res.data);
+        console.log(res.data);
+        setLoading(false);
+      })
+      .catch((error) => setError(error));
+  }, []);
+
+  const saveAttribute = (row, key, onSuccess, onFail) => {
+    axios
+      .put(`${process.env.REACT_APP_API_BASE_URL}/attributes/${key}`, {
+        Name: row.Name,
+      })
+      .then(() => {
+        saveLocalAttribute(row, key);
+        console.log(key);
+        onSuccess();
+      })
+      .catch((error) => {
+        setSavingError(error);
+        openNotification("Unable to save attribute.", error.message, "error");
+        onFail();
       });
-  }
-
-  onDeleteAttributeClick = (id) => {
-    this.deleteAttribute(id);
-    
   };
 
-  deleteAttribute = (id) => {
-    console.log("Delete Memorial: ", id);
+  const deleteLocalAttribute = (key) => {
+    const tempAttributes = [...attributes];
+    let deleteIndex = -1;
+    for (let i = 0; i < tempAttributes.length; i++) {
+      if (tempAttributes[i].Id === key) {
+        deleteIndex = i;
+        break;
+      }
+    }
+    if (deleteIndex === -1) {
+      return;
+    }
+    tempAttributes.splice(deleteIndex, 1);
+    setAttributes(tempAttributes);
+    setDeletingAttribute(null);
   };
 
-  onEditAttributeClick = (attribute) => {
-    this.editAttribute(attribute);
-  
+  const saveLocalAttribute = (row, key) => {
+    const newAttributes = [...attributes];
+    const index = newAttributes.findIndex((attribute) => key === attribute.key);
+    if (index > -1) {
+      const item = newAttributes[index];
+      newAttributes.splice(index, 1, { ...item, ...row });
+    } else {
+    }
+    setAttributes(newAttributes);
   };
 
-  editAttribute = (attribute) => {
-    console.log("Editing Attribute: ", attribute.Name);
-  };
-
-  formatAttributesForTable = () => {
-    return this.state.Attributes.map((attributes) => {
-      attributes.key = attributes.Id;
-      return attributes;
+  const openNotification = (
+    message,
+    description,
+    type = null,
+    onClick = () => {},
+    onClose = () => {}
+  ) => {
+    notification.open({
+      message: message,
+      description: description,
+      type: type,
+      onClick: () => onClick(),
+      onClose: () => onClose(),
     });
   };
 
-  render() {
-    return (
-      <Table
-        className={styles.Memorials}
-        columns={this.columns}
-        dataSource={this.formatAttributesForTable()}
-        pagination={false}
-        scroll={{ pagination: false }}
-        components={{
-          body: {
-            cell: this.EditableMemorialCell,
-          },
-        }}
+  const onDeleteClick = (attribute) => setDeletingAttribute(attribute);
+
+  return error ? (
+    <Result status="500" subTitle="Sorry, something went wrong." />
+  ) : loading ? (
+    <Spin tip="Loading Attributes..." />
+  ) : (
+    <>
+      {deletingAttribute ? (
+        <DeleteAttributeModal
+          attribute={deletingAttribute}
+          deleteSuccess={() => deleteLocalAttribute(deletingAttribute.key)}
+          onCancelClick={() => setDeletingAttribute(null)}
+        />
+      ) : null}
+      <AttributesTable
+        attributes={attributes}
+        saveAttribute={saveAttribute}
+        onDeleteClick={onDeleteClick}
       />
-    );
-  }
-}
+    </>
+  );
+};
 
 export default Attributes;
