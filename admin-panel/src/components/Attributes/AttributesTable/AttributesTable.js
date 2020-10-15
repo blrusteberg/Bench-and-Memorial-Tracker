@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Space, Form } from "antd";
+import { Table, Space, Form, Button, Modal } from "antd";
 
 import styles from "./AttributesTable.module.css";
 import EditableCell from "../Components/EditableCell";

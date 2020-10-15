@@ -6,7 +6,7 @@ import { Modal, Card, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import styles from "./DeleteAttributeModal.module.css";
 
-const DeleteMemorialModal = ({ attribute, deleteSuccess, onCancelClick }) => {
+const DeleteAttributeModal = ({ attribute, deleteSuccess, onCancelClick }) => {
   const [visible, setVisible] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -46,4 +46,4 @@ const DeleteMemorialModal = ({ attribute, deleteSuccess, onCancelClick }) => {
   );
 };
 
-export default DeleteMemorialModal;
+export default DeleteAttributeModal;
