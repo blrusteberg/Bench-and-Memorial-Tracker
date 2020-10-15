@@ -1,32 +1,26 @@
 import React from "react";
 import axios from "axios";
-import lodash, { set } from "lodash";
+import lodash from "lodash";
 import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../assets/deleteAttribute.png";
+import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
-import { Dropdown } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
-import 'antd/dist/antd.css';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Select } from "antd";
 
 class Attributes extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      oldAttributes: [],
-      selectedAttributes: [],
-      allAttributes: [],
-      showSaveButton: false,
-      isSaving: false,
-      showPopup: false,
-      deletedAttributeCount: 0,
-      deletedAttributes: [],
-      showDeleteModal: false,
-      invalidTextInput: false,
-      deleteTypeInput: ""
-    };
-  }
+  state = {
+    oldAttributes: [],
+    selectedAttributes: [],
+    allAttributes: [],
+    showSaveButton: false,
+    isSaving: false,
+    showPopup: false,
+    deletedAttributeCount: 0,
+    deletedAttributes: [],
+    showDeleteModal: false,
+    invalidTextInput: false,
+    deleteTypeInput: "",
+  };
 
   componentDidMount() {
     axios
@@ -50,15 +44,13 @@ class Attributes extends React.Component {
                 selectedAttributes: selectedAttributes,
               });
 
-              let filteredAttributes = res.data.filter(function (
-                allAttributes
-              ) {
-                return (
-                  response.data.filter(function (selectedAttributes) {
-                    return selectedAttributes.Id === allAttributes.Id;
-                  }).length === 0
-                );
-              });
+              let filteredAttributes = res.data.filter(
+                (allAttributes) =>
+                  response.data.filter(
+                    (selectedAttributes) =>
+                      selectedAttributes.Id === allAttributes.Id
+                  ).length === 0
+              );
               const sortedAttributes = filteredAttributes.sort((a, b) =>
                 a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1
               );
@@ -109,6 +101,8 @@ class Attributes extends React.Component {
     });
   };
 
+  onAttributeClick = (attributeId) => this.addAttribute(attributeId);
+
   addAttribute = (attributeId) => {
     let allAttributes = [...this.state.allAttributes];
     let selectedAttributes = [...this.state.selectedAttributes];
@@ -119,9 +113,7 @@ class Attributes extends React.Component {
     filteredAttribute.Required = false;
     selectedAttributes.push(filteredAttribute);
 
-    allAttributes = allAttributes.filter(function (item) {
-      return item.Id !== attributeId;
-    });
+    allAttributes = allAttributes.filter((item) => item.Id !== attributeId);
 
     this.setState({
       allAttributes: allAttributes,
@@ -174,8 +166,7 @@ class Attributes extends React.Component {
               this.props.selectedTypeId,
             newTypeName
           )
-          .then((res) => {
-          })
+          .then((res) => {})
           .catch((error) => {
             console.log(error);
           });
@@ -217,16 +208,18 @@ class Attributes extends React.Component {
     this.setState({
       showDeleteModal: !this.state.showDeleteModal,
       deleteTypeInput: "",
-      invalidTextInput: false
-    })
-  }
+      invalidTextInput: false,
+    });
+  };
 
   deleteType = () => {
-
-    if(this.props.oldTypeName.toLowerCase() === this.state.deleteTypeInput.toLowerCase()){
+    if (
+      this.props.oldTypeName.toLowerCase() ===
+      this.state.deleteTypeInput.toLowerCase()
+    ) {
       this.setState({
         isSaving: true,
-        invalidTextInput: false
+        invalidTextInput: false,
       });
 
       axios
@@ -241,8 +234,8 @@ class Attributes extends React.Component {
         });
     } else {
       this.setState({
-        invalidTextInput: true
-      })
+        invalidTextInput: true,
+      });
     }
   };
 
@@ -250,7 +243,7 @@ class Attributes extends React.Component {
     this.setState({
       deleteTypeInput: event.target.value,
     });
-  }
+  };
 
   togglePopup = () => {
     if (this.state.showPopup === false) {
@@ -294,28 +287,31 @@ class Attributes extends React.Component {
     const isSaving = this.state.isSaving;
     const showPopup = this.state.showPopup;
 
-    let selectedAttributes = this.state.selectedAttributes;
-
-    const attributeOptions = this.state.allAttributes.map((item) => ({
-      key: item.Id,
-      text: item.Name,
-      value: item.Name,
-      onClick: () => this.addAttribute(item.Id),
-    }));
+    const filteredAttributes = this.state.allAttributes.filter(
+      (attribute) => !this.state.selectedAttributes.includes(attribute)
+    );
 
     return (
       <div className={styles.attributes}>
-        <div className={styles.attributeDropdownWrapper}>
-          {
-            <Dropdown
-              placeholder="Add an Attribute.."
-              search
-              selection
-              options={attributeOptions}
-              selectOnBlur={false}
-            />
-          }
-        </div>
+        {
+          <Select
+            className={styles.attributesDropdown}
+            placeholder="Add an Attribute..."
+            onChange={this.onAttributeClick}
+            showSearch={true}
+            value={null}
+            size="medium"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {filteredAttributes.map((attribute) => (
+              <Select.Option value={attribute.Id}>
+                {attribute.Name}
+              </Select.Option>
+            ))}
+          </Select>
+        }
         <table>
           <tbody>
             <tr className={styles.tableHeader}>
@@ -324,8 +320,8 @@ class Attributes extends React.Component {
               <td>Data Type</td>
               <td>Required</td>
             </tr>
-            {selectedAttributes.map((item, n) => (
-              <tr>
+            {this.state.selectedAttributes.map((item, n) => (
+              <tr key={n}>
                 {item.Name.toLowerCase() === "longitude" ||
                 item.Name.toLowerCase() === "latitude"
                   ? [
@@ -399,30 +395,30 @@ class Attributes extends React.Component {
           </tbody>
         </table>
         <div>
-            {showSaveButton && isExistingType && (
-              <div className={styles.saveButtonWrapper}>
-                <Button
-                  type="primary"
-                  onClick={() => this.togglePopup()}
-                  disabled={isSaving}
-                  block
-                >
-                  Save Type
-                </Button>
-              </div>
-            )}
-            {!isExistingType && (
-              <div className={styles.saveButtonWrapper}>
-                <Button
-                  type="primary"
-                  onClick={() => this.saveAttributes()}
-                  disabled={isSaving}
-                  block
-                >
-                  Save Type
+          {showSaveButton && isExistingType && (
+            <div className={styles.saveButtonWrapper}>
+              <Button
+                type="primary"
+                onClick={() => this.togglePopup()}
+                disabled={isSaving}
+                block
+              >
+                Save Type
               </Button>
-              </div>
-            )}
+            </div>
+          )}
+          {!isExistingType && (
+            <div className={styles.saveButtonWrapper}>
+              <Button
+                type="primary"
+                onClick={() => this.saveAttributes()}
+                disabled={isSaving}
+                block
+              >
+                Save Type
+              </Button>
+            </div>
+          )}
           <div className={styles.deleteButtonWrapper}>
             {isExistingType ? (
               <Button
@@ -456,11 +452,13 @@ class Attributes extends React.Component {
         >
           <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
           <input
-                  type="text"
-                  value={this.state.deleteTypeInput}
-                  onChange={this.handleDeleteTypeInput}
+            type="text"
+            value={this.state.deleteTypeInput}
+            onChange={this.handleDeleteTypeInput}
           />
-          {this.state.invalidTextInput && <p className={styles.invalidTypeName}>Incorrect type name</p>}
+          {this.state.invalidTextInput && (
+            <p className={styles.invalidTypeName}>Incorrect type name</p>
+          )}
         </Modal>
       </div>
     );
