@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import lodash from "lodash";
+import { Input } from "antd";
 
 import styles from "./Types.module.css";
 import Dropdown from "./Dropdown/Dropdown";
@@ -67,44 +68,44 @@ class Types extends React.Component {
   };
 
   render() {
-    return (
-      this.state.isLoading ? (
-        <div className={styles.loadingTitle}>Loading....</div>
-      ) : (
-        <div className={styles.container}>
-          <div className={styles.dropDownWrapper}>
-            <div className={styles.memorialTypes}>Memorial Types</div>
-            <Dropdown
-              types={this.state.initialTypes}
-              selectedTypeIndex={this.state.selectedTypeIndex}
-              dropdownChange={this.dropdownChange}
-            />
-          </div>
-          {this.state.selectedTypeIndex ? (
-            <>
-              <div className={styles.memorialTypeNameWrapper}>
-                <div className={styles.memorialTypeName}>Memorial Type Name</div>
-                <input
-                  className={styles.memorialTypeNameInput}
-                  type="text"
-                  value={this.state.newTypeName}
-                  placeholder="Enter a name..."
-                  onChange={this.handleNewTypeNameChange}
-                  maxLength={50}
-                />
-              </div>
-              <div className={styles.attributesWrapper}>
-                <Attributes
-                  key={this.state.selected.Id}
-                  selectedTypeId={this.state.selected.Id}
-                  oldTypeName={this.state.selected.Name}
-                  typeName={this.state.newTypeName}
-                  isTypeNameChanged={this.state.isTypeNameChanged}
-                />
-              </div>
-            </>
-          ) : null}
-        </div>)
+    return this.state.isLoading ? (
+      <div className={styles.loadingTitle}>Loading....</div>
+    ) : (
+      <div className={styles.container}>
+        <div className={styles.dropDownWrapper}>
+          <div className={styles.memorialTypes}>Memorial Types</div>
+          <Dropdown
+            types={this.state.initialTypes}
+            selectedTypeIndex={this.state.selectedTypeIndex}
+            dropdownChange={this.dropdownChange}
+          />
+        </div>
+        {this.state.selectedTypeIndex ? (
+          <>
+            <div className={styles.memorialTypeNameWrapper}>
+              <div className={styles.memorialTypeName}>Memorial Type Name</div>
+              <Input
+                className={styles.memorialTypeNameInput}
+                type="text"
+                value={this.state.newTypeName}
+                placeholder="Enter a name..."
+                onChange={this.handleNewTypeNameChange}
+                maxLength={50}
+                
+              />
+            </div>
+            <div className={styles.attributesWrapper}>
+              <Attributes
+                key={this.state.selected.Id}
+                selectedTypeId={this.state.selected.Id}
+                oldTypeName={this.state.selected.Name}
+                typeName={this.state.newTypeName}
+                isTypeNameChanged={this.state.isTypeNameChanged}
+              />
+            </div>
+          </>
+        ) : null}
+      </div>
     );
   }
 }
