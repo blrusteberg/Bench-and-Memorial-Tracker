@@ -1,5 +1,4 @@
 import React from "react";
-import { Menu } from "antd";
 import { CaretLeftOutlined } from "@ant-design/icons";
 
 import NavigationPanel from "./NavigationPanel/NavigationPanel";

@@ -5,8 +5,8 @@ import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
 import styles from "./App.module.css";
 
-import { Modal, Button } from 'antd';
-import 'antd/dist/antd.css';
+import { Modal, Button } from "antd";
+import "antd/dist/antd.css";
 
 export const MapCenterContext = React.createContext();
 
@@ -37,26 +37,33 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    axios.get(`${process.env.REACT_APP_API_BASE_URL}/memorials/types/attributes/values`).then(
-      (result) => {
-        console.log("DATA", result.data);
-        this.setState({
-          Memorials: result.data.map((memorial) => {
-            memorial.hideIcon = false;
-            memorial.hideBubble = true;
-            return memorial;
-          }),
-          isLoading: false,
-          mapCenter: this.getUserLocation(),
-        });
-      },
-      (error) => {
-        this.setState({
-          isLoading: false,
-          error: error,
-        });
-      }
-    );
+    axios
+      .get(
+        `${
+          process.env.REACT_APP_API_BASE_URL
+        }/memorials/types/attributes/values?statusFilters=${JSON.stringify([
+          "live",
+        ])}`
+      )
+      .then(
+        (result) => {
+          this.setState({
+            Memorials: result.data.map((memorial) => {
+              memorial.hideIcon = false;
+              memorial.hideBubble = true;
+              return memorial;
+            }),
+            isLoading: false,
+            mapCenter: this.getUserLocation(),
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoading: false,
+            error: error,
+          });
+        }
+      );
   }
 
   searchHandler = (searchText) => {
@@ -90,7 +97,7 @@ class App extends React.Component {
   bubbleCloseClickHandler = () => {
     const memorials = [...this.state.Memorials];
     memorials.map((memorial) => {
-      memorial.hideBubble = true;
+      return { ...memorial, hideBubble: true };
     });
     this.setState({ Memorials: memorials });
   };
@@ -143,7 +150,9 @@ class App extends React.Component {
           />
         </MapCenterContext.Provider>
         <div className={styles.modalWrapper}>
-          <Button type="primary" onClick={this.showModal}>Open blank modal</Button>
+          <Button type="primary" onClick={this.showModal}>
+            Open blank modal
+          </Button>
         </div>
         <Modal
           title="Blank Modal"

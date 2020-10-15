@@ -17,8 +17,6 @@ const icon = (props) => {
     assignedStyles.push(styles.IconImage);
   }
 
-  const type = "Memorial";
-
   return (
     <div className={styles.icon}>
       <img

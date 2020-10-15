@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Table, Space, Form } from "antd";
+import { Table, Space, Form, Badge } from "antd";
 
 import styles from "./MemorialsTable.module.css";
 import AttributesTable from "./AttributesTable/AttributesTable";
 import EditableCell from "../Components/EditableCell";
-import DeleteMemorialModal from "../Components/DeleteMemorialModal";
 
-const MemorialsTable = ({ memorials, onDeleteClick, saveMemorial }) => {
+const MemorialsTable = ({
+  memorials,
+  onUpdateMemorialStatusClick,
+  onDeleteClick,
+  saveMemorial,
+}) => {
   const [editingKey, setEditingKey] = useState("");
   const [form] = Form.useForm();
   const [saving, setSaving] = useState(false);
@@ -33,6 +37,40 @@ const MemorialsTable = ({ memorials, onDeleteClick, saveMemorial }) => {
     }
   };
 
+  const getChangeStatusAction = (record) => {
+    switch (record.Status) {
+      case "live":
+        return (
+          <a
+            href="javascript:void(0)"
+            onClick={() => onUpdateMemorialStatusClick(record, "on hold")}
+          >
+            Put on hold
+          </a>
+        );
+      case "unapproved":
+        return (
+          <a
+            href="javascript:void(0)"
+            onClick={() => onUpdateMemorialStatusClick(record, "live")}
+          >
+            Approve
+          </a>
+        );
+      case "on hold":
+        return (
+          <a
+            href="javascript:void(0)"
+            onClick={() => onUpdateMemorialStatusClick(record, "live")}
+          >
+            Go live
+          </a>
+        );
+      default:
+        return null;
+    }
+  };
+
   const onEditClick = (record) => {
     form.setFieldsValue({
       Name: "",
@@ -49,11 +87,25 @@ const MemorialsTable = ({ memorials, onDeleteClick, saveMemorial }) => {
       return memorial;
     });
 
+  const memorialStatusToBadgeColor = new Map([
+    ["unapproved", "yellow"],
+    ["live", "green"],
+    ["on hold", "red"],
+  ]);
+
+  const memorialStatusToBadgeText = new Map([
+    ["unapproved", "Unapproved"],
+    ["live", "Live"],
+    ["on hold", "On hold"],
+  ]);
+
   const columns = [
     {
       title: "Name",
       dataIndex: "Name",
       editable: true,
+      textWrap: "word-break",
+      width: "35%",
     },
     {
       title: "Type",
@@ -62,28 +114,51 @@ const MemorialsTable = ({ memorials, onDeleteClick, saveMemorial }) => {
       editable: false,
     },
     {
+      title: "Status",
+      dataIndex: "Status",
+      align: "center",
+      editable: false,
+      render: (_, record) => {
+        const memorialStatus = record.Status;
+        return (
+          <Badge
+            color={memorialStatusToBadgeColor.get(memorialStatus)}
+            text={memorialStatusToBadgeText.get(memorialStatus)}
+          />
+        );
+      },
+    },
+    {
       title: "Action",
       dataIndex: "operation",
       align: "center",
       editable: false,
-      render: (_, record) => {
-        return isEditing(record) ? (
+      render: (_, record) =>
+        isEditing(record) ? (
           <Space size="small" align="center">
             {saving ? (
               <p>Saving...</p>
             ) : (
-              <a onClick={() => onSaveClick(record.key)}>Save</a>
+              <a href="javascript:void(0)" onClick={() => onSaveClick(record.key)}>
+                Save
+              </a>
             )}
 
-            <a onClick={onCancelClick}>Cancel</a>
+            <a href="javascript:void(0)" onClick={onCancelClick}>
+              Cancel
+            </a>
           </Space>
         ) : (
-          <Space size="small" align="center">
-            <a onClick={() => onEditClick(record)}>Edit</a>
-            <a onClick={() => onDeleteClick(record)}>Delete</a>
+          <Space size="large" align="center">
+            {getChangeStatusAction(record)}
+            <a href="javascript:void(0)" onClick={() => onEditClick(record)}>
+              Edit
+            </a>
+            <a href="javascript:void(0)" onClick={() => onDeleteClick(record)}>
+              Delete
+            </a>
           </Space>
-        );
-      },
+        ),
     },
   ];
 
@@ -117,6 +192,7 @@ const MemorialsTable = ({ memorials, onDeleteClick, saveMemorial }) => {
             cell: EditableCell,
           },
         }}
+        tableLayout="fixed"
       />
     </Form>
   );
