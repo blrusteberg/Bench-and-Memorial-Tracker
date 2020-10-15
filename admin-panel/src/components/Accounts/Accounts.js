@@ -1,20 +1,19 @@
 import React from 'react';
 import { Table, Space, Checkbox } from 'antd';
 import axios from "axios";
-import accounts from "../../data/mockAccounts.json"
 import styles from "./Accounts.module.css";
 import "antd/dist/antd.css";
 
-const { Column, ColumnGroup } = Table;
 
 class Accounts extends React.Component {
   state = {
     Accounts: [
       {
         Id: "",
-        username: "",
-        password: "",
-        accountType: ""
+        Username: "",
+        Password: "",
+        AccountType: "",
+        DelAccess: ""
       }
     ]
   };
@@ -22,42 +21,40 @@ class Accounts extends React.Component {
   columns = [
     {
       title: 'Username',
-      dataIndex: 'username',
-      key: 'username'
+      dataIndex: 'Username',
+      key: 'Username'
     },
     {
       title: 'Password',
-      dataIndex: 'password',
-      key: 'password',
+      dataIndex: 'Password',
+      key: 'Password',
       align: 'center'
     },
     {
       title: 'Account Type',
-      dataIndex: 'accountType',
-      key: 'accountType'
+      dataIndex: 'AccountType',
+      key: 'AccountType'
     },
     {
       title: 'Delete Access',
-      dataIndex: 'delAccess',
+      dataIndex: 'DelAccess',
       render: (hasDelete) =>
         hasDelete ? <Checkbox checked={true} disabled={true}/>: <Checkbox checked={false} disabled={true}/>
     },
     {
       title: "Action",
-      dataIndex: "operation",
-      key: "operation",
+      dataIndex: "Operation",
+      key: "Operation",
       render: (text, record) => (
         <Space size="middle">
           <a>Edit</a>
           <a>Delete</a>
         </Space>
-        
       )
     }
-
   ];
   
-  /*
+  
   componentDidMount() {
     axios
       .get(
@@ -65,20 +62,19 @@ class Accounts extends React.Component {
       )
       .then((res) => {
         this.setState({ Accounts: res.data });
-        console.log("STATE: ", this.state);
       })
   }
-  */
+  
   formatForTable = () => {
-    return this.state.Accounts.map((accounts) => {
-      accounts.key = accounts.Id;
-      return accounts;
+    return this.state.Accounts.map((account) => {
+      account.key = account.Id;
+      return account;
     })
   }
 
   render() {
     return (
-      <Table className={styles.accounts} dataSource={accounts} pagination={false} columns={this.columns} />
+      <Table className={styles.accounts} dataSource={this.formatForTable()} pagination={false} columns={this.columns} />
     )
   }
 }

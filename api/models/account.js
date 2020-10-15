@@ -15,15 +15,14 @@ class Accounts extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["Id"],
       properties: {
         Id: { type: "string" },
-        username: {type: "string"},
-        password: {type: "string"},
-        accountType: {
+        Username: {type: "string"},
+        Password: {type: "string"},
+        AccountType: {
             type: "string",
             enum: ["tagger", "clerk", "admin"]},
-        delAccess: {type: "bit"}
+        DelAccess: {type: "bit"}
       },
     };
   }

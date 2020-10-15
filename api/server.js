@@ -11,6 +11,7 @@ const memorialRoutes = require("./routes/memorials.js");
 const typeRoutes = require("./routes/types.js");
 const attributeRoutes = require("./routes/attributes.js");
 const valueRoutes = require("./routes/values.js");
+const accountRoutes = require("./routes/accounts.js");
 const Error = require("./error/error");
 
 app.use(cors());
@@ -40,6 +41,7 @@ app.use("/memorials", memorialRoutes);
 app.use("/types", typeRoutes);
 app.use("/attributes", attributeRoutes);
 app.use("/values", valueRoutes);
+app.use("/accounts", accountRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
