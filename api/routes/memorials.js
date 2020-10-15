@@ -19,8 +19,15 @@ router.get("/types/attributes/values", async (req, res) => {
     const memorials = await Memorial.query().withGraphFetched(
       "[Type.[Attributes], Values]"
     );
+    const statusFilters = req.query.statusFilters
+      ? JSON.parse(req.query.statusFilters)
+      : null;
     const formattedMemorials = [];
-    memorials.forEach((memorial) => {
+    for (let i = 0; i < memorials.length; i++) {
+      const memorial = memorials[i];
+      if (statusFilters && !statusFilters.includes(memorial.Status)) {
+        continue;
+      }
       const formattedAttributes = [];
       memorial.Type.Attributes.forEach((attribute) => {
         let attributePushed = false;
@@ -49,13 +56,14 @@ router.get("/types/attributes/values", async (req, res) => {
       formattedMemorials.push({
         Id: memorial.Id,
         Name: memorial.Name,
+        Status: memorial.Status,
         Type: {
           Id: memorial.Type.Id,
           Name: memorial.Type.Name,
           Attributes: formattedAttributes,
         },
       });
-    });
+    }
     res.status(200).json(formattedMemorials);
   } catch (err) {
     Error.errorHandler(err, res);
@@ -113,6 +121,7 @@ router.put("/:id", async (req, res) => {
   try {
     const numUpdated = await Memorial.query().findById(req.params.id).patch({
       Name: req.body.Name,
+      Status: req.body.Status,
     });
     res.status(204).json({ message: `Updated ${numUpdated} memorial` });
   } catch (err) {

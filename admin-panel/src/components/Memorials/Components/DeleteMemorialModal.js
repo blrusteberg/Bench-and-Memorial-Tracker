@@ -51,7 +51,9 @@ const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
           <div className={styles.imageWrapper}>
             <img
               className={styles.memorialImage}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQpQvu-Dgiig9gqnEazRVPss4UEyp-yUhMngw&usqp=CAU"
+              src={`http://placekitten.com/${Math.floor(
+                Math.random() * (800 - 300) + 300
+              )}/${Math.floor(Math.random() * (800 - 300) + 300)}`}
             />
           </div>
         </div>

@@ -18,7 +18,11 @@ class Memorial extends Model {
       required: ["TypeId"],
       properties: {
         TypeId: { type: "string" },
-        Name: {type: "string"}
+        Name: { type: "string" },
+        Status: {
+          type: "string",
+          enum: ["unapproved", "approved", "on hold", "live"],
+        },
       },
     };
   }

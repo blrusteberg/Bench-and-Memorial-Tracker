@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Table, Space } from "antd";
+import React from "react";
+import { Table } from "antd";
 
 import styles from "./AttributesTable.module.css";
 
@@ -24,7 +24,7 @@ const AttributesTable = (props) => {
       title: "Action",
       dataIndex: "operation",
       key: "operation",
-      render: (value, row, index) => <a>Edit</a>,
+      render: (value, row, index) => <a href="javascript:void(0)">Edit</a>,
       align: "center",
     },
   ];
