@@ -50,7 +50,7 @@ class Attribute extends Model {
             to: "Types_Attributes.TypeId",
             extra: ["Required"],
           },
-          to: "Type.Id",
+          to: "Types.Id",
         },
       },
     };
