@@ -18,6 +18,7 @@ class Type extends Model {
       required: ["Name"],
       properties: {
         Name: { type: "string" },
+        Type: { type: "string" },
       },
     };
   }
