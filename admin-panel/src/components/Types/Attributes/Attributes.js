@@ -5,7 +5,7 @@ import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
-import { Button, Modal, Select } from "antd";
+import { Input, Button, Modal, Select } from "antd";
 
 const NUMBER_OF_ICONS = 11;
 
@@ -394,7 +394,7 @@ class Attributes extends React.Component {
                         />
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           key={item.Id}
                           value={item.Name}
@@ -402,7 +402,7 @@ class Attributes extends React.Component {
                         />
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           value={item.ValueType}
                           disabled="disabled"
@@ -428,7 +428,7 @@ class Attributes extends React.Component {
                         </div>
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           key={item.Id}
                           value={item.Name}
@@ -436,7 +436,7 @@ class Attributes extends React.Component {
                         />
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           value={item.ValueType}
                           disabled="disabled"
@@ -512,7 +512,7 @@ class Attributes extends React.Component {
           onCancel={this.toggleDeleteTypeModal}
         >
           <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
-          <input
+          <Input
             type="text"
             value={this.state.deleteTypeInput}
             onChange={this.handleDeleteTypeInput}

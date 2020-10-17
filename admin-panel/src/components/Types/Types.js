@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import lodash from "lodash";
-import { Input } from "antd";
+import { Spin, Input } from "antd";
 
 import styles from "./Types.module.css";
 import Dropdown from "./Dropdown/Dropdown";
@@ -69,7 +69,7 @@ class Types extends React.Component {
 
   render() {
     return this.state.isLoading ? (
-      <div className={styles.loadingTitle}>Loading....</div>
+      <Spin tip="Loading Types..." />
     ) : (
       <div className={styles.container}>
         <div className={styles.dropDownWrapper}>
