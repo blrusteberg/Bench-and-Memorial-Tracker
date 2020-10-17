@@ -7,7 +7,21 @@ import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
 import { Input, Button, Modal, Select } from "antd";
 
-const NUMBER_OF_ICONS = 11;
+const DEFAULT_ICON = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png"
+
+const urlArray = [
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/1.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/10.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/3.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/4.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/5.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/6.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/7.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/8.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/9.png"
+];
 
 class Attributes extends React.Component {
   state = {
@@ -24,7 +38,7 @@ class Attributes extends React.Component {
     deleteTypeInput: "",
     visible: false,
     imageArray: [],
-    currentIcon: 0,
+    currentIcon: "",
   };
 
   componentDidMount() {
@@ -59,8 +73,10 @@ class Attributes extends React.Component {
               const sortedAttributes = filteredAttributes.sort((a, b) =>
                 a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1
               );
+              let currentIcon = res.data.Icon ? res.data.Icon : DEFAULT_ICON;
               this.setState({
                 allAttributes: [...sortedAttributes],
+                currentIcon: currentIcon
               });
             })
             .catch((error) => {
@@ -86,9 +102,12 @@ class Attributes extends React.Component {
           const sortedAttributes = filteredAttributes.sort((a, b) =>
             a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1
           );
+
+          
           this.setState({
             selectedAttributes,
             allAttributes: [...sortedAttributes],
+            currentIcon: DEFAULT_ICON,
           });
         }
       })
@@ -96,18 +115,18 @@ class Attributes extends React.Component {
         console.log(error);
       });
 
-      let imageArray = [];
-      for(let index=0; index<NUMBER_OF_ICONS; index++){
-        imageArray.push(
+      let imageArray = urlArray.map((item, index) => {
+        return (
           <img 
             className={styles.icons}
             key={index}
-            src={process.env.PUBLIC_URL + "icons/" + index + ".png"}
+            src={item}
             alt=""
-            onClick={() => this.handleIconOnClick(index)}
+            onClick={() => this.handleIconOnClick(item)}
           />
         )
-      }
+      })
+      
 
       this.setState({
         imageArray: imageArray
@@ -195,6 +214,7 @@ class Attributes extends React.Component {
       }
       const newMemorialTypesObject = {
         Attributes: this.state.selectedAttributes,
+        Icon: this.state.currentIcon
       };
       axios
         .put(
@@ -211,6 +231,7 @@ class Attributes extends React.Component {
       const newMemorialTypesObject = {
         Type: { Name: this.props.typeName },
         Attributes: this.state.selectedAttributes,
+        Icon: this.state.currentIcon
       };
       axios
         .post(
@@ -314,10 +335,11 @@ class Attributes extends React.Component {
     });
   };
 
-  handleIconOnClick = id => {
+  handleIconOnClick = url => {
     this.setState({
-      currentIcon: id,
-      visible: false
+      currentIcon: url,
+      visible: false,
+      showSaveButton: true,
     });
   }
 
@@ -332,7 +354,7 @@ class Attributes extends React.Component {
       (attribute) => !this.state.selectedAttributes.includes(attribute)
     );
 
-    let currentIcon = this.state.imageArray[this.state.currentIcon];
+    let currentIcon = this.state.currentIcon;
 
     return (
       <div className={styles.attributes}>
@@ -340,7 +362,11 @@ class Attributes extends React.Component {
           <Button className={styles.iconButton} type="primary" onClick={this.showModal}>
             Choose an icon
           </Button>
-          {currentIcon}
+          <img 
+            className={styles.icons}
+            src={currentIcon}
+            alt=""
+          />
         </div>
         <Modal
           title="Choose an icon"
