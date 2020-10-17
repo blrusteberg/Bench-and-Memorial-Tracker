@@ -298,6 +298,7 @@ class Attributes extends React.Component {
   handleIconOnClick = id => {
     this.setState({
       currentIcon: id,
+      visible: false
     });
   }
 
