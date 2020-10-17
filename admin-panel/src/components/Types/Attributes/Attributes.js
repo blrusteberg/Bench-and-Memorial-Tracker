@@ -6,7 +6,8 @@ import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
 import { Button, Modal, Select } from "antd";
-// import icons from "../../../assets/icons";
+
+const NUMBER_OF_ICONS = 11;
 
 class Attributes extends React.Component {
   state = {
@@ -22,6 +23,7 @@ class Attributes extends React.Component {
     invalidTextInput: false,
     deleteTypeInput: "",
     visible: false,
+    imageArray: [],
     currentIcon: 0,
   };
 
@@ -93,6 +95,23 @@ class Attributes extends React.Component {
       .catch((error) => {
         console.log(error);
       });
+
+      let imageArray = [];
+      for(let index=0; index<NUMBER_OF_ICONS; index++){
+        imageArray.push(
+          <img 
+            className={styles.icons}
+            key={index}
+            src={process.env.PUBLIC_URL + "icons/" + index + ".png"}
+            alt=""
+            onClick={() => this.handleIconOnClick(index)}
+          />
+        )
+      }
+
+      this.setState({
+        imageArray: imageArray
+      })
   }
 
   onChangeRequired = (event, n) => {
@@ -313,63 +332,16 @@ class Attributes extends React.Component {
       (attribute) => !this.state.selectedAttributes.includes(attribute)
     );
 
-   // do this once in didMount
-    let imageArray = [];
-    for(let index=0; index<4; index++){
-      imageArray.push(
-        <img 
-          className={styles.deleteAttributeButton}
-          key={index}
-          src={process.env.PUBLIC_URL + "icons/test" + index + ".png"}
-          alt=""
-          onClick={() => this.handleIconOnClick(index)}
-        />
-      )
-    }
-
-    // imageArray.map(index => 
-    //   <img 
-    //     className={styles.deleteAttributeButton}
-    //     key={index}
-    //     src={process.env.PUBLIC_URL + "icons/test" + index + ".png"}
-    //     alt=""
-    //     onClick={() => this.handleIconOnClick(index)}
-    //   />
-    // )
-    // console.log(imageArray);
-        // let currentIcon = imageArray[this.state.currentIcon];
-
-    let currentIcon = <img 
-        src={process.env.PUBLIC_URL + "icons/test"+ this.state.currentIcon +".png"}
-        alt=""
-      />
-    // lodash.times(50, (i) => {
-    //   imageArray.push(
-    //     <img
-    //       alt=""
-    //       key={i}
-    //       className={styles.deleteAttributeButton}
-    //       src={deleteAttributeButton}
-    //       onClick={() => this.handleIconOnClick(i)}
-    //     />
-    //   );
-    // });
-
-    // imageArray.push(
-    //   <img
-    //     alt=""
-    //     className={styles.deleteAttributeButton}
-    //     src={closeWindow}
-    //     onClick={() => this.handleIconOnClick(51)}
-    //   />
-    // );
+    let currentIcon = this.state.imageArray[this.state.currentIcon];
 
     return (
       <div className={styles.attributes}>
-        <Button type="primary" onClick={this.showModal}>
-          Choose an icon
-        </Button>
-        {currentIcon}
+        <div className={styles.iconWrapper}>
+          <Button className={styles.iconButton} type="primary" onClick={this.showModal}>
+            Choose an icon
+          </Button>
+          {currentIcon}
+        </div>
         <Modal
           title="Choose an icon"
           visible={this.state.visible}
@@ -380,178 +352,176 @@ class Attributes extends React.Component {
             </Button>
           ]}
         >
-          {imageArray}
+          {this.state.imageArray}
+        </Modal>
+        {
+          <Select
+            className={styles.attributesDropdown}
+            placeholder="Add an Attribute..."
+            onChange={this.onAttributeClick}
+            showSearch={true}
+            value={null}
+            size="medium"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {filteredAttributes.map((attribute) => (
+              <Select.Option value={attribute.Id}>
+                {attribute.Name}
+              </Select.Option>
+            ))}
+          </Select>
+        }
+        <table>
+          <tbody>
+            <tr className={styles.tableHeader}>
+              <td></td>
+              <td>Label</td>
+              <td>Data Type</td>
+              <td>Required</td>
+            </tr>
+            {this.state.selectedAttributes.map((item, n) => (
+              <tr key={n}>
+                {item.Name.toLowerCase() === "longitude" ||
+                item.Name.toLowerCase() === "latitude"
+                  ? [
+                      <td>
+                        <img
+                          alt=""
+                          className={styles.hiddenDeleteAttributeButton}
+                          src={deleteAttributeButton}
+                        />
+                      </td>,
+                      <td>
+                        <input
+                          type="text"
+                          key={item.Id}
+                          value={item.Name}
+                          disabled="disabled"
+                        />
+                      </td>,
+                      <td>
+                        <input
+                          type="text"
+                          value={item.ValueType}
+                          disabled="disabled"
+                        />{" "}
+                      </td>,
+                      <td className={styles.requiredCheckBox}>
+                        <input
+                          type="checkbox"
+                          checked={true}
+                          disabled="disabled"
+                        />
+                      </td>,
+                    ]
+                  : [
+                      <td>
+                        <div className={styles.deleteAttributeWrapper}>
+                          <img
+                            alt=""
+                            className={styles.deleteAttributeButton}
+                            src={deleteAttributeButton}
+                            onClick={() => this.deleteAttribute(item.Id)}
+                          />
+                        </div>
+                      </td>,
+                      <td>
+                        <input
+                          type="text"
+                          key={item.Id}
+                          value={item.Name}
+                          disabled="disabled"
+                        />
+                      </td>,
+                      <td>
+                        <input
+                          type="text"
+                          value={item.ValueType}
+                          disabled="disabled"
+                        />
+                      </td>,
+                      <td className={styles.requiredCheckBox}>
+                        <input
+                          type="checkbox"
+                          checked={item.Required}
+                          value={item.Required}
+                          onChange={(event) => this.onChangeRequired(event, n)}
+                        />
+                      </td>,
+                    ]}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div>
+          {showSaveButton && isExistingType && (
+            <div className={styles.saveButtonWrapper}>
+              <Button
+                type="primary"
+                onClick={() => this.togglePopup()}
+                disabled={isSaving}
+                block
+              >
+                Save Type
+              </Button>
+            </div>
+          )}
+          {!isExistingType && (
+            <div className={styles.saveButtonWrapper}>
+              <Button
+                type="primary"
+                onClick={() => this.saveAttributes()}
+                disabled={isSaving}
+                block
+              >
+                Save Type
+              </Button>
+            </div>
+          )}
+          <div className={styles.deleteButtonWrapper}>
+            {isExistingType ? (
+              <Button
+                type="danger"
+                onClick={() => this.toggleDeleteTypeModal()}
+                disabled={isSaving}
+                block
+              >
+                Delete Type
+              </Button>
+            ) : null}
+          </div>
+        </div>
+        {showPopup && (
+          <Popup
+            text='Click "Cancel" to hide popup'
+            saveAttributes={this.saveAttributes}
+            deletedAttributeCount={this.state.deletedAttributeCount}
+            deletedAttributes={this.state.deletedAttributes}
+            oldTypeName={this.props.oldTypeName}
+            newTypeName={this.props.typeName}
+            closePopup={this.togglePopup}
+            visible={showPopup}
+          />
+        )}
+        <Modal
+          className={styles.modal}
+          visible={this.state.showDeleteModal}
+          onOk={this.deleteType}
+          onCancel={this.toggleDeleteTypeModal}
+        >
+          <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
+          <input
+            type="text"
+            value={this.state.deleteTypeInput}
+            onChange={this.handleDeleteTypeInput}
+          />
+          {this.state.invalidTextInput && (
+            <p className={styles.invalidTypeName}>Incorrect type name</p>
+          )}
         </Modal>
       </div>
-      // <div className={styles.attributes}>
-      //   {
-      //     <Select
-      //       className={styles.attributesDropdown}
-      //       placeholder="Add an Attribute..."
-      //       onChange={this.onAttributeClick}
-      //       showSearch={true}
-      //       value={null}
-      //       size="medium"
-      //       filterOption={(input, option) =>
-      //         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      //       }
-      //     >
-      //       {filteredAttributes.map((attribute) => (
-      //         <Select.Option value={attribute.Id}>
-      //           {attribute.Name}
-      //         </Select.Option>
-      //       ))}
-      //     </Select>
-      //   }
-      //   <table>
-      //     <tbody>
-      //       <tr className={styles.tableHeader}>
-      //         <td></td>
-      //         <td>Label</td>
-      //         <td>Data Type</td>
-      //         <td>Required</td>
-      //       </tr>
-      //       {this.state.selectedAttributes.map((item, n) => (
-      //         <tr key={n}>
-      //           {item.Name.toLowerCase() === "longitude" ||
-      //           item.Name.toLowerCase() === "latitude"
-      //             ? [
-      //                 <td>
-      //                   <img
-      //                     alt=""
-      //                     className={styles.hiddenDeleteAttributeButton}
-      //                     src={deleteAttributeButton}
-      //                   />
-      //                 </td>,
-      //                 <td>
-      //                   <input
-      //                     type="text"
-      //                     key={item.Id}
-      //                     value={item.Name}
-      //                     disabled="disabled"
-      //                   />
-      //                 </td>,
-      //                 <td>
-      //                   <input
-      //                     type="text"
-      //                     value={item.ValueType}
-      //                     disabled="disabled"
-      //                   />{" "}
-      //                 </td>,
-      //                 <td className={styles.requiredCheckBox}>
-      //                   <input
-      //                     type="checkbox"
-      //                     checked={true}
-      //                     disabled="disabled"
-      //                   />
-      //                 </td>,
-      //               ]
-      //             : [
-      //                 <td>
-      //                   <div className={styles.deleteAttributeWrapper}>
-      //                     <img
-      //                       alt=""
-      //                       className={styles.deleteAttributeButton}
-      //                       src={deleteAttributeButton}
-      //                       onClick={() => this.deleteAttribute(item.Id)}
-      //                     />
-      //                   </div>
-      //                 </td>,
-      //                 <td>
-      //                   <input
-      //                     type="text"
-      //                     key={item.Id}
-      //                     value={item.Name}
-      //                     disabled="disabled"
-      //                   />
-      //                 </td>,
-      //                 <td>
-      //                   <input
-      //                     type="text"
-      //                     value={item.ValueType}
-      //                     disabled="disabled"
-      //                   />
-      //                 </td>,
-      //                 <td className={styles.requiredCheckBox}>
-      //                   <input
-      //                     type="checkbox"
-      //                     checked={item.Required}
-      //                     value={item.Required}
-      //                     onChange={(event) => this.onChangeRequired(event, n)}
-      //                   />
-      //                 </td>,
-      //               ]}
-      //         </tr>
-      //       ))}
-      //     </tbody>
-      //   </table>
-      //   <div>
-      //     {showSaveButton && isExistingType && (
-      //       <div className={styles.saveButtonWrapper}>
-      //         <Button
-      //           type="primary"
-      //           onClick={() => this.togglePopup()}
-      //           disabled={isSaving}
-      //           block
-      //         >
-      //           Save Type
-      //         </Button>
-      //       </div>
-      //     )}
-      //     {!isExistingType && (
-      //       <div className={styles.saveButtonWrapper}>
-      //         <Button
-      //           type="primary"
-      //           onClick={() => this.saveAttributes()}
-      //           disabled={isSaving}
-      //           block
-      //         >
-      //           Save Type
-      //         </Button>
-      //       </div>
-      //     )}
-      //     <div className={styles.deleteButtonWrapper}>
-      //       {isExistingType ? (
-      //         <Button
-      //           type="danger"
-      //           onClick={() => this.toggleDeleteTypeModal()}
-      //           disabled={isSaving}
-      //           block
-      //         >
-      //           Delete Type
-      //         </Button>
-      //       ) : null}
-      //     </div>
-      //   </div>
-      //   {showPopup && (
-      //     <Popup
-      //       text='Click "Cancel" to hide popup'
-      //       saveAttributes={this.saveAttributes}
-      //       deletedAttributeCount={this.state.deletedAttributeCount}
-      //       deletedAttributes={this.state.deletedAttributes}
-      //       oldTypeName={this.props.oldTypeName}
-      //       newTypeName={this.props.typeName}
-      //       closePopup={this.togglePopup}
-      //       visible={showPopup}
-      //     />
-      //   )}
-      //   <Modal
-      //     className={styles.modal}
-      //     visible={this.state.showDeleteModal}
-      //     onOk={this.deleteType}
-      //     onCancel={this.toggleDeleteTypeModal}
-      //   >
-      //     <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
-      //     <input
-      //       type="text"
-      //       value={this.state.deleteTypeInput}
-      //       onChange={this.handleDeleteTypeInput}
-      //     />
-      //     {this.state.invalidTextInput && (
-      //       <p className={styles.invalidTypeName}>Incorrect type name</p>
-      //     )}
-      //   </Modal>
-      // </div>
     );
   }
 }
