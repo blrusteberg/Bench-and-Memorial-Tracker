@@ -7,7 +7,7 @@ import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
 import { Input, Button, Modal, Select } from "antd";
 
-const DEFAULT_ICON = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png"
+const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png"
 
 const urlArray = [
   "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png",
@@ -38,7 +38,7 @@ class Attributes extends React.Component {
     deleteTypeInput: "",
     visible: false,
     imageArray: [],
-    currentIcon: "",
+    currentUrl: "",
   };
 
   componentDidMount() {
@@ -73,10 +73,10 @@ class Attributes extends React.Component {
               const sortedAttributes = filteredAttributes.sort((a, b) =>
                 a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1
               );
-              let currentIcon = res.data.Icon ? res.data.Icon : DEFAULT_ICON;
+              let currentUrl = this.props.oldUrl ? this.props.oldUrl : DEFAULT_URL;
               this.setState({
                 allAttributes: [...sortedAttributes],
-                currentIcon: currentIcon
+                currentUrl: currentUrl
               });
             })
             .catch((error) => {
@@ -107,7 +107,7 @@ class Attributes extends React.Component {
           this.setState({
             selectedAttributes,
             allAttributes: [...sortedAttributes],
-            currentIcon: DEFAULT_ICON,
+            currentUrl: DEFAULT_URL,
           });
         }
       })
@@ -198,8 +198,8 @@ class Attributes extends React.Component {
     });
 
     if (this.props.selectedTypeId) {
-      if (this.props.typeName !== this.props.oldTypeName) {
-        const newTypeName = { Name: this.props.typeName };
+      if (this.props.typeName !== this.props.oldTypeName || this.props.oldUrl != this.state.currentUrl) {
+        const newTypeName = { Name: this.props.typeName, Icon: this.state.currentUrl };
         axios
           .put(
             process.env.REACT_APP_API_BASE_URL +
@@ -214,7 +214,6 @@ class Attributes extends React.Component {
       }
       const newMemorialTypesObject = {
         Attributes: this.state.selectedAttributes,
-        Icon: this.state.currentIcon
       };
       axios
         .put(
@@ -229,9 +228,8 @@ class Attributes extends React.Component {
         });
     } else {
       const newMemorialTypesObject = {
-        Type: { Name: this.props.typeName },
+        Type: { Name: this.props.typeName, Icon: this.state.currentUrl },
         Attributes: this.state.selectedAttributes,
-        Icon: this.state.currentIcon
       };
       axios
         .post(
@@ -337,7 +335,7 @@ class Attributes extends React.Component {
 
   handleIconOnClick = url => {
     this.setState({
-      currentIcon: url,
+      currentUrl: url,
       visible: false,
       showSaveButton: true,
     });
@@ -354,7 +352,7 @@ class Attributes extends React.Component {
       (attribute) => !this.state.selectedAttributes.includes(attribute)
     );
 
-    let currentIcon = this.state.currentIcon;
+    let currentUrl = this.state.currentUrl;
 
     return (
       <div className={styles.attributes}>
@@ -364,7 +362,7 @@ class Attributes extends React.Component {
           </Button>
           <img 
             className={styles.icons}
-            src={currentIcon}
+            src={currentUrl}
             alt=""
           />
         </div>

@@ -90,6 +90,7 @@ router.put("/:id", async (req, res) => {
   try {
     const numUpdated = await Type.query().findById(req.params.id).patch({
       Name: req.body.Name,
+      Icon: req.body.Icon,
     });
     const s = numUpdated === 1 ? "" : "s";
     res.status(201).json({ message: `Updated ${numUpdated} type${s}` });

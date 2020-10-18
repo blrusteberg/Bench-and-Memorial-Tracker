@@ -15,12 +15,14 @@ class Types extends React.Component {
     newTypeName: "",
     isTypeNameChanged: false,
     isLoading: true,
+    currentUrl: ""
   };
 
   componentDidMount() {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/types`)
       .then((response) => {
+        console.log(response.data);
         let memorialTypes = [];
         if (response.data.length > 0) {
           memorialTypes = response.data;
@@ -51,6 +53,7 @@ class Types extends React.Component {
       selectedTypeIndex: event.target.value,
       newTypeName: selectedType.Id ? selectedType.Name : "",
       isTypeNameChanged: false,
+      currentUrl: selectedType.Icon ? selectedType.Icon : null,
     });
   };
 
@@ -101,6 +104,7 @@ class Types extends React.Component {
                 oldTypeName={this.state.selected.Name}
                 typeName={this.state.newTypeName}
                 isTypeNameChanged={this.state.isTypeNameChanged}
+                oldUrl={this.state.currentUrl}
               />
             </div>
           </>
