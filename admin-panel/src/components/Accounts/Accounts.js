@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Checkbox, Button, notification, Spin, Result } from 'antd';
+import { Button, Spin, Result } from 'antd';
 import axios from "axios";
 import styles from "./Accounts.module.css";
 import "antd/dist/antd.css";
@@ -73,22 +73,7 @@ const Accounts = () => {
         refreshPage();
       });
   };
-  
-  const openNotification = (
-    message,
-    description,
-    type = null,
-    onClick = () => {},
-    onClose = () => {}
-  ) => {
-    notification.open({
-      message: message,
-      description: description,
-      type: type,
-      onClick: () => onClick(),
-      onClose: () => onClose(),
-    });
-  };
+
 
   const onDeleteClick = (account) => setDeletingAccount(account);
 

@@ -2,9 +2,8 @@ import React, { useState, createContext } from "react";
 import axios from "axios";
 import "antd/dist/antd.css";
 
-import { Modal, Card, Space } from "antd";
+import { Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import styles from "./DeleteAccountModal.module.css";
 
 const DeleteAccountModal = ({ account, deleteSuccess, onCancelClick }) => {
   const [visible, setVisible] = useState(true);

@@ -1,9 +1,7 @@
-import React, { useState, createContext } from "react";
-import axios from "axios";
+import React, { useState, } from "react";
 import "antd/dist/antd.css";
 
-import { Modal, Form, Input, Menu, Select, message, Checkbox, Switch } from "antd";
-import { ExclamationCircleOutlined, DownOutlined } from "@ant-design/icons";
+import { Modal, Form, Input,  Select, Switch } from "antd";
 import styles from "./AddAccountModal.module.css";
 
 const { Option } = Select;
@@ -21,11 +19,10 @@ const AddAccountModal = ({
         Username: "",
         Password: "",
         AccountType: "",
-        DelAccess: false,
+        DelAccess: "",
     },
   ]);
   const [isAdding, setIsAdding] = useState(false);
-  const [checked, setChecked] = useState(false);
   const [form] = Form.useForm();
 
   const onAddClick = async () => {
@@ -37,17 +34,6 @@ const AddAccountModal = ({
   };
 
 
-  const getAccountNames = () => {
-    accounts.map((accounts) => {
-      accounts.key = accounts.Id;
-      return accounts;
-    });
-  };
-
-  const onChange = (event) => {
-    const value = event.target.value;
-    return value;
-  };
 
   return (
     <Modal
