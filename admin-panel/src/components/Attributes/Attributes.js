@@ -82,6 +82,7 @@ const Attributes = () => {
       .post(`${process.env.REACT_APP_API_BASE_URL}/attributes`, attribute)
       .then((res) => {
         console.log(res.data);
+        refreshPage();
       });
   };
 
@@ -135,6 +136,7 @@ const Attributes = () => {
         <AddAttributeModal
           attributes={attributes}
           addSuccess={refreshPage}
+          saveAttribute={saveAttribute}
           modalVisible={modalVisible}
           onCancelClick={() => setModalVisible(false)}
         />

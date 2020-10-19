@@ -10,6 +10,7 @@ import Attributes from "../../Types/Attributes/Attributes";
 const AddAttributeModal = ({
   attributes,
   addSuccess,
+  saveAttribute,
   modalVisible,
   onCancelClick,
 }) => {
@@ -24,7 +25,11 @@ const AddAttributeModal = ({
 
   const onAddClick = async () => {
     const formData = await form.validateFields();
-    console.log(formData);
+    if (checkAttributes(formData) == true) {
+      saveAttribute(formData);
+    } else {
+      return alert("Attribute already Exists!");
+    }
   };
 
   const getAttributeNames = () => {
@@ -34,9 +39,18 @@ const AddAttributeModal = ({
     });
   };
 
-  const onAttributeInputChange = (event) => {
-    const value = event.target.value;
-    //some error checking
+  const checkAttributes = (formData) => {
+    let canSave = true;
+    attributes.map((attribute) => {
+      if (attribute.Name === formData.Name) {
+        canSave = false;
+      }
+    });
+    if (canSave == false) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   return (
@@ -53,14 +67,32 @@ const AddAttributeModal = ({
       <Form form={form}>
         <div className={styles.attributeNameContainer}>
           <tr>
-            <Form.Item label="Name" name="Name">
+            <Form.Item
+              label="Name"
+              name="Name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter a New Attribute Name!",
+                },
+              ]}
+            >
               <Input className={styles.attributeInput} maxLength={248} />
             </Form.Item>
           </tr>
         </div>
         <div className={styles.valueTypeContainer}>
           <tr>
-            <Form.Item label="Value Type" valueType="ValueType">
+            <Form.Item
+              label="Value Type"
+              name="ValueType"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select a Value Type!",
+                },
+              ]}
+            >
               <Select placeholder="Select Value Type" style={{ width: 200 }}>
                 <option value="Number">Number</option>
                 <option value="Words">Words</option>
