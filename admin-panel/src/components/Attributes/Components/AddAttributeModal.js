@@ -28,7 +28,7 @@ const AddAttributeModal = ({
     if (checkAttributes(formData) == true) {
       saveAttribute(formData);
     } else {
-      return alert("Attribute already Exists!");
+      return alert(`${formData.Name} already Exists!`);
     }
   };
 
@@ -42,7 +42,7 @@ const AddAttributeModal = ({
   const checkAttributes = (formData) => {
     let canSave = true;
     attributes.map((attribute) => {
-      if (attribute.Name === formData.Name) {
+      if (attribute.Name.toLowerCase() === formData.Name.toLowerCase()) {
         canSave = false;
       }
     });
