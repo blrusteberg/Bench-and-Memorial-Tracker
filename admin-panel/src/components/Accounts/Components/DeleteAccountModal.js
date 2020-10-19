@@ -25,7 +25,7 @@ const DeleteAccountModal = ({ account, deleteSuccess, onCancelClick }) => {
   return (
     <Modal
       visible={visible}
-      title={`Are you sure you want to delete ${account.Name} account?`}
+      title={`Are you sure you want to delete ${account.Username} account?`}
       icon={<ExclamationCircleOutlined />}
       content="Add row details here..."
       okText="Delete"

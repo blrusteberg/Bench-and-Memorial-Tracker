@@ -2,14 +2,16 @@ import React, { useState, createContext } from "react";
 import axios from "axios";
 import "antd/dist/antd.css";
 
-import { Modal, Form, Input, Menu, Select, message, Checkbox } from "antd";
+import { Modal, Form, Input, Menu, Select, message, Checkbox, Switch } from "antd";
 import { ExclamationCircleOutlined, DownOutlined } from "@ant-design/icons";
 import styles from "./AddAccountModal.module.css";
-import Attributes from "../../Types/Attributes/Attributes";
+
+const { Option } = Select;
 
 const AddAccountModal = ({
   accounts,
   addSuccess,
+  saveAccount,
   modalVisible,
   onCancelClick,
 }) => {
@@ -19,18 +21,21 @@ const AddAccountModal = ({
         Username: "",
         Password: "",
         AccountType: "",
-        DelAccess: ""
+        DelAccess: false,
     },
   ]);
   const [isAdding, setIsAdding] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [form] = Form.useForm();
 
   const onAddClick = async () => {
     const formData = await form.validateFields();
-    axios
-        .post()
-    console.log(formData);
+    if(formData.DelAccess == undefined) {
+        formData.DelAccess = false;
+    }
+    saveAccount(formData);
   };
+
 
   const getAccountNames = () => {
     accounts.map((accounts) => {
@@ -39,14 +44,14 @@ const AddAccountModal = ({
     });
   };
 
-  const onAccountsInputChange = (event) => {
+  const onChange = (event) => {
     const value = event.target.value;
-    //some error checking
+    return value;
   };
 
   return (
     <Modal
-      title="Adding a new Account..."
+      title="Create a new account"
       visible={modalVisible}
       okText={"Add Account"}
       onOk={onAddClick}
@@ -66,25 +71,25 @@ const AddAccountModal = ({
         <div className={styles.accountNameContainer}>
           <tr>
             <Form.Item label="Password" name="Password">
-              <Input className={styles.accountInput} maxLength={248} />
+              <Input.Password />
             </Form.Item>
           </tr>
         </div>
         <div className={styles.accountTypeContainer}>
           <tr>
-            <Form.Item label="Account Type" valueType="AccountType">
+            <Form.Item label="Account Type" name="AccountType" valueType="string">
               <Select placeholder="Select Account Type" style={{ width: 200 }}>
-                <option value="Tagger">Tagger</option>
-                <option value="Clerk">Clerk</option>
-                <option value="Admin">Admin</option>
+                <Option value="tagger">Tagger</Option>
+                <Option value="clerk">Clerk</Option>
+                <Option value="admin">Admin</Option>
               </Select>
             </Form.Item>
           </tr>
         </div>
         <div className={styles.accountNameContainer}>
           <tr>
-            <Form.Item label="Delete Access" name="DeleteAccess">
-              <Checkbox className={styles.accountInput} maxLength={248} />
+            <Form.Item label="Delete Access" name="DelAccess" valuePropName="checked">
+              <Switch />
             </Form.Item>
           </tr>
         </div>
