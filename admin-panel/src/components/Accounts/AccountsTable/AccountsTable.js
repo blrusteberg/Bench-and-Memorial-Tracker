@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Space, Form, Checkbox } from "antd";
+import { Table, Space, Form, Checkbox, Switch } from "antd";
 
 import styles from "./AccountsTable.module.css";
 
@@ -16,13 +16,13 @@ const AccountsTable = ({
           title: 'Username',
           dataIndex: 'Username',
           key: 'Username',
-          align: 'center'
+          align: 'left'
         },
         {
           title: 'Password',
           dataIndex: 'Password',
           key: 'Password',
-          align: 'center'
+          align: 'center',
         },
         {
           title: 'Account Type',
@@ -34,8 +34,8 @@ const AccountsTable = ({
           title: 'Delete Access',
           dataIndex: 'DelAccess',
           align: 'center',
-          render: (hasDelete) =>
-            hasDelete ? <Checkbox checked={true} disabled={true}/>: <Checkbox checked={false} disabled={true}/>
+          render: (delAccess) =>
+            <Switch checked={delAccess} disabled={true} />
         },
         {
           title: "Action",

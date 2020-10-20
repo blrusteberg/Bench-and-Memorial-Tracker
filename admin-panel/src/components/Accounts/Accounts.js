@@ -74,6 +74,8 @@ const Accounts = () => {
       });
   };
 
+  
+
 
   const onDeleteClick = (account) => setDeletingAccount(account);
 
@@ -111,7 +113,9 @@ const Accounts = () => {
           addSuccess={refreshPage}
           modalVisible={modalVisible}
           saveAccount={saveAccount}
-          onCancelClick={() => setModalVisible(false)}
+          onCancelClick={() => {
+            setModalVisible(false);
+          }}
         />
         <AccountsTable
           accounts={accounts}

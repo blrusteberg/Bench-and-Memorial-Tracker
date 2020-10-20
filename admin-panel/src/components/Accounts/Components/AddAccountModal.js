@@ -27,20 +27,16 @@ const AddAccountModal = ({
 
   const onAddClick = async () => {
     const formData = await form.validateFields();
-    if(formData.DelAccess == undefined) {
-        formData.DelAccess = false;
-    }
     saveAccount(formData);
   };
-
-
-
+  
   return (
     <Modal
       title="Create a new account"
       visible={modalVisible}
       okText={"Add Account"}
       onOk={onAddClick}
+      maskClosable={false}
       onCancel={() => {
         onCancelClick();
         modalVisible = false;
@@ -49,22 +45,52 @@ const AddAccountModal = ({
       <Form form={form}>
         <div className={styles.accountNameContainer}>
           <tr>
-            <Form.Item label="Username" name="Username">
-              <Input className={styles.accountInput} maxLength={248} />
+            <Form.Item 
+                label="Username" 
+                name="Username"
+                hasFeedback
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input username!',
+                    },
+                ]}
+            >
+              <Input className={styles.accountInput} maxLength={50} />
             </Form.Item>
           </tr>
         </div>
         <div className={styles.accountNameContainer}>
           <tr>
-            <Form.Item label="Password" name="Password">
+            <Form.Item 
+                label="Password" 
+                name="Password"
+                hasFeedback
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input password!',
+                    },
+                ]}
+            >
               <Input.Password />
             </Form.Item>
           </tr>
         </div>
         <div className={styles.accountTypeContainer}>
           <tr>
-            <Form.Item label="Account Type" name="AccountType" valueType="string">
-              <Select placeholder="Select Account Type" style={{ width: 200 }}>
+            <Form.Item 
+                label="Account Type" 
+                name="AccountType"
+                hasFeedback
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please select an account type!',
+                    },
+                ]}
+            >
+              <Select placeholder="Select Account Type" className={styles.accountDropdown}>
                 <Option value="tagger">Tagger</Option>
                 <Option value="clerk">Clerk</Option>
                 <Option value="admin">Admin</Option>
