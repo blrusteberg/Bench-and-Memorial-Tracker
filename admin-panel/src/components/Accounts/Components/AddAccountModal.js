@@ -22,18 +22,21 @@ const AddAccountModal = ({
         DelAccess: "",
     },
   ]);
-  const [isAdding, setIsAdding] = useState(false);
+
   const [form] = Form.useForm();
 
   const onAddClick = async () => {
     const formData = await form.validateFields();
     saveAccount(formData);
   };
-  
+
+
+
   return (
     <Modal
       title="Create a new account"
       visible={modalVisible}
+      destroyOnClose={true}
       okText={"Add Account"}
       onOk={onAddClick}
       maskClosable={false}
@@ -42,7 +45,7 @@ const AddAccountModal = ({
         modalVisible = false;
       }}
     >
-      <Form form={form}>
+      <Form form={form} preserve={false}>
         <div className={styles.accountNameContainer}>
           <tr>
             <Form.Item 
