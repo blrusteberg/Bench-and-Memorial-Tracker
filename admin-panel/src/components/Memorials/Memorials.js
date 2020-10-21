@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Spin, Result, notification, Radio } from "antd";
+import {
+  Spin,
+  Result,
+  notification,
+  Button,
+  Space,
+  Radio,
+  Divider,
+} from "antd";
 
 import styles from "./Memorials.module.css";
-import DeleteMemorialModal from "./Components/DeleteMemorialModal";
+import DeleteMemorialModal from "./Modals/DeleteMemorialModal/DeleteMemorialModal";
 import MemorialsTable from "./MemorialsTable/MemorialsTable";
+import MemorialModal from "./Modals/MemorialModal/MemorialModal";
 
 const Memorials = () => {
   const [memorials, setMemorials] = useState([
@@ -26,6 +35,7 @@ const Memorials = () => {
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [deletingMemorial, setDeletingMemorial] = useState();
+  const [memorialModalVisible, setMemorialModalVisible] = useState(false);
 
   useEffect(() => {
     axios
@@ -125,6 +135,11 @@ const Memorials = () => {
     <Spin tip="Loading Memorials..." />
   ) : (
     <div className={styles.Memorials}>
+      <MemorialModal
+        onCancel={() => setMemorialModalVisible(false)}
+        visible={memorialModalVisible}
+      />
+
       {deletingMemorial ? (
         <DeleteMemorialModal
           memorial={deletingMemorial}
@@ -132,17 +147,33 @@ const Memorials = () => {
           onCancelClick={() => setDeletingMemorial(null)}
         />
       ) : null}
-      <Radio.Group
-        options={[
-          { label: "Approved", value: "approved" },
-          { label: "Unapproved", value: "unapproved" },
-        ]}
-        onChange={(e) => setTableView(e.target.value)}
-        value={tableView}
-        optionType="button"
-        buttonStyle="solid"
-        className={styles.tableViewRadio}
-      />
+      <Space align="center" className={styles.memorialActions}>
+        <Button
+          className={styles.addMemorialButton}
+          type="primary"
+          onClick={() => setMemorialModalVisible(true)}
+        >
+          Add Memorial
+        </Button>
+        <Divider>
+          <Radio.Group
+            onChange={(e) => setTableView(e.target.value)}
+            value={tableView}
+            optionType="button"
+            buttonStyle="solid"
+            className={styles.tableViewRadio}
+          >
+            <Radio.Button value="approved">Approved</Radio.Button>
+            <Radio.Button
+              value="unapproved"
+              className={styles.unapprovedTableViewButton}
+            >
+              Unapproved
+            </Radio.Button>
+          </Radio.Group>
+        </Divider>
+      </Space>
+
       <MemorialsTable
         tableView={tableView}
         memorials={tableView === "approved" ? memorials : unapprovedMemorials}

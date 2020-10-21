@@ -13,6 +13,7 @@ const MemorialsTable = ({
 }) => {
   const [editingKey, setEditingKey] = useState("");
   const [form] = Form.useForm();
+  const [attributesForm] = Form.useForm();
   const [saving, setSaving] = useState(false);
 
   const isEditing = (record) => editingKey === record.key;
@@ -20,18 +21,21 @@ const MemorialsTable = ({
   const onSaveClick = async (key) => {
     setSaving(true);
     try {
-      const row = await form.validateFields();
-      saveMemorial(
-        row,
-        key,
-        () => {
-          setEditingKey("");
-          setSaving(false);
-        },
-        () => {
-          setSaving(false);
-        }
-      );
+      const memorial = await form.validateFields();
+      const attributes = await attributesForm.validateFields();
+      console.log("MEMORIAL: ", memorial);
+      console.log("ATTRIBUTES: ", attributes);
+      // saveMemorial(
+      //   row,
+      //   key,
+      //   () => {
+      //     setEditingKey("");
+      //     setSaving(false);
+      //   },
+      //   () => {
+      //     setSaving(false);
+      //   }
+      // );
     } catch (error) {
       setSaving(false);
     }
@@ -42,7 +46,7 @@ const MemorialsTable = ({
       case "live":
         return (
           <a
-            href="javascript:void(0)"
+            href={null}
             onClick={() => onUpdateMemorialStatusClick(record, "on hold")}
           >
             Put on hold
@@ -51,7 +55,7 @@ const MemorialsTable = ({
       case "unapproved":
         return (
           <a
-            href="javascript:void(0)"
+            href={null}
             onClick={() => onUpdateMemorialStatusClick(record, "live")}
           >
             Approve
@@ -60,7 +64,7 @@ const MemorialsTable = ({
       case "on hold":
         return (
           <a
-            href="javascript:void(0)"
+            href={null}
             onClick={() => onUpdateMemorialStatusClick(record, "live")}
           >
             Go live
@@ -76,6 +80,18 @@ const MemorialsTable = ({
       Name: "",
       ...record,
     });
+    const fieldValues = [];
+    console.log("FIELD VALUES: ", { ...record.Type.Attributes });
+    console.log("getFieldsValue: ", form.getFieldsValue());
+    attributesForm.setFieldsValue(
+      [
+        {
+          Value: "",
+          Required: false,
+        },
+      ],
+      ...record.Type.Attributes
+    );
     setEditingKey(record.key);
   };
 
@@ -103,19 +119,23 @@ const MemorialsTable = ({
     {
       title: "Name",
       dataIndex: "Name",
+      key: "name",
       editable: true,
+      inputType: "Words",
       textWrap: "word-break",
       width: "35%",
     },
     {
       title: "Type",
       dataIndex: ["Type", "Name"],
+      key: "type",
       align: "center",
       editable: false,
     },
     {
       title: "Status",
       dataIndex: "Status",
+      key: "status",
       align: "center",
       editable: false,
       render: (_, record) => {
@@ -131,6 +151,7 @@ const MemorialsTable = ({
     {
       title: "Action",
       dataIndex: "operation",
+      key: "operation",
       align: "center",
       editable: false,
       render: (_, record) =>
@@ -139,22 +160,22 @@ const MemorialsTable = ({
             {saving ? (
               <p>Saving...</p>
             ) : (
-              <a href="javascript:void(0)" onClick={() => onSaveClick(record.key)}>
+              <a href={null} onClick={() => onSaveClick(record.key)}>
                 Save
               </a>
             )}
 
-            <a href="javascript:void(0)" onClick={onCancelClick}>
+            <a href={null} onClick={onCancelClick}>
               Cancel
             </a>
           </Space>
         ) : (
           <Space size="large" align="center">
             {getChangeStatusAction(record)}
-            <a href="javascript:void(0)" onClick={() => onEditClick(record)}>
+            <a href={null} onClick={() => onEditClick(record)}>
               Edit
             </a>
-            <a href="javascript:void(0)" onClick={() => onDeleteClick(record)}>
+            <a href={null} onClick={() => onDeleteClick(record)}>
               Delete
             </a>
           </Space>
@@ -171,6 +192,7 @@ const MemorialsTable = ({
             editing: isEditing(memorial),
             dataIndex: col.dataIndex,
             title: col.title,
+            inputRequired: true,
             inputType: "Words",
           }),
         }
@@ -184,7 +206,11 @@ const MemorialsTable = ({
         columns={mergedColumns}
         dataSource={formatMemorialsForTable()}
         expandedRowRender={(memorial) => (
-          <AttributesTable attributes={memorial.Type.Attributes} />
+          <AttributesTable
+            Attributes={memorial.Type.Attributes}
+            editing={isEditing(memorial)}
+            form={attributesForm}
+          />
         )}
         bordered
         components={{
