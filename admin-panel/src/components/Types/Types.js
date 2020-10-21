@@ -22,7 +22,6 @@ class Types extends React.Component {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/types`)
       .then((response) => {
-        console.log(response.data);
         let memorialTypes = [];
         if (response.data.length > 0) {
           memorialTypes = response.data;
