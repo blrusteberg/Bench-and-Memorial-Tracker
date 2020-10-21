@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Space, Form, Checkbox, Switch } from "antd";
+import { Table, Space, Form, Checkbox, Switch, Tag } from "antd";
 
 import styles from "./AccountsTable.module.css";
 
@@ -28,8 +28,19 @@ const AccountsTable = ({
           title: 'Account Type',
           dataIndex: 'AccountType',
           key: 'AccountType',
-          align: 'center'
-        },
+          align: 'center',
+          render: (AccountTypes) => {
+                let color = AccountTypes.length > 5 ? '#873800' : '#bfbfbf';
+                if (AccountTypes === 'admin') {
+                    color = '#faad14';
+                }
+                return (
+                    <Tag color={color} key={AccountTypes}>
+                        {AccountTypes.toUpperCase()}
+                    </Tag>
+                    )
+                }
+            },
         {
           title: 'Delete Access',
           dataIndex: 'DelAccess',
