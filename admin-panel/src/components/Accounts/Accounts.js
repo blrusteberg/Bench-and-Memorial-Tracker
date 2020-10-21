@@ -79,6 +79,12 @@ const Accounts = () => {
 
   const onDeleteClick = (account) => setDeletingAccount(account);
 
+  const onShowClick = (password) => {
+    return (
+      null
+    )
+  }
+
   const refreshPage = () => {
     window.location.reload(false);
   };
@@ -121,6 +127,7 @@ const Accounts = () => {
           accounts={accounts}
           saveAccount={saveAccount}
           onDeleteClick={onDeleteClick}
+          onShowClick={onShowClick}
         />
       </div>
     </>

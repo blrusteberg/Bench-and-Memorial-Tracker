@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Table, Space, Form, Checkbox, Switch, Tag } from "antd";
-
+import { Table, Space, Form, Checkbox, Switch, Tag, Button} from "antd";
+import {EyeInvisibleOutlined} from '@ant-design/icons';
 import styles from "./AccountsTable.module.css";
 
 
 const AccountsTable = ({
     accounts,
     onDeleteClick,
+    onShowClick,
     saveAccount,
 }) => {
     const [form] = Form.useForm();
@@ -23,20 +24,25 @@ const AccountsTable = ({
           dataIndex: 'Password',
           key: 'Password',
           align: 'center',
+          render: (password) => {
+              return (
+                <Button icon={<EyeInvisibleOutlined/>} onClick={() => onShowClick(password)}></Button>
+              )
+          }
         },
         {
           title: 'Account Type',
           dataIndex: 'AccountType',
           key: 'AccountType',
           align: 'center',
-          render: (AccountTypes) => {
-                let color = AccountTypes.length > 5 ? '#873800' : '#bfbfbf';
-                if (AccountTypes === 'admin') {
-                    color = '#faad14';
+          render: (type) => {
+                let color = type.length > 5 ? '#ffa940' : '#d9d9d9';
+                if (type === 'admin') {
+                    color = '#fadb14';
                 }
                 return (
-                    <Tag color={color} key={AccountTypes}>
-                        {AccountTypes.toUpperCase()}
+                    <Tag color={color} key={type}>
+                        {type.toUpperCase()}
                     </Tag>
                     )
                 }
