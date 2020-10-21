@@ -63,3 +63,20 @@ td {
   text-transform: uppercase;
   color: rgb(211, 0, 0);
 }
+
+.iconWrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: .5%;
+  margin-bottom: .5%;
+}
+
+.iconButton {
+  margin-right: 5%
+}
+
+.icons {
+  cursor: pointer;
+  width: 45px;
+}

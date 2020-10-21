@@ -5,7 +5,28 @@ import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
-import { Button, Modal, Select } from "antd";
+import { Input, Button, Modal, Select } from "antd";
+
+const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png"
+
+const urlArray = [
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/artist.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bank.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bench.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/building.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bus-stop.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/hamburger.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/headstone.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/history-book.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/hospital.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/mausoleum.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorial.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/statue-of-liberty.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/statue.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/tree.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/waving-flag.png",
+];
 
 class Attributes extends React.Component {
   state = {
@@ -20,6 +41,9 @@ class Attributes extends React.Component {
     showDeleteModal: false,
     invalidTextInput: false,
     deleteTypeInput: "",
+    visible: false,
+    imageArray: [],
+    currentUrl: "",
   };
 
   componentDidMount() {
@@ -54,8 +78,10 @@ class Attributes extends React.Component {
               const sortedAttributes = filteredAttributes.sort((a, b) =>
                 a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1
               );
+              let currentUrl = this.props.oldUrl ? this.props.oldUrl : DEFAULT_URL;
               this.setState({
                 allAttributes: [...sortedAttributes],
+                currentUrl: currentUrl
               });
             })
             .catch((error) => {
@@ -81,15 +107,35 @@ class Attributes extends React.Component {
           const sortedAttributes = filteredAttributes.sort((a, b) =>
             a.Name.toLowerCase() > b.Name.toLowerCase() ? 1 : -1
           );
+
+          
           this.setState({
             selectedAttributes,
             allAttributes: [...sortedAttributes],
+            currentUrl: DEFAULT_URL,
           });
         }
       })
       .catch((error) => {
         console.log(error);
       });
+
+      let imageArray = urlArray.map((item, index) => {
+        return (
+          <img 
+            className={styles.icons}
+            key={index}
+            src={item}
+            alt=""
+            onClick={() => this.handleIconOnClick(item)}
+          />
+        )
+      })
+      
+
+      this.setState({
+        imageArray: imageArray
+      })
   }
 
   onChangeRequired = (event, n) => {
@@ -157,8 +203,8 @@ class Attributes extends React.Component {
     });
 
     if (this.props.selectedTypeId) {
-      if (this.props.typeName !== this.props.oldTypeName) {
-        const newTypeName = { Name: this.props.typeName };
+      if (this.props.typeName !== this.props.oldTypeName || this.props.oldUrl != this.state.currentUrl) {
+        const newTypeName = { Name: this.props.typeName, Icon: this.state.currentUrl };
         axios
           .put(
             process.env.REACT_APP_API_BASE_URL +
@@ -187,7 +233,7 @@ class Attributes extends React.Component {
         });
     } else {
       const newMemorialTypesObject = {
-        Type: { Name: this.props.typeName },
+        Type: { Name: this.props.typeName, Icon: this.state.currentUrl },
         Attributes: this.state.selectedAttributes,
       };
       axios
@@ -279,6 +325,26 @@ class Attributes extends React.Component {
       deletedAttributes: deletedAttributes,
     });
   };
+  
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleCancel = e => {
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleIconOnClick = url => {
+    this.setState({
+      currentUrl: url,
+      visible: false,
+      showSaveButton: true,
+    });
+  }
 
   render() {
     const showSaveButton =
@@ -291,8 +357,32 @@ class Attributes extends React.Component {
       (attribute) => !this.state.selectedAttributes.includes(attribute)
     );
 
+    let currentUrl = this.state.currentUrl;
+
     return (
       <div className={styles.attributes}>
+        <div className={styles.iconWrapper}>
+          <Button className={styles.iconButton} type="primary" onClick={this.showModal}>
+            Choose an icon
+          </Button>
+          <img 
+            className={styles.icons}
+            src={currentUrl}
+            alt=""
+          />
+        </div>
+        <Modal
+          title="Choose an icon"
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>
+              Cancel
+            </Button>
+          ]}
+        >
+          {this.state.imageArray}
+        </Modal>
         {
           <Select
             className={styles.attributesDropdown}
@@ -333,7 +423,7 @@ class Attributes extends React.Component {
                         />
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           key={item.Id}
                           value={item.Name}
@@ -341,7 +431,7 @@ class Attributes extends React.Component {
                         />
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           value={item.ValueType}
                           disabled="disabled"
@@ -367,7 +457,7 @@ class Attributes extends React.Component {
                         </div>
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           key={item.Id}
                           value={item.Name}
@@ -375,7 +465,7 @@ class Attributes extends React.Component {
                         />
                       </td>,
                       <td>
-                        <input
+                        <Input
                           type="text"
                           value={item.ValueType}
                           disabled="disabled"
@@ -450,8 +540,8 @@ class Attributes extends React.Component {
           onOk={this.deleteType}
           onCancel={this.toggleDeleteTypeModal}
         >
-          <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
-          <input
+          <p>Enter "{this.props.oldTypeName}" and click OK to delete type.</p>
+          <Input
             type="text"
             value={this.state.deleteTypeInput}
             onChange={this.handleDeleteTypeInput}
