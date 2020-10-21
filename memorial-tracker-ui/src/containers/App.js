@@ -69,7 +69,6 @@ class App extends React.Component {
 
   searchHandler = (searchText) => {
     const memorials = [...this.state.Memorials];
-    console.log(memorials);
     memorials.forEach((memorial) => {
       let hideIcon = true;
       if (
