@@ -16,7 +16,7 @@ const memorial = (props) => {
     >
       <img
         className={styles.icon}
-        src={`./icons/memorial.png`}
+        src={props.Type.Icon}
         alt="memorial type icon"
       />
       <div className={styles.memorialInfo}>

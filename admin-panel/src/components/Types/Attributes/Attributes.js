@@ -7,20 +7,25 @@ import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
 import { Input, Button, Modal, Select } from "antd";
 
-const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png"
+const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png"
 
 const urlArray = [
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/1.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/10.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/2.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/3.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/4.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/5.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/6.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/7.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/8.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/9.png"
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/artist.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bank.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bench.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/building.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bus-stop.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/hamburger.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/headstone.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/history-book.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/hospital.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/mausoleum.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorial.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/statue-of-liberty.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/statue.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/tree.png",
+  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/waving-flag.png",
 ];
 
 class Attributes extends React.Component {
@@ -535,7 +540,7 @@ class Attributes extends React.Component {
           onOk={this.deleteType}
           onCancel={this.toggleDeleteTypeModal}
         >
-          <p>Enter {this.props.oldTypeName} and click OK to delete type.</p>
+          <p>Enter "{this.props.oldTypeName}" and click OK to delete type.</p>
           <Input
             type="text"
             value={this.state.deleteTypeInput}
