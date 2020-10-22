@@ -1,6 +1,6 @@
 import React from "react";
 import { CaretLeftOutlined } from "@ant-design/icons";
-
+import { Button } from 'antd';
 import NavigationPanel from "./NavigationPanel/NavigationPanel";
 import styles from "./SideBar.module.css";
 
@@ -25,6 +25,9 @@ class SideBar extends React.Component {
             handleNavigationClick={this.props.handleNavigationClick}
             roles={this.props.roles}
           />
+        </div>
+        <div className={styles.buttonWrapper}>
+          <Button type="primary" onClick={this.props.handleLogout}>Logout</Button>
         </div>
         <div className={styles.roleSelectWrapper}>
           Choose role:
