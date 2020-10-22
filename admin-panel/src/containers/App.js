@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 import { CaretRightOutlined } from "@ant-design/icons";
-import { Layout } from "antd";
+import { Layout, Checkbox } from "antd";
 import "antd/dist/antd.css";
 
 import styles from "./App.module.css";
@@ -21,8 +21,17 @@ class App extends React.Component {
     page: "Memorials",
     sideBarCollapse: false,
     roles: ["User", "Admin", "Clerk", "Tagger"],
-    isLoggedIn: false
+    isLoggedIn: false,
+    stayLoggedIn: false,
   };
+
+  componentDidMount(){
+    let isLoggedIn = localStorage.getItem('isLoggedIn') || sessionStorage.getItem('isLoggedIn');
+    this.setState({
+      isLoggedIn: isLoggedIn
+    })
+  }
+
   handleNavigationClick = (event) => {
     this.changePage(event.key);
   };
@@ -56,6 +65,14 @@ class App extends React.Component {
     });
   };
 
+  handleLogout = () => {
+    delete localStorage.isLoggedIn
+    delete sessionStorage.isLoggedIn;
+    this.setState({
+      isLoggedIn: false
+    })
+  }
+
   createFormForInitialLogin = () => {
     const layout = {
       labelCol: {
@@ -72,18 +89,32 @@ class App extends React.Component {
       },
     };
 
-    const onFinish = (values) => {
-      if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
+  const onFinish = (values) => {
+    if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
+      if(this.state.stayLoggedIn === false){
+        sessionStorage.setItem('isLoggedIn', true);
+        this.setState({
+          isLoggedIn: true
+        })
+      }
+      else {
         localStorage.setItem('isLoggedIn', true);
         this.setState({
           isLoggedIn: true
         })
       }
-    };
-  
-    const onFinishFailed = (errorInfo) => {
-      console.log('Failed:', errorInfo);
-    };
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  const onChangeStayLoggedIn = () => {
+    this.setState({
+      stayLoggedIn: !this.state.stayLoggedIn
+    })
+  }
 
     return (
       <div className={styles.formWrapper}>
@@ -113,17 +144,20 @@ class App extends React.Component {
               Submit
             </Button>
           </Form.Item>
+          <div className={styles.checkboxWrapper}>
+          <Checkbox onChange={onChangeStayLoggedIn}>Stay signed In</Checkbox>
+          </div>
         </Form>
+        
       </div>
     )
   }
 
   render() {
-    let isLoggedIn = localStorage.getItem('isLoggedIn');
     const { Header, Sider, Content } = Layout;
     return (
       <div className={styles.App}>
-      {isLoggedIn ? (
+      {this.state.isLoggedIn ? (
         <Layout>
           <Layout>
             <BrowserRouter>
@@ -136,6 +170,7 @@ class App extends React.Component {
                     }
                     handlePermissionChange={this.handlePermissionChange}
                     roles={this.state.roles}
+                    handleLogout={this.handleLogout}
                   />
                 </Sider>
               )}
