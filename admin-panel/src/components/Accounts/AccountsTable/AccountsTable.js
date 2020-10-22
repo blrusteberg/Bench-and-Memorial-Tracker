@@ -9,7 +9,7 @@ const AccountsTable = ({
     onDeleteClick,
 }) => {
     const [form] = Form.useForm();
-    const [passVisible, setPassVisible] = useState(false);
+    const [passVisible, setPassVisible] = useState(true);
 
     const columns = [
         {
