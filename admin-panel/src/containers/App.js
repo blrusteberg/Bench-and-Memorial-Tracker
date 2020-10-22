@@ -93,16 +93,13 @@ class App extends React.Component {
     if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
       if(this.state.stayLoggedIn === false){
         sessionStorage.setItem('isLoggedIn', true);
-        this.setState({
-          isLoggedIn: true
-        })
       }
       else {
         localStorage.setItem('isLoggedIn', true);
-        this.setState({
-          isLoggedIn: true
-        })
       }
+      this.setState({
+        isLoggedIn: true
+      })
     }
   };
 
