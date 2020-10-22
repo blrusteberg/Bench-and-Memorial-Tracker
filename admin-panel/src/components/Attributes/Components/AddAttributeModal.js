@@ -1,42 +1,24 @@
 import React, { useState, createContext } from "react";
-import axios from "axios";
 import "antd/dist/antd.css";
 
-import { Modal, Form, Input, Menu, Select, message } from "antd";
-import { ExclamationCircleOutlined, DownOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Select } from "antd";
 import styles from "./AddAttributeModal.module.css";
-import Attributes from "../../Types/Attributes/Attributes";
 
 const AddAttributeModal = ({
   attributes,
-  addSuccess,
-  saveAttribute,
+  addAttribute,
   modalVisible,
   onCancelClick,
 }) => {
-  const [attribute, setAttribute] = useState([
-    {
-      Name: "",
-      ValueType: "",
-    },
-  ]);
-  const [isAdding, setIsAdding] = useState(false);
   const [form] = Form.useForm();
 
   const onAddClick = async () => {
     const formData = await form.validateFields();
     if (checkAttributes(formData) == true) {
-      saveAttribute(formData);
+      addAttribute(formData);
     } else {
       return alert(`${formData.Name} already Exists!`);
     }
-  };
-
-  const getAttributeNames = () => {
-    attributes.map((attributes) => {
-      attributes.key = attributes.Id;
-      return attributes;
-    });
   };
 
   const checkAttributes = (formData) => {
@@ -62,6 +44,7 @@ const AddAttributeModal = ({
       onCancel={() => {
         onCancelClick();
         modalVisible = false;
+        form.resetFields();
       }}
     >
       <Form form={form}>
@@ -73,7 +56,7 @@ const AddAttributeModal = ({
               rules={[
                 {
                   required: true,
-                  message: "Please enter a New Attribute Name!",
+                  message: "Enter a Name.",
                 },
               ]}
             >
@@ -89,11 +72,11 @@ const AddAttributeModal = ({
               rules={[
                 {
                   required: true,
-                  message: "Please select a Value Type!",
+                  message: "Choose a Value Type.",
                 },
               ]}
             >
-              <Select placeholder="Select Value Type" style={{ width: 200 }}>
+              <Select placeholder="Select a Value Type" style={{ width: 200 }}>
                 <option value="Number">Number</option>
                 <option value="Words">Words</option>
                 <option value="Yes/No">Yes/No</option>

@@ -1,10 +1,9 @@
-import React, { useState, createContext } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "antd/dist/antd.css";
 
-import { Modal, Card, Space } from "antd";
+import { Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import styles from "./DeleteAttributeModal.module.css";
 
 const DeleteAttributeModal = ({ attribute, deleteSuccess, onCancelClick }) => {
   const [visible, setVisible] = useState(true);
