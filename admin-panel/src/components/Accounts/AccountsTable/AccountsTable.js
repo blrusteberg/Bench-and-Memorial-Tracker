@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { Table, Space, Form, Checkbox, Switch, Tag, Button} from "antd";
-import {EyeInvisibleOutlined} from '@ant-design/icons';
+import { Table, Space, Form, Switch, Tag, Button} from "antd";
+import {DeleteOutlined, EyeInvisibleOutlined} from '@ant-design/icons';
 import styles from "./AccountsTable.module.css";
 
 
 const AccountsTable = ({
     accounts,
     onDeleteClick,
-    onShowClick,
-    saveAccount,
 }) => {
     const [form] = Form.useForm();
+    const [passVisible, setPassVisible] = useState(false);
 
     const columns = [
         {
@@ -26,7 +25,10 @@ const AccountsTable = ({
           align: 'center',
           render: (password) => {
               return (
-                <Button icon={<EyeInvisibleOutlined/>} onClick={() => onShowClick(password)}></Button>
+                <>
+                    <Space hidden={passVisible}>{password}</Space>
+                    <Button icon={<EyeInvisibleOutlined/>} onClick={() => setPassVisible(!passVisible)}></Button>
+                </>
               )
           }
         },
@@ -36,9 +38,18 @@ const AccountsTable = ({
           key: 'AccountType',
           align: 'center',
           render: (type) => {
-                let color = type.length > 5 ? '#ffa940' : '#d9d9d9';
-                if (type === 'admin') {
-                    color = '#fadb14';
+            let color = null;
+                switch(type) {
+                    case 'admin':
+                        color = '#ad8b00';
+                        break;
+                    case 'clerk':
+                        color = '#8c8c8c';
+                        break;
+                    default:
+                        color = '#d46b08'
+                        break;
+
                 }
                 return (
                     <Tag color={color} key={type}>
@@ -61,8 +72,9 @@ const AccountsTable = ({
           align: 'center',
           render: (text, record) => (
             <Space size="middle">
-              <a onClick={() => onDeleteClick(record)}>Delete</a>
+                <DeleteOutlined className={styles.deleteButton} onClick={() => onDeleteClick(record)} />
             </Space>
+            //<a onClick={() => onDeleteClick(record)}>Delete</a>
           )
         }
       ];

@@ -24,7 +24,8 @@ const Accounts = () => {
   const [deletingAccount, setDeletingAccount] = useState();
   const [error, setError] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  
+
+   
   useEffect(() => {
     axios
       .get(
@@ -54,17 +55,6 @@ const Accounts = () => {
     setDeletingAccount(null);
   };
 
-  const saveLocalAttribute = (row, key) => {
-    const newAccounts = [...accounts];
-    const index = newAccounts.findIndex((account) => key === account.key);
-    if (index > -1) {
-      const item = newAccounts[index];
-      newAccounts.splice(index, 1, { ...item, ...row });
-    } else {
-    }
-    setAccounts(newAccounts);
-  };
-
   const saveAccount = (account) => {
     axios
       .post(`${process.env.REACT_APP_API_BASE_URL}/accounts`, account)
@@ -74,16 +64,7 @@ const Accounts = () => {
       });
   };
 
-  
-
-
   const onDeleteClick = (account) => setDeletingAccount(account);
-
-  const onShowClick = (password) => {
-    return (
-      null
-    )
-  }
 
   const refreshPage = () => {
     window.location.reload(false);
@@ -127,7 +108,6 @@ const Accounts = () => {
           accounts={accounts}
           saveAccount={saveAccount}
           onDeleteClick={onDeleteClick}
-          onShowClick={onShowClick}
         />
       </div>
     </>

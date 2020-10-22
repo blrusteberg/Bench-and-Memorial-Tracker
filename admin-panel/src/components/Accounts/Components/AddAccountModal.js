@@ -55,7 +55,7 @@ const AddAccountModal = ({
                 rules={[
                     {
                         required: true,
-                        message: 'Please input username!',
+                        message: 'Enter username',
                     },
                 ]}
             >
@@ -72,7 +72,7 @@ const AddAccountModal = ({
                 rules={[
                     {
                         required: true,
-                        message: 'Please input password!',
+                        message: 'Enter password',
                     },
                 ]}
             >
@@ -89,7 +89,7 @@ const AddAccountModal = ({
                 rules={[
                     {
                         required: true,
-                        message: 'Please select an account type!',
+                        message: 'Select an account type',
                     },
                 ]}
             >
