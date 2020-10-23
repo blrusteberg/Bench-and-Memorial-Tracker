@@ -24,7 +24,9 @@ const navigationPanel = (props) => {
           <Menu.Item
             className={styles.MenuItem}
             key="accounts"
-            icon={<TeamOutlined className={styles.menuItemIcon} />}
+            icon={
+              <TeamOutlined style={{ fontSize: "1.5rem" }} theme="outlined" />
+            }
           >
             <Link to="/accounts" className={styles.nav}>
               Accounts
@@ -35,7 +37,9 @@ const navigationPanel = (props) => {
           <Menu.Item
             className={styles.MenuItem}
             key="memorials"
-            icon={<BankOutlined />}
+            icon={
+              <BankOutlined style={{ fontSize: "1.5rem" }} theme="outlined" />
+            }
           >
             <Link to="memorials" className={styles.nav}>
               Memorials
@@ -44,7 +48,9 @@ const navigationPanel = (props) => {
           <Menu.Item
             className={styles.MenuItem}
             key="types"
-            icon={<TagsOutlined className={styles.menuItemIcon} />}
+            icon={
+              <TagsOutlined style={{ fontSize: "1.5rem" }} theme="outlined" />
+            }
           >
             <Link to="types" className={styles.nav}>
               Types
@@ -53,7 +59,12 @@ const navigationPanel = (props) => {
           <Menu.Item
             className={styles.MenuItem}
             key="attributes"
-            icon={<AppstoreAddOutlined className={styles.menuItemIcon} />}
+            icon={
+              <AppstoreAddOutlined
+                style={{ fontSize: "1.5rem" }}
+                theme="outlined"
+              />
+            }
           >
             <Link to="attributes" className={styles.nav}>
               Attributes
@@ -63,7 +74,9 @@ const navigationPanel = (props) => {
         <Menu.Item
           className={styles.MenuItem}
           key="taggerForm"
-          icon={<SolutionOutlined className={styles.menuItemIcon} />}
+          icon={
+            <SolutionOutlined style={{ fontSize: "1.5rem" }} theme="outlined" />
+          }
         >
           <Link to="tagger-form" className={styles.nav}>
             Tagger Form

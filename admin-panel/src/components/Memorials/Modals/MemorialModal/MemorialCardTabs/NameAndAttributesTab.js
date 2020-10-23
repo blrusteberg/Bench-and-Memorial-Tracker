@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Select, Input } from "antd";
+import { Form, Select, Input, Divider } from "antd";
+import { TypeContext } from "../MemorialModal";
 
 const { Option } = Select;
 
 const NameAndAttributes = ({ types }) => {
+  console.log("TYPES", types);
   const [selectedType, setSelectedType] = useState();
 
   const onTypeSelect = (typeId) => {
@@ -24,6 +26,8 @@ const NameAndAttributes = ({ types }) => {
       >
         <Input />
       </Form.Item>
+
+      <Divider />
       <Form.Item label="Type">
         <Select
           showSearch
@@ -40,6 +44,7 @@ const NameAndAttributes = ({ types }) => {
           ))}
         </Select>
       </Form.Item>
+      <Divider dashed />
       {selectedType &&
         selectedType.Attributes.map((attribute) => (
           <Form.Item key={attribute.Id} label={attribute.Name}>
