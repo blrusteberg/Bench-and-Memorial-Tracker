@@ -9,6 +9,7 @@ const EditableCell = ({
   record,
   index,
   children,
+  customValidator,
   ...restProps
 }) => {
   const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
@@ -21,6 +22,16 @@ const EditableCell = ({
             margin: 0,
           }}
           rules={[
+            customValidator
+              ? {
+                  validator: (_, value) => {
+                    const result = customValidator(value, record[dataIndex]);
+                    return result.valid
+                      ? Promise.resolve(result.message)
+                      : Promise.reject(result.message);
+                  },
+                }
+              : {},
             {
               required: true,
               message: `Please Input ${title}!`,

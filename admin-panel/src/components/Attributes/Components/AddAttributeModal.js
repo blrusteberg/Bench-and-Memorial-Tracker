@@ -1,42 +1,21 @@
 import React, { useState, createContext } from "react";
-import axios from "axios";
 import "antd/dist/antd.css";
 
-import { Modal, Form, Input, Menu, Select, message } from "antd";
-import { ExclamationCircleOutlined, DownOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Select } from "antd";
 import styles from "./AddAttributeModal.module.css";
-import Attributes from "../../Types/Attributes/Attributes";
 
 const AddAttributeModal = ({
   attributes,
-  addSuccess,
+  addAttribute,
   modalVisible,
   onCancelClick,
+  attributeNameValidator,
 }) => {
-  const [attribute, setAttribute] = useState([
-    {
-      Name: "",
-      ValueType: "",
-    },
-  ]);
-  const [isAdding, setIsAdding] = useState(false);
   const [form] = Form.useForm();
 
   const onAddClick = async () => {
     const formData = await form.validateFields();
-    console.log(formData);
-  };
-
-  const getAttributeNames = () => {
-    attributes.map((attributes) => {
-      attributes.key = attributes.Id;
-      return attributes;
-    });
-  };
-
-  const onAttributeInputChange = (event) => {
-    const value = event.target.value;
-    //some error checking
+    addAttribute(formData);
   };
 
   return (
@@ -48,20 +27,47 @@ const AddAttributeModal = ({
       onCancel={() => {
         onCancelClick();
         modalVisible = false;
+        form.resetFields();
       }}
     >
       <Form form={form}>
         <div className={styles.attributeNameContainer}>
           <tr>
-            <Form.Item label="Name" name="Name">
+            <Form.Item
+              label="Name"
+              name="Name"
+              rules={[
+                {
+                  required: true,
+                  message: "Enter a name",
+                },
+                () => ({
+                  validator(_, value) {
+                    const result = attributeNameValidator(value);
+                    return result.valid
+                      ? Promise.resolve(result.message)
+                      : Promise.reject(result.message);
+                  },
+                }),
+              ]}
+            >
               <Input className={styles.attributeInput} maxLength={248} />
             </Form.Item>
           </tr>
         </div>
         <div className={styles.valueTypeContainer}>
           <tr>
-            <Form.Item label="Value Type" valueType="ValueType">
-              <Select placeholder="Select Value Type" style={{ width: 200 }}>
+            <Form.Item
+              label="Value Type"
+              name="ValueType"
+              rules={[
+                {
+                  required: true,
+                  message: "Choose a value type",
+                },
+              ]}
+            >
+              <Select placeholder="Select a Value Type" style={{ width: 200 }}>
                 <option value="Number">Number</option>
                 <option value="Words">Words</option>
                 <option value="Yes/No">Yes/No</option>
