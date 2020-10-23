@@ -106,6 +106,26 @@ const Attributes = () => {
     });
   };
 
+  const attributeNameValidator = (input, currentValue = "") => {
+    if (
+      input.toLowerCase() === "latitude" ||
+      input.toLowerCase() === "longitude"
+    ) {
+      return {
+        valid: false,
+        message: "Attribute name cannot be latitude or longitude",
+      };
+    }
+
+    for (let i = 0; i < attributes.length; i++) {
+      if (attributes[i].Name === input && input != currentValue) {
+        return { valid: false, message: "Attribute name already taken" };
+      }
+    }
+
+    return { valid: true, message: "" };
+  };
+
   return error ? (
     <Result status="500" subTitle="Sorry, something went wrong." />
   ) : loading ? (
@@ -128,6 +148,7 @@ const Attributes = () => {
           Add New Attribute
         </Button>
         <AddAttributeModal
+          attributeNameValidator={attributeNameValidator}
           attributes={attributes}
           addAttribute={addAttribute}
           modalVisible={modalVisible}
@@ -136,6 +157,7 @@ const Attributes = () => {
           }}
         />
         <AttributesTable
+          attributeNameValidator={attributeNameValidator}
           attributes={attributes}
           saveAttribute={saveAttribute}
           onDeleteClick={onDeleteClick}

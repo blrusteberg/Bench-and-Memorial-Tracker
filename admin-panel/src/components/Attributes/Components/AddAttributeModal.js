@@ -9,30 +9,13 @@ const AddAttributeModal = ({
   addAttribute,
   modalVisible,
   onCancelClick,
+  attributeNameValidator,
 }) => {
   const [form] = Form.useForm();
 
   const onAddClick = async () => {
     const formData = await form.validateFields();
-    if (checkAttributes(formData) == true) {
-      addAttribute(formData);
-    } else {
-      return alert(`${formData.Name} already Exists!`);
-    }
-  };
-
-  const checkAttributes = (formData) => {
-    let canSave = true;
-    attributes.map((attribute) => {
-      if (attribute.Name.toLowerCase() === formData.Name.toLowerCase()) {
-        canSave = false;
-      }
-    });
-    if (canSave == false) {
-      return false;
-    } else {
-      return true;
-    }
+    addAttribute(formData);
   };
 
   return (
@@ -56,8 +39,16 @@ const AddAttributeModal = ({
               rules={[
                 {
                   required: true,
-                  message: "Enter a Name.",
+                  message: "Enter a name",
                 },
+                () => ({
+                  validator(_, value) {
+                    const result = attributeNameValidator(value);
+                    return result.valid
+                      ? Promise.resolve(result.message)
+                      : Promise.reject(result.message);
+                  },
+                }),
               ]}
             >
               <Input className={styles.attributeInput} maxLength={248} />
@@ -72,7 +63,7 @@ const AddAttributeModal = ({
               rules={[
                 {
                   required: true,
-                  message: "Choose a Value Type.",
+                  message: "Choose a value type",
                 },
               ]}
             >
