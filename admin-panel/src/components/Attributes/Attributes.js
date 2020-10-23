@@ -38,7 +38,6 @@ const Attributes = () => {
       })
       .then(() => {
         saveLocalAttribute(row, key);
-        console.log(key);
         onSuccess();
       })
       .catch((error) => {
