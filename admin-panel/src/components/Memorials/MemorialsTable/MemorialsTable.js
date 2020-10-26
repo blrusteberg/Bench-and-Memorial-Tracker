@@ -3,7 +3,7 @@ import { Table, Space, Form, Badge } from "antd";
 
 import styles from "./MemorialsTable.module.css";
 import AttributesTable from "./AttributesTable/AttributesTable";
-import EditableCell from "../Components/EditableCell";
+import MemorialModal from "../Modals/MemorialModal/MemorialModal";
 
 const MemorialsTable = ({
   memorials,
@@ -11,35 +11,7 @@ const MemorialsTable = ({
   onDeleteClick,
   saveMemorial,
 }) => {
-  const [editingKey, setEditingKey] = useState("");
-  const [form] = Form.useForm();
-  const [attributesForm] = Form.useForm();
-  const [saving, setSaving] = useState(false);
-
-  const isEditing = (record) => editingKey === record.key;
-
-  const onSaveClick = async (key) => {
-    setSaving(true);
-    try {
-      const memorial = await form.validateFields();
-      const attributes = await attributesForm.validateFields();
-      console.log("MEMORIAL: ", memorial);
-      console.log("ATTRIBUTES: ", attributes);
-      // saveMemorial(
-      //   row,
-      //   key,
-      //   () => {
-      //     setEditingKey("");
-      //     setSaving(false);
-      //   },
-      //   () => {
-      //     setSaving(false);
-      //   }
-      // );
-    } catch (error) {
-      setSaving(false);
-    }
-  };
+  const [editingMemorial, setEditingMemorial] = useState();
 
   const getChangeStatusAction = (record) => {
     switch (record.Status) {
@@ -76,26 +48,8 @@ const MemorialsTable = ({
   };
 
   const onEditClick = (record) => {
-    form.setFieldsValue({
-      Name: "",
-      ...record,
-    });
-    const fieldValues = [];
-    console.log("FIELD VALUES: ", { ...record.Type.Attributes });
-    console.log("getFieldsValue: ", form.getFieldsValue());
-    attributesForm.setFieldsValue(
-      [
-        {
-          Value: "",
-          Required: false,
-        },
-      ],
-      ...record.Type.Attributes
-    );
-    setEditingKey(record.key);
+    setEditingMemorial(record);
   };
-
-  const onCancelClick = () => setEditingKey("");
 
   const formatMemorialsForTable = () =>
     memorials.map((memorial) => {
@@ -120,7 +74,6 @@ const MemorialsTable = ({
       title: "Name",
       dataIndex: "Name",
       key: "name",
-      editable: true,
       inputType: "Words",
       textWrap: "word-break",
       width: "35%",
@@ -130,14 +83,12 @@ const MemorialsTable = ({
       dataIndex: ["Type", "Name"],
       key: "type",
       align: "center",
-      editable: false,
     },
     {
       title: "Status",
       dataIndex: "Status",
       key: "status",
       align: "center",
-      editable: false,
       render: (_, record) => {
         const memorialStatus = record.Status;
         return (
@@ -153,74 +104,40 @@ const MemorialsTable = ({
       dataIndex: "operation",
       key: "operation",
       align: "center",
-      editable: false,
-      render: (_, record) =>
-        isEditing(record) ? (
-          <Space size="small" align="center">
-            {saving ? (
-              <p>Saving...</p>
-            ) : (
-              <a href={null} onClick={() => onSaveClick(record.key)}>
-                Save
-              </a>
-            )}
-
-            <a href={null} onClick={onCancelClick}>
-              Cancel
-            </a>
-          </Space>
-        ) : (
-          <Space size="large" align="center">
-            {getChangeStatusAction(record)}
-            <a href={null} onClick={() => onEditClick(record)}>
-              Edit
-            </a>
-            <a href={null} onClick={() => onDeleteClick(record)}>
-              Delete
-            </a>
-          </Space>
-        ),
+      render: (_, record) => (
+        <Space size="large" align="center">
+          {getChangeStatusAction(record)}
+          <a href={null} onClick={() => onEditClick(record)}>
+            Edit
+          </a>
+          <a href={null} onClick={() => onDeleteClick(record)}>
+            Delete
+          </a>
+        </Space>
+      ),
     },
   ];
 
-  const mergedColumns = columns.map((col) => {
-    return col.editable
-      ? {
-          ...col,
-          onCell: (memorial) => ({
-            record: memorial,
-            editing: isEditing(memorial),
-            dataIndex: col.dataIndex,
-            title: col.title,
-            inputRequired: true,
-            inputType: "Words",
-          }),
-        }
-      : col;
-  });
-
   return (
-    <Form component={false} form={form}>
+    <>
+      <MemorialModal
+        visible={editingMemorial != null}
+        memorial={editingMemorial}
+        onCancel={() => setEditingMemorial()}
+        saveMemorial={saveMemorial}
+      />
       <Table
         className={styles.Memorials}
-        columns={mergedColumns}
+        columns={columns}
         dataSource={formatMemorialsForTable()}
-        expandedRowRender={(memorial) => (
-          <AttributesTable
-            Attributes={memorial.Type.Attributes}
-            editing={isEditing(memorial)}
-            form={attributesForm}
-          />
-        )}
-        bordered
-        components={{
-          body: {
-            cell: EditableCell,
-          },
+        expandedRowRender={(memorial) => {
+          console.log("MEMORIAL ATTRIBUTES CHECK", memorial);
+          return <AttributesTable Attributes={memorial.Type.Attributes} />;
         }}
+        bordered
         tableLayout="fixed"
       />
-    </Form>
+    </>
   );
 };
 

@@ -61,19 +61,46 @@ const Memorials = () => {
       .catch((error) => setError(error));
   }, []);
 
-  const saveMemorial = (row, key, onSuccess, onFail) => {
-    axios
-      .put(`${process.env.REACT_APP_API_BASE_URL}/memorials/${key}`, {
-        Name: row.Name,
-      })
-      .then(() => {
-        saveLocalMemorial(row, key);
-        onSuccess();
-      })
-      .catch((error) => {
-        openNotification("Unable to save memorial.", error.message, "error");
-        onFail();
-      });
+  const saveMemorial = (memorial, onSuccess = () => {}, onFail = () => {}) => {
+    memorial.Id
+      ? axios
+          .put(
+            `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorial.Id}`,
+            {
+              Name: memorial.Name,
+              TypeId: memorial.Type.Id,
+              Attributes: memorial.Type.Attributes,
+            }
+          )
+          .then(() => {
+            onSuccess();
+            saveLocalMemorial(memorial);
+          })
+          .catch((error) => {
+            openNotification(
+              "Unable to save memorial.",
+              error.message,
+              "error"
+            );
+            onFail();
+          })
+      : axios
+          .post(
+            `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
+            memorial
+          )
+          .then(() => {
+            onSuccess();
+            saveLocalMemorial(memorial);
+          })
+          .catch((error) => {
+            openNotification(
+              "Unable to save memorial.",
+              error.message,
+              "error"
+            );
+            onFail();
+          });
   };
 
   const deleteLocalMemorial = (key) => {
@@ -93,25 +120,40 @@ const Memorials = () => {
     setDeletingMemorial(null);
   };
 
-  const saveLocalMemorial = (row, key) => {
-    const newMemorials = [...memorials];
-    const index = newMemorials.findIndex((memorial) => key === memorial.key);
-    if (index > -1) {
-      const item = newMemorials[index];
-      newMemorials.splice(index, 1, { ...item, ...row });
-    } else {
-    }
-    setMemorials(newMemorials);
+  const saveLocalMemorial = (memorial) => {
+    window.location.reload();
   };
 
   const onDeleteClick = (memorial) => setDeletingMemorial(memorial);
 
   const updateMemorialStatus = (memorial, status) => {
+    if (status === "live") {
+      const validation = validateMemorialAttributes(memorial);
+      if (!validation.valid) {
+        openNotification("Memorial is not valid", validation.message, "error");
+        return;
+      }
+    }
     axios
       .put(`${process.env.REACT_APP_API_BASE_URL}/memorials/${memorial.Id}`, {
         Status: status,
       })
       .then(() => window.location.reload());
+  };
+
+  const validateMemorialAttributes = (memorial) => {
+    let validation = { valid: true, message: "Memorial is valid" };
+    memorial.Type.Attributes.forEach((attribute) => {
+      console.log(attribute);
+      if (!attribute.Value && attribute.Required) {
+        validation = {
+          valid: false,
+          message:
+            "All required attributes need values before the memorial can be approved",
+        };
+      }
+    });
+    return validation;
   };
 
   const openNotification = (
@@ -138,6 +180,7 @@ const Memorials = () => {
       <MemorialModal
         onCancel={() => setMemorialModalVisible(false)}
         visible={memorialModalVisible}
+        saveMemorial={saveMemorial}
       />
 
       {deletingMemorial ? (
