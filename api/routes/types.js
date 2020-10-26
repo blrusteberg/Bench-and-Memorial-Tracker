@@ -21,7 +21,11 @@ router.post("/attributes", async (req, res) => {
   try {
     const type = await Type.query().insert({
       Name: req.body.Type.Name,
+<<<<<<< HEAD
       Type: req.body.Type.Icon,
+=======
+      Icon: req.body.Type.Icon,
+>>>>>>> develop
     });
     const relatePromises = [];
     req.body.Attributes.forEach((attribute) => {
@@ -90,6 +94,7 @@ router.put("/:id", async (req, res) => {
   try {
     const numUpdated = await Type.query().findById(req.params.id).patch({
       Name: req.body.Name,
+      Icon: req.body.Icon,
     });
     const s = numUpdated === 1 ? "" : "s";
     res.status(201).json({ message: `Updated ${numUpdated} type${s}` });

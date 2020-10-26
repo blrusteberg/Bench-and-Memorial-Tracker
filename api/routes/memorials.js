@@ -61,6 +61,7 @@ router.get("/types/attributes/values", async (req, res) => {
           Id: memorial.Type.Id,
           Name: memorial.Type.Name,
           Attributes: formattedAttributes,
+          Icon: memorial.Type.Icon,
         },
       });
     }

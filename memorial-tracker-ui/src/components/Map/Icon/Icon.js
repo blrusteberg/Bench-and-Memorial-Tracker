@@ -21,7 +21,7 @@ const icon = (props) => {
     <div className={styles.icon}>
       <img
         className={assignedStyles.join(" ")}
-        src={`./icons/memorial.png`}
+        src={props.Icon}
         alt="memorial icon"
         onClick={props.onIconClick}
       />

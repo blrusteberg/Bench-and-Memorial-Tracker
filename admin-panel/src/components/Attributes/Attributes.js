@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Modal, notification, Button, Spin, Result } from "antd";
+import { notification, Button, Spin, Result } from "antd";
 
 import styles from "./Attributes.module.css";
 import AttributesTable from "./AttributesTable/AttributesTable";
@@ -19,7 +19,6 @@ const Attributes = () => {
   const [savingError, setSavingError] = useState();
   const [loading, setLoading] = useState(true);
   const [deletingAttribute, setDeletingAttribute] = useState();
-  const [addingAttribute, setAddingAttribute] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -32,22 +31,21 @@ const Attributes = () => {
       .catch((error) => setError(error));
   }, []);
 
-  // const saveAttribute = (row, key, onSuccess, onFail) => {
-  //   axios
-  //     .put(`${process.env.REACT_APP_API_BASE_URL}/attributes/${key}`, {
-  //       Name: row.Name,
-  //     })
-  //     .then(() => {
-  //       saveLocalAttribute(row, key);
-  //       console.log(key);
-  //       onSuccess();
-  //     })
-  //     .catch((error) => {
-  //       setSavingError(error);
-  //       openNotification("Unable to save attribute.", error.message, "error");
-  //       onFail();
-  //     });
-  // };
+  const saveAttribute = (row, key, onSuccess, onFail) => {
+    axios
+      .put(`${process.env.REACT_APP_API_BASE_URL}/attributes/${key}`, {
+        Name: row.Name,
+      })
+      .then(() => {
+        saveLocalAttribute(row, key);
+        onSuccess();
+      })
+      .catch((error) => {
+        setSavingError(error);
+        openNotification("Unable to save attribute.", error.message, "error");
+        onFail();
+      });
+  };
 
   const deleteLocalAttribute = (key) => {
     const tempAttributes = [...attributes];
@@ -77,12 +75,18 @@ const Attributes = () => {
     setAttributes(newAttributes);
   };
 
-  const saveAttribute = (attribute) => {
+  const addAttribute = (attribute) => {
     axios
       .post(`${process.env.REACT_APP_API_BASE_URL}/attributes`, attribute)
       .then((res) => {
-        console.log(res.data);
+        window.location.reload();
       });
+  };
+
+  const onDeleteClick = (attribute) => setDeletingAttribute(attribute);
+
+  const addAttributeButtonClick = () => {
+    setModalVisible(true);
   };
 
   const openNotification = (
@@ -101,14 +105,24 @@ const Attributes = () => {
     });
   };
 
-  const onDeleteClick = (attribute) => setDeletingAttribute(attribute);
+  const attributeNameValidator = (input, currentValue = "") => {
+    if (
+      input.toLowerCase() === "latitude" ||
+      input.toLowerCase() === "longitude"
+    ) {
+      return {
+        valid: false,
+        message: "Attribute name cannot be latitude or longitude",
+      };
+    }
 
-  const refreshPage = () => {
-    window.location.reload(false);
-  };
+    for (let i = 0; i < attributes.length; i++) {
+      if (attributes[i].Name === input && input != currentValue) {
+        return { valid: false, message: "Attribute name already taken" };
+      }
+    }
 
-  const addAttributeButtonClick = () => {
-    setModalVisible(true);
+    return { valid: true, message: "" };
   };
 
   return error ? (
@@ -133,12 +147,16 @@ const Attributes = () => {
           Add New Attribute
         </Button>
         <AddAttributeModal
+          attributeNameValidator={attributeNameValidator}
           attributes={attributes}
-          addSuccess={refreshPage}
+          addAttribute={addAttribute}
           modalVisible={modalVisible}
-          onCancelClick={() => setModalVisible(false)}
+          onCancelClick={() => {
+            setModalVisible(false);
+          }}
         />
         <AttributesTable
+          attributeNameValidator={attributeNameValidator}
           attributes={attributes}
           saveAttribute={saveAttribute}
           onDeleteClick={onDeleteClick}

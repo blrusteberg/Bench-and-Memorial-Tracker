@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import lodash from "lodash";
-import { Input } from "antd";
+import { Spin, Input } from "antd";
 
 import styles from "./Types.module.css";
 import Dropdown from "./Dropdown/Dropdown";
@@ -15,6 +15,7 @@ class Types extends React.Component {
     newTypeName: "",
     isTypeNameChanged: false,
     isLoading: true,
+    currentUrl: ""
   };
 
   componentDidMount() {
@@ -51,6 +52,7 @@ class Types extends React.Component {
       selectedTypeIndex: event.target.value,
       newTypeName: selectedType.Id ? selectedType.Name : "",
       isTypeNameChanged: false,
+      currentUrl: selectedType.Icon ? selectedType.Icon : null,
     });
   };
 
@@ -69,7 +71,7 @@ class Types extends React.Component {
 
   render() {
     return this.state.isLoading ? (
-      <div className={styles.loadingTitle}>Loading....</div>
+      <Spin tip="Loading Types..." />
     ) : (
       <div className={styles.container}>
         <div className={styles.dropDownWrapper}>
@@ -101,6 +103,7 @@ class Types extends React.Component {
                 oldTypeName={this.state.selected.Name}
                 typeName={this.state.newTypeName}
                 isTypeNameChanged={this.state.isTypeNameChanged}
+                oldUrl={this.state.currentUrl}
               />
             </div>
           </>

@@ -5,7 +5,12 @@ import { Table, Space, Form, Button, Modal } from "antd";
 import styles from "./AttributesTable.module.css";
 import EditableCell from "../Components/EditableCell";
 
-const AttributesTable = ({ attributes, saveAttribute, onDeleteClick }) => {
+const AttributesTable = ({
+  attributes,
+  saveAttribute,
+  onDeleteClick,
+  attributeNameValidator,
+}) => {
   const [editingKey, setEditingKey] = useState("");
   const [form] = Form.useForm();
   const [saving, setSaving] = useState(false);
@@ -53,6 +58,7 @@ const AttributesTable = ({ attributes, saveAttribute, onDeleteClick }) => {
       title: "Name",
       dataIndex: "Name",
       editable: true,
+      customValidator: attributeNameValidator,
     },
     {
       title: "Value Type",
@@ -94,6 +100,7 @@ const AttributesTable = ({ attributes, saveAttribute, onDeleteClick }) => {
             record: attribute,
             editing: isEditing(attribute),
             dataIndex: col.dataIndex,
+            customValidator: col.customValidator,
             title: col.title,
             inputType: "Words",
           }),

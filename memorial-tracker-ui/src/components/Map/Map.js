@@ -25,6 +25,7 @@ class Map extends React.Component {
                     lat={coordinates.lat}
                     lng={coordinates.lng}
                     typeName={memorial.Type.Name}
+                    Icon={memorial.Type.Icon}
                     Type={memorial.Type}
                     Name={memorial.Name}
                     hideIcon={memorial.hideIcon}
