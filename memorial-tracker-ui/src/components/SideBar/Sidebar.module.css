@@ -12,9 +12,3 @@
   overflow-y: scroll;
   height: 100%;
 }
-
-.closeSideBarIcon {
-  font-size: 2rem;
-  float: right;
-  color: black;
-}
