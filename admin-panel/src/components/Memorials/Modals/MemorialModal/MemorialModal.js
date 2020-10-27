@@ -31,6 +31,7 @@ const MemorialModal = ({
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
+    console.log("USE EFFECT");
     if (loadingTypes) {
       axios
         .get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`)
@@ -69,7 +70,7 @@ const MemorialModal = ({
         })),
       ]);
     }
-  }, [memorial]);
+  }, [memorial, form, loadingTypes, types]);
 
   const onTypeSelect = (typeId) => {
     for (let i = 0; i < types.length; i++) {
@@ -119,11 +120,11 @@ const MemorialModal = ({
     let type = null;
     switch (attribute.ValueType) {
       case "Words":
+      default:
         rules.push({ max: 248, type: "string" });
         inputNode = <Input />;
         type = "string";
 
-      default:
         break;
 
       case "Number":

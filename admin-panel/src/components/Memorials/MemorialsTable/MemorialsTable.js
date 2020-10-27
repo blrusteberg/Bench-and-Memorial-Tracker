@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Space, Form, Badge } from "antd";
+import { Table, Space, Badge } from "antd";
 
 import styles from "./MemorialsTable.module.css";
 import AttributesTable from "./AttributesTable/AttributesTable";
@@ -17,30 +17,33 @@ const MemorialsTable = ({
     switch (record.Status) {
       case "live":
         return (
-          <a
-            href={null}
+          <button
+            type="button"
+            className={styles.linkButton}
             onClick={() => onUpdateMemorialStatusClick(record, "on hold")}
           >
             Put on hold
-          </a>
+          </button>
         );
       case "unapproved":
         return (
-          <a
-            href={null}
+          <button
+            type="button"
+            className={styles.linkButton}
             onClick={() => onUpdateMemorialStatusClick(record, "live")}
           >
             Approve
-          </a>
+          </button>
         );
       case "on hold":
         return (
-          <a
-            href={null}
+          <button
+            type="button"
+            className={styles.linkButton}
             onClick={() => onUpdateMemorialStatusClick(record, "live")}
           >
             Go live
-          </a>
+          </button>
         );
       default:
         return null;
@@ -107,12 +110,20 @@ const MemorialsTable = ({
       render: (_, record) => (
         <Space size="large" align="center">
           {getChangeStatusAction(record)}
-          <a href={null} onClick={() => onEditClick(record)}>
+          <button
+            type="button"
+            className={styles.linkButton}
+            onClick={() => onEditClick(record)}
+          >
             Edit
-          </a>
-          <a href={null} onClick={() => onDeleteClick(record)}>
+          </button>
+          <button
+            type="button"
+            className={styles.linkButton}
+            onClick={() => onDeleteClick(record)}
+          >
             Delete
-          </a>
+          </button>
         </Space>
       ),
     },
