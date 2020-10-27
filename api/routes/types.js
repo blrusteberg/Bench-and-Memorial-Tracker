@@ -21,11 +21,7 @@ router.post("/attributes", async (req, res) => {
   try {
     const type = await Type.query().insert({
       Name: req.body.Type.Name,
-<<<<<<< HEAD
-      Type: req.body.Type.Icon,
-=======
       Icon: req.body.Type.Icon,
->>>>>>> develop
     });
     const relatePromises = [];
     req.body.Attributes.forEach((attribute) => {

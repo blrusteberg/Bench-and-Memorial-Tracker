@@ -73,8 +73,8 @@ const Memorials = () => {
             }
           )
           .then(() => {
-            onSuccess();
             saveLocalMemorial(memorial);
+            onSuccess();
           })
           .catch((error) => {
             openNotification(
@@ -90,8 +90,8 @@ const Memorials = () => {
             memorial
           )
           .then(() => {
-            onSuccess();
             saveLocalMemorial(memorial);
+            onSuccess();
           })
           .catch((error) => {
             openNotification(
@@ -144,7 +144,6 @@ const Memorials = () => {
   const validateMemorialAttributes = (memorial) => {
     let validation = { valid: true, message: "Memorial is valid" };
     memorial.Type.Attributes.forEach((attribute) => {
-      console.log(attribute);
       if (!attribute.Value && attribute.Required) {
         validation = {
           valid: false,

@@ -28,6 +28,7 @@ const MemorialModal = ({
   const [selectedType, setSelectedType] = useState();
   const [changesMade, setChangesMade] = useState(false);
   const [action, setAction] = useState();
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (loadingTypes) {
@@ -108,6 +109,7 @@ const MemorialModal = ({
   };
 
   const onCancelClick = () => {
+    setIsSaving(true);
     onCancel();
   };
 
@@ -166,7 +168,9 @@ const MemorialModal = ({
       visible={visible}
       onCancel={onCancelClick}
       onOk={onOkClick}
-      okButtonProps={{ disabled: action === "edit" && !changesMade }}
+      okButtonProps={{
+        disabled: action === ("edit" && !changesMade) || isSaving,
+      }}
       okText={action === "edit" ? "Save" : "Create"}
       destroyOnClose={true}
       width={550}

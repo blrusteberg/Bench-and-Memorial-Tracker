@@ -131,7 +131,6 @@ const MemorialsTable = ({
         columns={columns}
         dataSource={formatMemorialsForTable()}
         expandedRowRender={(memorial) => {
-          console.log("MEMORIAL ATTRIBUTES CHECK", memorial);
           return <AttributesTable Attributes={memorial.Type.Attributes} />;
         }}
         bordered
