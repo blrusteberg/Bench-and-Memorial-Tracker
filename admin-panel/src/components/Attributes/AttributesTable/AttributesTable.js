@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Table, Space, Form, Button, Modal } from "antd";
+import React, { useState } from "react";
+import { Table, Space, Form } from "antd";
 
 import styles from "./AttributesTable.module.css";
 import EditableCell from "../Components/EditableCell";
@@ -77,15 +76,39 @@ const AttributesTable = ({
             {saving ? (
               <p>Saving...</p>
             ) : (
-              <a onClick={() => onSaveClick(record.key)}>Save</a>
+              <button
+                type="button"
+                className={styles.linkButton}
+                onClick={() => onSaveClick(record.key)}
+              >
+                Save
+              </button>
             )}
 
-            <a onClick={onCancelClick}>Cancel</a>
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={onCancelClick}
+            >
+              Cancel
+            </button>
           </Space>
         ) : (
           <Space size="small" align="center">
-            <a onClick={() => onEditClick(record)}>Edit</a>
-            <a onClick={() => onDeleteClick(record)}>Delete</a>
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={() => onEditClick(record)}
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={() => onDeleteClick(record)}
+            >
+              Delete
+            </button>
           </Space>
         );
       },

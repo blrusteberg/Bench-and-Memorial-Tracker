@@ -61,10 +61,10 @@
 
 .noError {
   visibility: hidden;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .error {
   color: red;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
