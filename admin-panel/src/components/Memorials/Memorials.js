@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Spin, Result, notification, Radio } from "antd";
+import {
+  Spin,
+  Result,
+  notification,
+  Button,
+  Space,
+  Radio,
+  Divider,
+} from "antd";
 
 import styles from "./Memorials.module.css";
-import DeleteMemorialModal from "./Components/DeleteMemorialModal";
+import DeleteMemorialModal from "./Modals/DeleteMemorialModal/DeleteMemorialModal";
 import MemorialsTable from "./MemorialsTable/MemorialsTable";
+import MemorialModal from "./Modals/MemorialModal/MemorialModal";
 
 const Memorials = () => {
   const [memorials, setMemorials] = useState([
@@ -26,6 +35,7 @@ const Memorials = () => {
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [deletingMemorial, setDeletingMemorial] = useState();
+  const [memorialModalVisible, setMemorialModalVisible] = useState(false);
 
   useEffect(() => {
     axios
@@ -51,19 +61,46 @@ const Memorials = () => {
       .catch((error) => setError(error));
   }, []);
 
-  const saveMemorial = (row, key, onSuccess, onFail) => {
-    axios
-      .put(`${process.env.REACT_APP_API_BASE_URL}/memorials/${key}`, {
-        Name: row.Name,
-      })
-      .then(() => {
-        saveLocalMemorial(row, key);
-        onSuccess();
-      })
-      .catch((error) => {
-        openNotification("Unable to save memorial.", error.message, "error");
-        onFail();
-      });
+  const saveMemorial = (memorial, onSuccess = () => {}, onFail = () => {}) => {
+    memorial.Id
+      ? axios
+          .put(
+            `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorial.Id}`,
+            {
+              Name: memorial.Name,
+              TypeId: memorial.Type.Id,
+              Attributes: memorial.Type.Attributes,
+            }
+          )
+          .then(() => {
+            saveLocalMemorial(memorial);
+            onSuccess();
+          })
+          .catch((error) => {
+            openNotification(
+              "Unable to save memorial.",
+              error.message,
+              "error"
+            );
+            onFail();
+          })
+      : axios
+          .post(
+            `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
+            memorial
+          )
+          .then(() => {
+            saveLocalMemorial(memorial);
+            onSuccess();
+          })
+          .catch((error) => {
+            openNotification(
+              "Unable to save memorial.",
+              error.message,
+              "error"
+            );
+            onFail();
+          });
   };
 
   const deleteLocalMemorial = (key) => {
@@ -83,25 +120,39 @@ const Memorials = () => {
     setDeletingMemorial(null);
   };
 
-  const saveLocalMemorial = (row, key) => {
-    const newMemorials = [...memorials];
-    const index = newMemorials.findIndex((memorial) => key === memorial.key);
-    if (index > -1) {
-      const item = newMemorials[index];
-      newMemorials.splice(index, 1, { ...item, ...row });
-    } else {
-    }
-    setMemorials(newMemorials);
+  const saveLocalMemorial = (memorial) => {
+    window.location.reload();
   };
 
   const onDeleteClick = (memorial) => setDeletingMemorial(memorial);
 
   const updateMemorialStatus = (memorial, status) => {
+    if (status === "live") {
+      const validation = validateMemorialAttributes(memorial);
+      if (!validation.valid) {
+        openNotification("Memorial is not valid", validation.message, "error");
+        return;
+      }
+    }
     axios
       .put(`${process.env.REACT_APP_API_BASE_URL}/memorials/${memorial.Id}`, {
         Status: status,
       })
       .then(() => window.location.reload());
+  };
+
+  const validateMemorialAttributes = (memorial) => {
+    let validation = { valid: true, message: "Memorial is valid" };
+    memorial.Type.Attributes.forEach((attribute) => {
+      if (!attribute.Value && attribute.Required) {
+        validation = {
+          valid: false,
+          message:
+            "All required attributes need values before the memorial can be approved",
+        };
+      }
+    });
+    return validation;
   };
 
   const openNotification = (
@@ -125,6 +176,12 @@ const Memorials = () => {
     <Spin tip="Loading Memorials..." />
   ) : (
     <div className={styles.Memorials}>
+      <MemorialModal
+        onCancel={() => setMemorialModalVisible(false)}
+        visible={memorialModalVisible}
+        saveMemorial={saveMemorial}
+      />
+
       {deletingMemorial ? (
         <DeleteMemorialModal
           memorial={deletingMemorial}
@@ -132,17 +189,33 @@ const Memorials = () => {
           onCancelClick={() => setDeletingMemorial(null)}
         />
       ) : null}
-      <Radio.Group
-        options={[
-          { label: "Approved", value: "approved" },
-          { label: "Unapproved", value: "unapproved" },
-        ]}
-        onChange={(e) => setTableView(e.target.value)}
-        value={tableView}
-        optionType="button"
-        buttonStyle="solid"
-        className={styles.tableViewRadio}
-      />
+      <Space align="center" className={styles.memorialActions}>
+        <Button
+          className={styles.addMemorialButton}
+          type="primary"
+          onClick={() => setMemorialModalVisible(true)}
+        >
+          Add Memorial
+        </Button>
+        <Divider>
+          <Radio.Group
+            onChange={(e) => setTableView(e.target.value)}
+            value={tableView}
+            optionType="button"
+            buttonStyle="solid"
+            className={styles.tableViewRadio}
+          >
+            <Radio.Button value="approved">Approved</Radio.Button>
+            <Radio.Button
+              value="unapproved"
+              className={styles.unapprovedTableViewButton}
+            >
+              Unapproved
+            </Radio.Button>
+          </Radio.Group>
+        </Divider>
+      </Space>
+
       <MemorialsTable
         tableView={tableView}
         memorials={tableView === "approved" ? memorials : unapprovedMemorials}

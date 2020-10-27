@@ -1,31 +1,41 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Switch } from "antd";
 
 import styles from "./AttributesTable.module.css";
 
-const AttributesTable = (props) => {
-  const attributes = props.attributes.map((attribute) => {
-    attribute.key = attribute.Id;
-    return attribute;
-  });
+const AttributesTable = ({ Attributes }) => {
+  const formatAttributesForTable = () =>
+    Attributes.map((attribute) => {
+      attribute.key = attribute.Id;
+      return attribute;
+    });
 
   const columns = [
-    { title: "Name", dataIndex: "Name" },
-    { title: "Value Type", dataIndex: "ValueType", align: "center" },
-    { title: "Value", dataIndex: "Value", align: "center" },
+    { title: "Name", dataIndex: "Name", key: "name" },
     {
-      title: "Required",
-      dataIndex: "Required",
-      render: (required) =>
-        required ? <div className={styles.Required}>*</div> : null,
+      title: "Value Type",
+      dataIndex: "ValueType",
+      key: "valueType",
       align: "center",
     },
     {
-      title: "Action",
-      dataIndex: "operation",
-      key: "operation",
-      render: (value, row, index) => <a href="javascript:void(0)">Edit</a>,
+      title: "Value",
+      dataIndex: "Value",
+      key: "value",
       align: "center",
+      render: (value) => {
+        return typeof value !== "boolean" ? value : value ? "Yes" : "No";
+      },
+    },
+    {
+      title: "Required",
+      dataIndex: "Required",
+      key: "required",
+      align: "center",
+      inputType: "boolean",
+      render: (required) => {
+        return <Switch checked={required} disabled size="small" />;
+      },
     },
   ];
 
@@ -33,7 +43,8 @@ const AttributesTable = (props) => {
     <Table
       className={styles.Attributes}
       columns={columns}
-      dataSource={attributes}
+      dataSource={formatAttributesForTable()}
+      bordered
     />
   );
 };

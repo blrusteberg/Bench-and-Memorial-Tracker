@@ -123,6 +123,7 @@ router.put("/:id", async (req, res) => {
     const numUpdated = await Memorial.query().findById(req.params.id).patch({
       Name: req.body.Name,
       Status: req.body.Status,
+      Attributes: req.body.Attributes,
     });
     res.status(204).json({ message: `Updated ${numUpdated} memorial` });
   } catch (err) {

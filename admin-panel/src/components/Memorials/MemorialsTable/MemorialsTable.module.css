@@ -1,6 +1,21 @@
 .Memorials {
   width: 100%;
   height: 100%;
-  margin: 2%;
+  padding: 0% 1%;
   overflow: auto;
+}
+
+.linkButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  color: #096dd9;
+}
+
+.linkButton:hover {
+  color: #1890ff;
 }

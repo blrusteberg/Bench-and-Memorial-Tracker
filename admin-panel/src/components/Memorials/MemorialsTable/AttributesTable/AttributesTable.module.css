@@ -4,3 +4,12 @@
     color: rgb(255, 95, 95);
   }
   
+  .link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline;
+    margin: 0;
+    padding: 0;
+  }

@@ -13,11 +13,6 @@
   height: 20%;
 }
 
-svg {
-  width: 1.5rem;
-  height: auto;
-}
-
 .MenuItem:hover {
   background-color: white;
 }
@@ -37,9 +32,4 @@ svg {
 .nav {
   text-align: center;
   font-size: 1.3rem;
-}
-
-svg {
-  width: 1.5rem;
-  height: auto;
 }

@@ -1,8 +1,8 @@
-import React, { useState, createContext } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "antd/dist/antd.css";
 
-import { Modal, Card, Space } from "antd";
+import { Modal, Card } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import styles from "./DeleteMemorialModal.module.css";
 
@@ -50,6 +50,7 @@ const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
           </div>
           <div className={styles.imageWrapper}>
             <img
+              alt="memorial"
               className={styles.memorialImage}
               src={`http://placekitten.com/${Math.floor(
                 Math.random() * (800 - 300) + 300

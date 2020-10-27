@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Table, Space, Form, Badge } from "antd";
+import { Table, Space, Badge } from "antd";
 
 import styles from "./MemorialsTable.module.css";
 import AttributesTable from "./AttributesTable/AttributesTable";
-import EditableCell from "../Components/EditableCell";
+import MemorialModal from "../Modals/MemorialModal/MemorialModal";
 
 const MemorialsTable = ({
   memorials,
@@ -11,60 +11,39 @@ const MemorialsTable = ({
   onDeleteClick,
   saveMemorial,
 }) => {
-  const [editingKey, setEditingKey] = useState("");
-  const [form] = Form.useForm();
-  const [saving, setSaving] = useState(false);
-
-  const isEditing = (record) => editingKey === record.key;
-
-  const onSaveClick = async (key) => {
-    setSaving(true);
-    try {
-      const row = await form.validateFields();
-      saveMemorial(
-        row,
-        key,
-        () => {
-          setEditingKey("");
-          setSaving(false);
-        },
-        () => {
-          setSaving(false);
-        }
-      );
-    } catch (error) {
-      setSaving(false);
-    }
-  };
+  const [editingMemorial, setEditingMemorial] = useState();
 
   const getChangeStatusAction = (record) => {
     switch (record.Status) {
       case "live":
         return (
-          <a
-            href="javascript:void(0)"
+          <button
+            type="button"
+            className={styles.linkButton}
             onClick={() => onUpdateMemorialStatusClick(record, "on hold")}
           >
             Put on hold
-          </a>
+          </button>
         );
       case "unapproved":
         return (
-          <a
-            href="javascript:void(0)"
+          <button
+            type="button"
+            className={styles.linkButton}
             onClick={() => onUpdateMemorialStatusClick(record, "live")}
           >
             Approve
-          </a>
+          </button>
         );
       case "on hold":
         return (
-          <a
-            href="javascript:void(0)"
+          <button
+            type="button"
+            className={styles.linkButton}
             onClick={() => onUpdateMemorialStatusClick(record, "live")}
           >
             Go live
-          </a>
+          </button>
         );
       default:
         return null;
@@ -72,14 +51,8 @@ const MemorialsTable = ({
   };
 
   const onEditClick = (record) => {
-    form.setFieldsValue({
-      Name: "",
-      ...record,
-    });
-    setEditingKey(record.key);
+    setEditingMemorial(record);
   };
-
-  const onCancelClick = () => setEditingKey("");
 
   const formatMemorialsForTable = () =>
     memorials.map((memorial) => {
@@ -103,21 +76,22 @@ const MemorialsTable = ({
     {
       title: "Name",
       dataIndex: "Name",
-      editable: true,
+      key: "name",
+      inputType: "Words",
       textWrap: "word-break",
       width: "35%",
     },
     {
       title: "Type",
       dataIndex: ["Type", "Name"],
+      key: "type",
       align: "center",
-      editable: false,
     },
     {
       title: "Status",
       dataIndex: "Status",
+      key: "status",
       align: "center",
-      editable: false,
       render: (_, record) => {
         const memorialStatus = record.Status;
         return (
@@ -131,70 +105,49 @@ const MemorialsTable = ({
     {
       title: "Action",
       dataIndex: "operation",
+      key: "operation",
       align: "center",
-      editable: false,
-      render: (_, record) =>
-        isEditing(record) ? (
-          <Space size="small" align="center">
-            {saving ? (
-              <p>Saving...</p>
-            ) : (
-              <a href="javascript:void(0)" onClick={() => onSaveClick(record.key)}>
-                Save
-              </a>
-            )}
-
-            <a href="javascript:void(0)" onClick={onCancelClick}>
-              Cancel
-            </a>
-          </Space>
-        ) : (
-          <Space size="large" align="center">
-            {getChangeStatusAction(record)}
-            <a href="javascript:void(0)" onClick={() => onEditClick(record)}>
-              Edit
-            </a>
-            <a href="javascript:void(0)" onClick={() => onDeleteClick(record)}>
-              Delete
-            </a>
-          </Space>
-        ),
+      render: (_, record) => (
+        <Space size="large" align="center">
+          {getChangeStatusAction(record)}
+          <button
+            type="button"
+            className={styles.linkButton}
+            onClick={() => onEditClick(record)}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className={styles.linkButton}
+            onClick={() => onDeleteClick(record)}
+          >
+            Delete
+          </button>
+        </Space>
+      ),
     },
   ];
 
-  const mergedColumns = columns.map((col) => {
-    return col.editable
-      ? {
-          ...col,
-          onCell: (memorial) => ({
-            record: memorial,
-            editing: isEditing(memorial),
-            dataIndex: col.dataIndex,
-            title: col.title,
-            inputType: "Words",
-          }),
-        }
-      : col;
-  });
-
   return (
-    <Form component={false} form={form}>
+    <>
+      <MemorialModal
+        visible={editingMemorial != null}
+        memorial={editingMemorial}
+        onCancel={() => setEditingMemorial()}
+        saveMemorial={saveMemorial}
+      />
       <Table
         className={styles.Memorials}
-        columns={mergedColumns}
+        columns={columns}
         dataSource={formatMemorialsForTable()}
-        expandedRowRender={(memorial) => (
-          <AttributesTable attributes={memorial.Type.Attributes} />
-        )}
-        bordered
-        components={{
-          body: {
-            cell: EditableCell,
-          },
+        expandedRowRender={(memorial) => {
+          return <AttributesTable Attributes={memorial.Type.Attributes} />;
         }}
+        bordered
         tableLayout="fixed"
       />
-    </Form>
+    </>
   );
 };
 
