@@ -19,3 +19,9 @@
   position: absolute;
   justify-content: center;
 }
+
+.closeSideBarIcon {
+  font-size: 2rem;
+  float: right;
+  color: black;
+}

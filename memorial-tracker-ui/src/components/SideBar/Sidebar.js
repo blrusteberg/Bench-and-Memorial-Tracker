@@ -4,6 +4,8 @@ import { MapCenterContext } from "../../containers/App";
 import Memorial from "./Memorial/Memorial";
 import styles from "./Sidebar.module.css";
 import { getCoordinatesOfMemorial } from "../../utils/utils";
+import { Drawer, Form } from 'antd';
+import { CaretLeftOutlined } from "@ant-design/icons";
 
 class Sidebar extends React.Component {
   state = {
@@ -26,9 +28,34 @@ class Sidebar extends React.Component {
     this.props.onSidebarClick(coordinates);
   };
 
+  // showDrawer = () => {
+  //   this.setState({
+  //     visible: true,
+  //   });
+  // };
+
+  // onClose = () => {
+  //   this.setState({
+  //     visible: false
+  //   })
+  // };
+
   render() {
     return (
-      <div className={styles.Sidebar}>
+      // <div className={styles.Sidebar}>
+      <div className={styles.sidebarContainer}>
+        <Drawer
+          placement="right"
+          closable={false}
+          visible={this.props.showSidebar}
+          onClose={this.props.toggleSidebar}
+          mask={false}
+          // onClick={this.onClose}
+        >
+        <CaretLeftOutlined
+          onClick={this.props.toggleSidebar} 
+          className={styles.closeSideBarIcon}
+        />
         <input
           onChange={(event) => this.props.searchHandler(event.target.value)}
           className={styles.SearchInput}
@@ -36,7 +63,7 @@ class Sidebar extends React.Component {
           placeholder="What are you looking for?"
         />
         <MapCenterContext.Provider value={this.state.lastClickedCoordinates}>
-          <div className={styles.ScrollMenu}>
+          <div>
             {this.props.Memorials.map((memorial) => {
               return (
                 <Memorial
@@ -51,6 +78,7 @@ class Sidebar extends React.Component {
             })}
           </div>
         </MapCenterContext.Provider>
+        </Drawer>
       </div>
     );
   }

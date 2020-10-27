@@ -6,6 +6,7 @@ import Sidebar from "../components/SideBar/Sidebar";
 import styles from "./App.module.css";
 
 import { Modal, Button } from "antd";
+import { CaretLeftOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 
 export const MapCenterContext = React.createContext();
@@ -35,6 +36,7 @@ class App extends React.Component {
     isLoading: true,
     mapCenter: { lat: 0, lng: 0 },
     visible: false,
+    showSidebar: false,
   };
 
   componentDidMount() {
@@ -132,6 +134,12 @@ class App extends React.Component {
     });
   };
 
+  showDrawer = () => {
+    this.setState({
+      showSidebar: !this.state.showSidebar,
+    });
+  };
+
   render() {
     const content = this.state.error ? (
       <div className={styles.error}>Oops, something's not right here...</div>
@@ -144,10 +152,16 @@ class App extends React.Component {
             onIconClick={this.onIconClick}
             bubbleCloseClick={this.bubbleCloseClickHandler}
           />
+          <CaretLeftOutlined
+            className={styles.closeSideBarIcon}
+            onClick={this.showDrawer}
+          />
           <Sidebar
             Memorials={this.state.Memorials}
             searchHandler={this.searchHandler}
             onSidebarClick={this.updateMapCenter}
+            toggleSidebar={this.showDrawer}
+            showSidebar={this.state.showSidebar}
           />
         </MapCenterContext.Provider>
         <div className={styles.modalWrapper}>
