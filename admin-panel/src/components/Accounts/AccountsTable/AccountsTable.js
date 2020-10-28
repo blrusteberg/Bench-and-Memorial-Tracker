@@ -41,13 +41,13 @@ const AccountsTable = ({
             let color = null;
                 switch(type) {
                     case 'admin':
-                        color = '#ad8b00';
+                        color = '#d4380d';
                         break;
                     case 'clerk':
                         color = '#8c8c8c';
                         break;
                     default:
-                        color = '#d46b08'
+                        color = '#5b8c00'
                         break;
 
                 }
@@ -72,7 +72,7 @@ const AccountsTable = ({
           align: 'center',
           render: (text, record) => (
             <Space size="middle">
-                <DeleteOutlined className={styles.deleteButton} onClick={() => onDeleteClick(record)} />
+                <a className={styles.deleteButton} onClick={() => onDeleteClick(record)} > Delete</a> 
             </Space>
             //<a onClick={() => onDeleteClick(record)}>Delete</a>
           )
