@@ -74,7 +74,6 @@ const AccountsTable = ({
             <Space size="middle">
                 <a className={styles.deleteButton} onClick={() => onDeleteClick(record)} > Delete</a> 
             </Space>
-            //<a onClick={() => onDeleteClick(record)}>Delete</a>
           )
         }
       ];

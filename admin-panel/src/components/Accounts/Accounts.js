@@ -59,7 +59,6 @@ const Accounts = () => {
     axios
       .post(`${process.env.REACT_APP_API_BASE_URL}/accounts`, account)
       .then((res) => {
-        console.log(res.data);
         refreshPage();
       });
   };

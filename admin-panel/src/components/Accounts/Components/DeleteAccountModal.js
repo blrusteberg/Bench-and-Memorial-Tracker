@@ -17,7 +17,6 @@ const DeleteAccountModal = ({ account, deleteSuccess, onCancelClick }) => {
       .then((res) => {
         setIsDeleting(false);
         deleteSuccess();
-        setVisible(false);
       });
   };
 
