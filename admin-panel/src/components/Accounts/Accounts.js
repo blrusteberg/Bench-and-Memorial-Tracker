@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Spin, Result } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Button, Spin, Result } from "antd";
 import axios from "axios";
 import styles from "./Accounts.module.css";
 import "antd/dist/antd.css";
@@ -9,28 +9,24 @@ import AddAccountModal from "./Components/AddAccountModal";
 import AccountsTable from "./AccountsTable/AccountsTable";
 
 const Accounts = () => {
-  const[accounts, setAccounts] = useState([
-      {
-        Id: "",
-        Username: "",
-        Password: "",
-        AccountType: "",
-        DelAccess: ""
-      }
-    ],
-  );
+  const [accounts, setAccounts] = useState([
+    {
+      Id: "",
+      Username: "",
+      Password: "",
+      AccountType: "",
+      DelAccess: "",
+    },
+  ]);
 
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
   const [deletingAccount, setDeletingAccount] = useState();
   const [error, setError] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
-   
   useEffect(() => {
     axios
-      .get(
-        `${process.env.REACT_APP_API_BASE_URL}/accounts`
-      )
+      .get(`${process.env.REACT_APP_API_BASE_URL}/accounts`)
       .then((res) => {
         setAccounts(res.data);
         setLoading(false);
@@ -79,7 +75,7 @@ const Accounts = () => {
     <Spin tip="Loading Accounts..." />
   ) : (
     <>
-      {deletingAccount? (
+      {deletingAccount ? (
         <DeleteAccountModal
           account={deletingAccount}
           deleteSuccess={() => deleteLocalAccounts(deletingAccount.key)}
@@ -111,5 +107,5 @@ const Accounts = () => {
       </div>
     </>
   );
-}
+};
 export default Accounts;
