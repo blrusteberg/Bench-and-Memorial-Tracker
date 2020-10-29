@@ -5,7 +5,6 @@ import Memorial from "./Memorial/Memorial";
 import styles from "./Sidebar.module.css";
 import { getCoordinatesOfMemorial } from "../../utils/utils";
 import { Drawer } from 'antd';
-import { CaretRightOutlined } from "@ant-design/icons";
 
 class Sidebar extends React.Component {
   state = {
@@ -32,14 +31,10 @@ class Sidebar extends React.Component {
     return (
       <Drawer
         placement="right"
-        closable={true}
+        closable={false}
         visible={this.props.showSidebar}
-        onClose={this.props.toggleSidebar}
-        closeIcon={<CaretRightOutlined className={styles.closeSideBarIcon}/>}
         mask={false}
       >
-      <br />
-      <br />
         <input
           onChange={(event) => this.props.searchHandler(event.target.value)}
           className={styles.SearchInput}
