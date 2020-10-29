@@ -116,7 +116,6 @@ class TaggerForm extends React.Component {
           if (attribute.Name.toLowerCase() === "longitude") {
             attribute.Value = longitude;
           }
-          console.log(memorial);
 
           this.setState({
             latitude: latitude,
@@ -174,13 +173,7 @@ class TaggerForm extends React.Component {
     });
   };
 
-  fileUploadHandler = () => {
-    //const fd = new FormData();
-    // fd.append('image', this.state.selectedFile, this.state.selectedFile.name)
-    // axios.post("http://localhost:1337/memorials", fd)
-    //   .then(res => {
-    //   });
-  };
+  fileUploadHandler = () => {};
 
   render() {
     return this.state.isLoading ? (
