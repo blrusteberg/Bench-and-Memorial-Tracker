@@ -16,7 +16,7 @@ const Attributes = () => {
     },
   ]);
   const [error, setError] = useState();
-  const [savingError, setSavingError] = useState();
+  const [setSavingError] = useState();
   const [loading, setLoading] = useState(true);
   const [deletingAttribute, setDeletingAttribute] = useState();
   const [modalVisible, setModalVisible] = useState(false);
@@ -117,7 +117,7 @@ const Attributes = () => {
     }
 
     for (let i = 0; i < attributes.length; i++) {
-      if (attributes[i].Name === input && input != currentValue) {
+      if (attributes[i].Name === input && input !== currentValue) {
         return { valid: false, message: "Attribute name already taken" };
       }
     }
