@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Space, Badge } from "antd";
 
 import styles from "./MemorialsTable.module.css";
@@ -12,6 +12,8 @@ const MemorialsTable = ({
   saveMemorial,
 }) => {
   const [editingMemorial, setEditingMemorial] = useState();
+
+  useEffect(() => {}, [memorials]);
 
   const getChangeStatusAction = (record) => {
     switch (record.Status) {

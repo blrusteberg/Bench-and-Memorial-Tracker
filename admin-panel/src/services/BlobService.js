@@ -24,8 +24,14 @@ class BlobService {
   }
 
   uploadMemorialImage = async (memorialId, image) => {
-    const blockBlobClient = this.imageContainerClient.getBlockBlobClient(memorialName + new Date().getTime())
+    console.log("UPLOAD MEMORIAL IAMGE CALLED", memorialId, image);
+
+    const blockBlobClient = this.imageContainerClient.getBlockBlobClient(
+      memorialId + new Date().getTime()
+    );
     const uploadImageResponse = await blockBlobClient.upload(image, 1);
     return uploadImageResponse;
-  }
+  };
 }
+
+export default BlobService;
