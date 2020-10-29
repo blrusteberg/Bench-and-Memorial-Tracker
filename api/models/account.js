@@ -21,8 +21,12 @@ class Accounts extends Model {
         Password: {type: "string"},
         AccountType: {
             type: "string",
-            enum: ["tagger", "clerk", "admin"]},
-        DelAccess: {type: "bit"}
+            enum: ["tagger", "clerk", "admin"]
+          },
+        DelAccess: {
+          type: "bit",
+          default: 0
+        }
       },
     };
   }
