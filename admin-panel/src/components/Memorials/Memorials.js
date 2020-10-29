@@ -14,6 +14,7 @@ import styles from "./Memorials.module.css";
 import DeleteMemorialModal from "./Modals/DeleteMemorialModal/DeleteMemorialModal";
 import MemorialsTable from "./MemorialsTable/MemorialsTable";
 import MemorialModal from "./Modals/MemorialModal/MemorialModal";
+import BlobService from "../../services/BlobService";
 
 const Memorials = () => {
   const [memorials, setMemorials] = useState([
@@ -61,7 +62,12 @@ const Memorials = () => {
       .catch((error) => setError(error));
   }, []);
 
-  const saveMemorial = (memorial, onSuccess = () => {}, onFail = () => {}) => {
+  const saveMemorial = (
+    memorial,
+    image,
+    onSuccess = () => {},
+    onFail = () => {}
+  ) => {
     memorial.Id
       ? axios
           .put(
@@ -74,6 +80,7 @@ const Memorials = () => {
           )
           .then(() => {
             saveLocalMemorial(memorial);
+            new BlobService().uploadMemorialImage(memorial.Id, image);
             onSuccess();
           })
           .catch((error) => {
@@ -104,7 +111,8 @@ const Memorials = () => {
   };
 
   const deleteLocalMemorial = (key) => {
-    const tempMemorials = [...memorials];
+    const tempMemorials =
+      tableView === "approved" ? [...memorials] : [...unapprovedMemorials];
     let deleteIndex = -1;
     for (let i = 0; i < tempMemorials.length; i++) {
       if (tempMemorials[i].Id === key) {
@@ -116,7 +124,9 @@ const Memorials = () => {
       return;
     }
     tempMemorials.splice(deleteIndex, 1);
-    setMemorials(tempMemorials);
+    tableView === "approved"
+      ? setMemorials(tempMemorials)
+      : setUnapprovedMemorials(tempMemorials);
     setDeletingMemorial(null);
   };
 
@@ -124,7 +134,9 @@ const Memorials = () => {
     window.location.reload();
   };
 
-  const onDeleteClick = (memorial) => setDeletingMemorial(memorial);
+  const onDeleteClick = (memorial) => {
+    setDeletingMemorial(memorial);
+  };
 
   const updateMemorialStatus = (memorial, status) => {
     if (status === "live") {
@@ -176,11 +188,13 @@ const Memorials = () => {
     <Spin tip="Loading Memorials..." />
   ) : (
     <div className={styles.Memorials}>
-      <MemorialModal
-        onCancel={() => setMemorialModalVisible(false)}
-        visible={memorialModalVisible}
-        saveMemorial={saveMemorial}
-      />
+      {memorialModalVisible ? (
+        <MemorialModal
+          onCancel={() => setMemorialModalVisible(false)}
+          visible={memorialModalVisible}
+          saveMemorial={saveMemorial}
+        />
+      ) : null}
 
       {deletingMemorial ? (
         <DeleteMemorialModal

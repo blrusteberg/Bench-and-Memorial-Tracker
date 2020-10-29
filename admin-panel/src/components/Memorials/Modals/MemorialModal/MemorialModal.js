@@ -9,8 +9,13 @@ import {
   Select,
   DatePicker,
   InputNumber,
+  Upload,
+  Button,
+  message,
 } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
+import BlobService from "../../../../services/BlobService";
 
 import styles from "./MemorialModal.module.css";
 
@@ -29,9 +34,9 @@ const MemorialModal = ({
   const [changesMade, setChangesMade] = useState(false);
   const [action, setAction] = useState();
   const [isSaving, setIsSaving] = useState(false);
+  const [memorialImage, setMemorialImage] = useState();
 
   useEffect(() => {
-    console.log("USE EFFECT");
     if (loadingTypes) {
       axios
         .get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`)
@@ -69,6 +74,7 @@ const MemorialModal = ({
           value: attribute.Value,
         })),
       ]);
+      setAction("edit");
     }
   }, [memorial, form, loadingTypes, types]);
 
@@ -99,6 +105,7 @@ const MemorialModal = ({
     } else {
       memorial = {
         Name: data.Name,
+        Image: memorialImage,
         TypeId: data.TypeId,
         Attributes: selectedType.Attributes.map((attribute) => ({
           ...attribute,
@@ -106,7 +113,7 @@ const MemorialModal = ({
         })),
       };
     }
-    saveMemorial(memorial, resetModal);
+    saveMemorial(memorial, memorialImage, resetModal);
   };
 
   const onCancelClick = () => {
@@ -162,6 +169,15 @@ const MemorialModal = ({
         {inputNode}
       </Form.Item>
     );
+  };
+
+  const uploadButtonProps = {
+    name: "memorialImage",
+    beforeUpload: (file) => {
+      setMemorialImage(file);
+      return false;
+    },
+    onRemove: () => setMemorialImage(null),
   };
 
   return (
@@ -229,6 +245,12 @@ const MemorialModal = ({
                 selectedType.Attributes.map((attribute) =>
                   getAttributeFormInput(attribute)
                 )}
+              <Divider dashed />
+              <Upload {...uploadButtonProps}>
+                <Button disabled={memorialImage} icon={<UploadOutlined />}>
+                  Click to Upload
+                </Button>
+              </Upload>
             </Form>
           </Card>
         )}
