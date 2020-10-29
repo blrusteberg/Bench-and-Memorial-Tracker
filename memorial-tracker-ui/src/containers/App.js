@@ -5,7 +5,7 @@ import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
 import styles from "./App.module.css";
 
-import { Modal, Button } from "antd";
+import { Modal, Button, Layout, Space, Typography, Divider  } from "antd";
 import "antd/dist/antd.css";
 
 export const MapCenterContext = React.createContext();
@@ -35,6 +35,7 @@ class App extends React.Component {
     isLoading: true,
     mapCenter: { lat: 0, lng: 0 },
     visible: false,
+    showSidebar: false,
   };
 
   componentDidMount() {
@@ -132,37 +133,59 @@ class App extends React.Component {
     });
   };
 
+  showDrawer = () => {
+    this.setState({
+      showSidebar: !this.state.showSidebar,
+    });
+  };
+  
   render() {
+    const { Header, Content } = Layout;
     const content = this.state.error ? (
       <div className={styles.error}>Oops, something's not right here...</div>
     ) : !this.state.isLoading ? (
       <div className={styles.App}>
-        <MapCenterContext.Provider value={this.state.mapCenter}>
-          <Map
-            Memorials={this.state.Memorials}
-            currentLocation={this.state.currentLocation}
-            onIconClick={this.onIconClick}
-            bubbleCloseClick={this.bubbleCloseClickHandler}
-          />
-          <Sidebar
-            Memorials={this.state.Memorials}
-            searchHandler={this.searchHandler}
-            onSidebarClick={this.updateMapCenter}
-          />
-        </MapCenterContext.Provider>
-        <div className={styles.modalWrapper}>
-          <Button type="primary" onClick={this.showModal}>
-            Open blank modal
-          </Button>
-        </div>
-        <Modal
-          title="Blank Modal"
-          visible={this.state.visible}
-          onOk={this.handleOkOrCancel}
-          onCancel={this.handleOkOrCancel}
-        >
-          <p>This is a blank modal!</p>
-        </Modal>
+        <Layout>
+          <Header>
+            <Space split={<Divider type="vertical" />}>
+              <Typography.Link>
+                <Button type="primary" onClick={this.showModal}>
+                  Memorial Suggestion Form
+                </Button>
+              </Typography.Link>
+              <Typography.Link>
+                <Button type="primary" onClick={this.showDrawer}>
+                  {this.state.showSidebar ? "Close search" : "Open search"}
+                </Button>
+              </Typography.Link>
+            </Space>
+            <Modal
+              title="Blank Modal"
+              visible={this.state.visible}
+              onOk={this.handleOkOrCancel}
+              onCancel={this.handleOkOrCancel}
+            >
+              <p>This is a blank modal!</p>
+            </Modal>
+          </Header>
+          <Content>
+            <MapCenterContext.Provider value={this.state.mapCenter}>
+              <Map
+                Memorials={this.state.Memorials}
+                currentLocation={this.state.currentLocation}
+                onIconClick={this.onIconClick}
+                bubbleCloseClick={this.bubbleCloseClickHandler}
+              />
+              <Sidebar
+                Memorials={this.state.Memorials}
+                searchHandler={this.searchHandler}
+                onSidebarClick={this.updateMapCenter}
+                showSidebar={this.state.showSidebar}
+              />
+              
+            </MapCenterContext.Provider>
+          </Content>
+        </Layout>
       </div>
     ) : (
       <h1 className={styles.loadingMessage}>Loading...</h1>
