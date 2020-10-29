@@ -1,13 +1,15 @@
-import React from 'react';
-import { Table, Space, Checkbox } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Spin, Result } from 'antd';
 import axios from "axios";
 import styles from "./Accounts.module.css";
 import "antd/dist/antd.css";
 
+import DeleteAccountModal from "./Components/DeleteAccountModal";
+import AddAccountModal from "./Components/AddAccountModal";
+import AccountsTable from "./AccountsTable/AccountsTable";
 
-class Accounts extends React.Component {
-  state = {
-    Accounts: [
+const Accounts = () => {
+  const[accounts, setAccounts] = useState([
       {
         Id: "",
         Username: "",
@@ -15,67 +17,99 @@ class Accounts extends React.Component {
         AccountType: "",
         DelAccess: ""
       }
-    ]
-  };
+    ],
+  );
 
-  columns = [
-    {
-      title: 'Username',
-      dataIndex: 'Username',
-      key: 'Username'
-    },
-    {
-      title: 'Password',
-      dataIndex: 'Password',
-      key: 'Password',
-      align: 'center'
-    },
-    {
-      title: 'Account Type',
-      dataIndex: 'AccountType',
-      key: 'AccountType'
-    },
-    {
-      title: 'Delete Access',
-      dataIndex: 'DelAccess',
-      render: (hasDelete) =>
-        hasDelete ? <Checkbox checked={true} disabled={true}/>: <Checkbox checked={false} disabled={true}/>
-    },
-    {
-      title: "Action",
-      dataIndex: "Operation",
-      key: "Operation",
-      render: (text, record) => (
-        <Space size="middle">
-          <a>Edit</a>
-          <a>Delete</a>
-        </Space>
-      )
-    }
-  ];
-  
-  
-  componentDidMount() {
+  const [loading, setLoading] = useState();
+  const [deletingAccount, setDeletingAccount] = useState();
+  const [error, setError] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+
+   
+  useEffect(() => {
     axios
       .get(
         `${process.env.REACT_APP_API_BASE_URL}/accounts`
       )
       .then((res) => {
-        this.setState({ Accounts: res.data });
+        setAccounts(res.data);
+        setLoading(false);
       })
-  }
-  
-  formatForTable = () => {
-    return this.state.Accounts.map((account) => {
-      account.key = account.Id;
-      return account;
-    })
-  }
+      .catch((error) => setError(error));
+  }, []);
 
-  render() {
-    return (
-      <Table className={styles.accounts} dataSource={this.formatForTable()} pagination={false} columns={this.columns} />
-    )
-  }
+  const deleteLocalAccounts = (key) => {
+    const tempAccounts = [...accounts];
+    let deleteIndex = -1;
+    for (let i = 0; i < tempAccounts.length; i++) {
+      if (tempAccounts[i].Id === key) {
+        deleteIndex = i;
+        break;
+      }
+    }
+    if (deleteIndex === -1) {
+      return;
+    }
+    tempAccounts.splice(deleteIndex, 1);
+    setAccounts(tempAccounts);
+    setDeletingAccount(null);
+  };
+
+  const saveAccount = (account) => {
+    axios
+      .post(`${process.env.REACT_APP_API_BASE_URL}/accounts`, account)
+      .then((res) => {
+        refreshPage();
+      });
+  };
+
+  const onDeleteClick = (account) => setDeletingAccount(account);
+
+  const refreshPage = () => {
+    window.location.reload(false);
+  };
+
+  const addAccountButtonClick = () => {
+    setModalVisible(true);
+  };
+
+  return error ? (
+    <Result status="500" subTitle="Sorry, something went wrong." />
+  ) : loading ? (
+    <Spin tip="Loading Accounts..." />
+  ) : (
+    <>
+      {deletingAccount? (
+        <DeleteAccountModal
+          account={deletingAccount}
+          deleteSuccess={() => deleteLocalAccounts(deletingAccount.key)}
+          onCancelClick={() => setDeletingAccount(null)}
+        />
+      ) : null}
+      <div className={styles.accountsContainer}>
+        <Button
+          className={styles.addAccountsButton}
+          type="primary"
+          onClick={addAccountButtonClick}
+        >
+          Add New Account
+        </Button>
+        <AddAccountModal
+          accounts={accounts}
+          addSuccess={refreshPage}
+          modalVisible={modalVisible}
+          saveAccount={saveAccount}
+          onCancelClick={() => {
+            setModalVisible(false);
+          }}
+        />
+        <AccountsTable
+          accounts={accounts}
+          saveAccount={saveAccount}
+          onDeleteClick={onDeleteClick}
+        />
+      </div>
+    </>
+  );
 }
 export default Accounts;

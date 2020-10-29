@@ -5,14 +5,11 @@ import styles from "./Attribute.module.css";
 import { Input } from "antd";
 
 class Attribute extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputFocus: false,
-      isValid: true,
-      Value: "",
-    };
-  }
+  state = {
+    inputFocus: false,
+    isValid: true,
+    Value: "",
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.Value !== this.props.Value) {
@@ -58,8 +55,14 @@ class Attribute extends React.Component {
     const errorMessages = {
       Date: "Date Format: MM/DD/YYYY.",
       Number: "Invalid number.",
+      Words: "Invalid Word",
+      YesNo: "Invalid Yes/No",
     };
-    return errorMessages[this.props.ValueType];
+    if (this.props.ValueType === "Yes/No") {
+      return errorMessages.YesNo;
+    } else {
+      return errorMessages[this.props.ValueType];
+    }
   };
 
   isInputDisabled = () => {
@@ -74,6 +77,9 @@ class Attribute extends React.Component {
 
       case "longitude":
         return this.props.longitude;
+
+      default:
+        return "";
     }
   };
 
@@ -99,6 +105,7 @@ class Attribute extends React.Component {
         onChange={this.onValueChange}
         onBlur={this.onValueInputBlur}
         maxLength={248}
+        placeholder={this.props.ValueType === "Date" ? "MM/DD/YYYY" : ""}
       />
     );
   };

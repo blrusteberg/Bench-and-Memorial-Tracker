@@ -45,6 +45,7 @@ class TaggerForm extends React.Component {
     areCoordsValid: true,
     isMemorialNameValid: true,
     selectedFile: null,
+    fillCoordsClicked: false,
   };
 
   componentDidMount() {
@@ -74,6 +75,8 @@ class TaggerForm extends React.Component {
         Attributes: attributes,
       },
       typeSelectedIndex: typeIndex,
+      latitude: "",
+      longitude: "",
     });
   };
 
@@ -113,6 +116,7 @@ class TaggerForm extends React.Component {
           if (attribute.Name.toLowerCase() === "longitude") {
             attribute.Value = longitude;
           }
+
           this.setState({
             latitude: latitude,
             longitude: longitude,
@@ -169,13 +173,7 @@ class TaggerForm extends React.Component {
     });
   };
 
-  fileUploadHandler = () => {
-    const fd = new FormData();
-    // fd.append('image', this.state.selectedFile, this.state.selectedFile.name)
-    // axios.post("http://localhost:1337/memorials", fd)
-    //   .then(res => {
-    //   });
-  };
+  fileUploadHandler = () => {};
 
   render() {
     return this.state.isLoading ? (
