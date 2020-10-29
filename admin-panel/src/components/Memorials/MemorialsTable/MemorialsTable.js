@@ -13,8 +13,6 @@ const MemorialsTable = ({
 }) => {
   const [editingMemorial, setEditingMemorial] = useState();
 
-  useEffect(() => {}, [memorials]);
-
   const getChangeStatusAction = (record) => {
     switch (record.Status) {
       case "live":

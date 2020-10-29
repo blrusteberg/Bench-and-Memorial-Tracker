@@ -11,11 +11,9 @@ import {
   InputNumber,
   Upload,
   Button,
-  message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
-import BlobService from "../../../../services/BlobService";
 
 import styles from "./MemorialModal.module.css";
 
