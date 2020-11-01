@@ -14,7 +14,7 @@ import Types from "../components/Types/Types";
 import TaggerForm from "../components/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Tag } from 'antd';
 require('dotenv').config()
 
 class App extends React.Component {
@@ -23,9 +23,11 @@ class App extends React.Component {
     sideBarCollapse: false,
     isLoggedIn: false,
     stayLoggedIn: false,
+    userRoleColor: ""
   };
 
   componentDidMount(){
+    this.handleTagColor();
     let isLoggedIn = localStorage.getItem('isLoggedIn') || sessionStorage.getItem('isLoggedIn');
     this.setState({
       isLoggedIn: isLoggedIn
@@ -52,13 +54,37 @@ class App extends React.Component {
 
   handleLogout = () => {
     delete localStorage.isLoggedIn;
+    delete localStorage.Username;
     delete localStorage.Role;
     delete localStorage.DeleteAccess
     delete sessionStorage.isLoggedIn;
+    delete sessionStorage.Username;
     delete sessionStorage.Role;
     delete sessionStorage.DeleteAccess
     this.setState({
       isLoggedIn: false
+    })
+  }
+
+  handleTagColor = (role) => {
+    const ROLE = localStorage.getItem("Role") || sessionStorage.getItem("Role");
+    let userRoleColor = null;
+    switch (ROLE) {
+      case "admin":
+        userRoleColor = "#d4380d";
+        break;
+      case "clerk":
+        userRoleColor = "#d4b106";
+        break;
+      case "tagger":
+        userRoleColor = "#389e0d";
+        break;
+      default:
+        userRoleColor = "##8c8c8c";
+        break;
+    } 
+    this.setState({
+      userRoleColor: userRoleColor
     })
   }
 
@@ -78,6 +104,8 @@ class App extends React.Component {
       },
     };
 
+   
+
   const handleRedirectOnLogin = (role) => {
     if(role === 'admin' || role === 'clerk') window.location = "/memorials";
     else if (role === 'tagger') window.location = "/tagger-form";
@@ -93,17 +121,19 @@ class App extends React.Component {
         .then((res) => {
           if(this.state.stayLoggedIn){
             localStorage.setItem('isLoggedIn', true);
+            localStorage.setItem('Username', values.username);
             localStorage.setItem('Role', res.data.role);
             localStorage.setItem('DeleteAccess', res.data.deleteAccess);
             handleRedirectOnLogin(res.data.role);
           } else {
             sessionStorage.setItem('isLoggedIn', true);
+            sessionStorage.setItem('Username', values.username);
             sessionStorage.setItem('Role', res.data.role);
             sessionStorage.setItem('DeleteAccess', res.data.deleteAccess);
             handleRedirectOnLogin(res.data.role);
           }
           this.setState({
-            isLoggedIn: true
+            isLoggedIn: true,
           })
         })
         .catch((error) => {
@@ -175,6 +205,7 @@ class App extends React.Component {
   render() {
     const { Header, Sider, Content } = Layout;
     const ROLE = localStorage.getItem("Role") || sessionStorage.getItem("Role");
+    const USERNAME = localStorage.getItem("Username") || sessionStorage.getItem("Username");
     return (
       <div className={styles.App}>
       {this.state.isLoggedIn ? (
@@ -190,7 +221,6 @@ class App extends React.Component {
                     }
                     handlePermissionChange={this.handlePermissionChange}
                     roles={ROLE}
-                    handleLogout={this.handleLogout}
                   />
                 </Sider>
               )}
@@ -203,6 +233,13 @@ class App extends React.Component {
                       onClick={() => this.sideBarCollapseHandler(false)}
                     />
                   ) : null}
+                  <div className={styles.buttonWrapper}>
+                    {USERNAME} &nbsp;
+                    <Tag color={this.state.userRoleColor} key={ROLE}>
+                      {ROLE.toUpperCase()}
+                    </Tag>
+                    <Button type="primary" onClick={this.handleLogout}>Logout</Button>
+                  </div>
                 </Header>
                 <div className={styles.dashContent}>
                   <Switch>

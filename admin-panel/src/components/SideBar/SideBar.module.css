@@ -28,8 +28,4 @@
   background-color: #30b7f5;
   width: 100%;
 }
-.buttonWrapper {
-  display: flex;
-  /* position: absolute; */
-  justify-content: center;
-}
+

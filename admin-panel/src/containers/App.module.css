@@ -54,3 +54,13 @@
   display: flex;
   justify-content: center;
 }
+
+.buttonWrapper {
+  float: right;
+  /* position: absolute; */
+  /* right: 0; */
+  /* position: absolute; */
+  /* align-items: center; */
+  /* flex-direction: column; */
+  font-size: 1rem;
+}
