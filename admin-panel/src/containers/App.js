@@ -14,7 +14,7 @@ import Types from "../components/Types/Types";
 import TaggerForm from "../components/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 require('dotenv').config()
 
 class App extends React.Component {
@@ -107,6 +107,9 @@ class App extends React.Component {
           })
         })
         .catch((error) => {
+          if (error.response.status === 401) {
+            errorMsg();
+           }
           console.log(error);
         });
   };
@@ -120,6 +123,10 @@ class App extends React.Component {
       stayLoggedIn: !this.state.stayLoggedIn
     })
   }
+
+  const errorMsg = () => {
+    message.error('Username and Password combination is incorrect');
+  };
 
     return (
       <div className={styles.formWrapper}>
@@ -157,7 +164,7 @@ class App extends React.Component {
             </Button>
           </Form.Item>
           <div className={styles.checkboxWrapper}>
-          <Checkbox onChange={onChangeStayLoggedIn}>Stay signed In</Checkbox>
+            <Checkbox onChange={onChangeStayLoggedIn}>Stay signed In</Checkbox>
           </div>
         </Form>
         
