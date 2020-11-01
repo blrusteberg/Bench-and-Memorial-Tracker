@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.post("/sign-in", async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         account = await Account.query().select().where('Username', req.body.Username).where('Password', req.body.Password);
         if (account.length) res.status(200).json({ valid: true, message: "Login successful" , role: account[0].AccountType, deleteAccess: account[0].DelAccess})

@@ -87,7 +87,7 @@ class App extends React.Component {
     const account = {Username: values.username, Password: values.password};
     axios
         .post(
-          `${process.env.REACT_APP_API_BASE_URL}/accounts/sign-in`,
+          `${process.env.REACT_APP_API_BASE_URL}/accounts/login`,
           account
         )
         .then((res) => {
