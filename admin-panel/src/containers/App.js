@@ -206,7 +206,10 @@ class App extends React.Component {
     const { Header, Sider, Content } = Layout;
     const ROLE = localStorage.getItem("Role") || sessionStorage.getItem("Role");
     const USERNAME = localStorage.getItem("Username") || sessionStorage.getItem("Username");
-    if (ROLE === NULL || USERNAME === NULL) this.handleLogout();
+    if (ROLE === null || USERNAME === null) {
+      delete localStorage.clear();
+      delete sessionStorage.clear();
+    }
     return (
       <div className={styles.App}>
       {this.state.isLoggedIn ? (
