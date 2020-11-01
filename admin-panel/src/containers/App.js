@@ -3,6 +3,7 @@ import { Switch, Route, BrowserRouter } from "react-router-dom";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { Layout, Checkbox } from "antd";
 import "antd/dist/antd.css";
+import axios from "axios";
 
 import styles from "./App.module.css";
 import SideBar from "../components/SideBar/SideBar";
@@ -20,7 +21,6 @@ class App extends React.Component {
   state = {
     page: "Memorials",
     sideBarCollapse: false,
-    roles: ["User", "Admin", "Clerk", "Tagger"],
     isLoggedIn: false,
     stayLoggedIn: false,
   };
@@ -44,21 +44,6 @@ class App extends React.Component {
     }
   };
 
-  handlePermissionChange = (e) => {
-    let roles = [];
-    if (e.target.value === "clerk") {
-      roles = ["User", "Clerk"];
-    } else if (e.target.value === "tagger") {
-      roles = ["User", "Tagger"];
-    } else if (e.target.value === "admin") {
-      roles = ["User", "Admin", "Clerk", "Tagger"];
-    }
-
-    this.setState({
-      roles: roles,
-    });
-  };
-
   sideBarCollapseHandler = (collapse) => {
     this.setState({
       sideBarCollapse: collapse,
@@ -66,8 +51,12 @@ class App extends React.Component {
   };
 
   handleLogout = () => {
-    delete localStorage.isLoggedIn
+    delete localStorage.isLoggedIn;
+    delete localStorage.Role;
+    delete localStorage.DeleteAccess
     delete sessionStorage.isLoggedIn;
+    delete sessionStorage.Role;
+    delete sessionStorage.DeleteAccess
     this.setState({
       isLoggedIn: false
     })
@@ -89,13 +78,40 @@ class App extends React.Component {
       },
     };
 
+  const handleRedirectOnLogin = (role) => {
+    if(role === 'admin' || role === 'clerk') window.location = "/memorials";
+    else if (role === 'tagger') window.location = "/tagger-form";
+  }
+
   const onFinish = (values) => {
-    if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
-      this.state.stayLoggedIn ? localStorage.setItem('isLoggedIn', true) : sessionStorage.setItem('isLoggedIn', true);
-      this.setState({
-        isLoggedIn: true
-      })
-    }
+    // send name/pass to api -> when sending to API, lock submit button
+    // IF success -> login -> direct to page based on role
+    // IF FAIL -> display error
+    const account = {Username: values.username, Password: values.password};
+    axios
+        .post(
+          `${process.env.REACT_APP_API_BASE_URL}/accounts/sign-in`,
+          account
+        )
+        .then((res) => {
+          if(this.state.stayLoggedIn){
+            localStorage.setItem('isLoggedIn', true);
+            localStorage.setItem('Role', res.data.role);
+            localStorage.setItem('DeleteAccess', res.data.deleteAccess);
+            handleRedirectOnLogin(res.data.role);
+          } else {
+            sessionStorage.setItem('isLoggedIn', true);
+            sessionStorage.setItem('Role', res.data.role);
+            sessionStorage.setItem('DeleteAccess', res.data.deleteAccess);
+            handleRedirectOnLogin(res.data.role);
+          }
+          this.setState({
+            isLoggedIn: true
+          })
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -119,6 +135,13 @@ class App extends React.Component {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
+            <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item
             label="Password"
             name="password"
@@ -147,6 +170,7 @@ class App extends React.Component {
 
   render() {
     const { Header, Sider, Content } = Layout;
+    const ROLE = localStorage.getItem("Role") || sessionStorage.getItem("Role");
     return (
       <div className={styles.App}>
       {this.state.isLoggedIn ? (
@@ -161,7 +185,7 @@ class App extends React.Component {
                       this.sideBarCollapseHandler(true)
                     }
                     handlePermissionChange={this.handlePermissionChange}
-                    roles={this.state.roles}
+                    roles={ROLE}
                     handleLogout={this.handleLogout}
                   />
                 </Sider>
@@ -178,19 +202,19 @@ class App extends React.Component {
                 </Header>
                 <div className={styles.dashContent}>
                   <Switch>
-                    {hasRole(this.state.roles, ["Admin"]) && (
+                    {hasRole(ROLE, ["admin"]) && (
                       <Route exact path="/accounts" component={Accounts} />
                     )}
-                    {hasRole(this.state.roles, ["Tagger", "Clerk"]) && (
+                    {hasRole(ROLE, ["tagger", "clerk", "admin"]) && (
                       <Route exact path="/tagger-form" component={TaggerForm} />
                     )}
-                    {hasRole(this.state.roles, ["Clerk"]) && (
+                    {hasRole(ROLE, ["clerk", "admin"]) && (
                       <Route exact path="/memorials" component={Memorials} />
                     )}
-                    {hasRole(this.state.roles, ["Clerk"]) && (
+                    {hasRole(ROLE, ["clerk", "admin"]) && (
                       <Route exact path="/types" component={Types} />
                     )}
-                    {hasRole(this.state.roles, ["Clerk"]) && (
+                    {hasRole(ROLE, ["clerk", "admin"]) && (
                       <Route exact path="/attributes" component={Attributes} />
                     )}
                   </Switch>
