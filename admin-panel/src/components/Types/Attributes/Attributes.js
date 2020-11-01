@@ -203,7 +203,7 @@ class Attributes extends React.Component {
     });
 
     if (this.props.selectedTypeId) {
-      if (this.props.typeName !== this.props.oldTypeName || this.props.oldUrl != this.state.currentUrl) {
+      if (this.props.typeName !== this.props.oldTypeName || this.props.oldUrl !== this.state.currentUrl) {
         const newTypeName = { Name: this.props.typeName, Icon: this.state.currentUrl };
         axios
           .put(
