@@ -26,9 +26,6 @@ class SideBar extends React.Component {
             roles={this.props.roles}
           />
         </div>
-        <div className={styles.buttonWrapper}>
-          <Button type="primary" onClick={this.props.handleLogout}>Logout</Button>
-        </div>
       </div>
     );
   }
