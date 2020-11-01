@@ -29,6 +29,16 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.post("/login", async (req, res) => {
+    try {
+        account = await Account.query().select().where('Username', req.body.Username).where('Password', req.body.Password);
+        if (account.length) res.status(200).json({ valid: true, message: "Login successful" , role: account[0].AccountType, deleteAccess: account[0].DelAccess})
+        else res.status(401).json({valid: false, message: "Username and Password combination is incorrect"});
+    } catch (err) {
+        Error.errorHandler(err, res);
+    }
+});
+
 router.delete("/:id", async (req, res) => {
     try {
         const deleted = await Account.query().deleteById(req.params.id);

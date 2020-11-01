@@ -29,18 +29,6 @@ class SideBar extends React.Component {
         <div className={styles.buttonWrapper}>
           <Button type="primary" onClick={this.props.handleLogout}>Logout</Button>
         </div>
-        <div className={styles.roleSelectWrapper}>
-          Choose role:
-          <select
-            id="roles"
-            styles={styles.roleSelect}
-            onChange={(event) => this.props.handlePermissionChange(event)}
-          >
-            <option value="admin">Admin</option>
-            <option value="clerk">Clerk</option>
-            <option value="tagger">Tagger</option>
-          </select>
-        </div>
       </div>
     );
   }

@@ -20,7 +20,7 @@ const navigationPanel = (props) => {
         className={styles.NavigationPanel}
         onClick={props.handleNavigationClick}
       >
-        {hasRole(props.roles, ["Admin"]) && (
+        {hasRole(props.roles, ["admin"]) && (
           <Menu.Item
             className={styles.MenuItem}
             key="accounts"
@@ -33,7 +33,7 @@ const navigationPanel = (props) => {
             </Link>
           </Menu.Item>
         )}
-        {hasRole(props.roles, ["Clerk"]) && [
+        {hasRole(props.roles, ["admin", "clerk"]) && [
           <Menu.Item
             className={styles.MenuItem}
             key="memorials"
