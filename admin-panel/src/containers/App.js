@@ -84,9 +84,6 @@ class App extends React.Component {
   }
 
   const onFinish = (values) => {
-    // send name/pass to api -> when sending to API, lock submit button
-    // IF success -> login -> direct to page based on role
-    // IF FAIL -> display error
     const account = {Username: values.username, Password: values.password};
     axios
         .post(
