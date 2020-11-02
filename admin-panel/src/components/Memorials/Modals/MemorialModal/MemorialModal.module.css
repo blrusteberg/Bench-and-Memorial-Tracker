@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.newMemorialFormP {
+.newMemorialForm {
   width: 100%;
 }
 
@@ -14,4 +14,9 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.imageUploader {
+  width: 128px;
+  height: 128px;
 }

@@ -17,6 +17,15 @@ class Map extends React.Component {
               center={mapCenter}
               defaultZoom={14}
             >
+              <Icon
+                Icon="https://memorialtrackerphotos.blob.core.windows.net/memorialicons/user-location.png"
+                onIconClick={() => {}}
+                closeBubbleClick={() => {}}
+                lat={this.props.userCoordinates.lat}
+                lng={this.props.userCoordinates.lng}
+                hideBubble={true}
+              />
+
               {this.props.Memorials.map((memorial) => {
                 const coordinates = getCoordinatesOfMemorial(memorial);
                 return (

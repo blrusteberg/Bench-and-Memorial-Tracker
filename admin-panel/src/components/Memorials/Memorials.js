@@ -17,20 +17,7 @@ import MemorialModal from "./Modals/MemorialModal/MemorialModal";
 import BlobService from "../../services/BlobService";
 
 const Memorials = () => {
-  const [memorials, setMemorials] = useState([
-    {
-      Id: "",
-      Name: "",
-      Statue: "",
-      Type: {
-        Id: "",
-        Name: "",
-        Attributes: [
-          { Id: "", Name: "", ValueType: "", Required: false, Value: null },
-        ],
-      },
-    },
-  ]);
+  const [memorials, setMemorials] = useState();
   const [unapprovedMemorials, setUnapprovedMemorials] = useState();
   const [tableView, setTableView] = useState("approved");
   const [error, setError] = useState();
@@ -68,46 +55,59 @@ const Memorials = () => {
     onSuccess = () => {},
     onFail = () => {}
   ) => {
-    memorial.Id
-      ? axios
-          .put(
-            `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorial.Id}`,
-            {
-              Name: memorial.Name,
-              TypeId: memorial.Type.Id,
-              Attributes: memorial.Type.Attributes,
-            }
-          )
-          .then(() => {
-            saveLocalMemorial(memorial);
-            new BlobService().uploadMemorialImage(memorial.Id, image);
-            onSuccess();
-          })
-          .catch((error) => {
-            openNotification(
-              "Unable to save memorial.",
-              error.message,
-              "error"
-            );
-            onFail();
-          })
-      : axios
-          .post(
-            `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
-            memorial
-          )
-          .then(() => {
-            saveLocalMemorial(memorial);
-            onSuccess();
-          })
-          .catch((error) => {
-            openNotification(
-              "Unable to save memorial.",
-              error.message,
-              "error"
-            );
-            onFail();
-          });
+    if (memorial.Id) {
+      new BlobService()
+        .uploadMemorialImage(memorial.Id, image, memorial.Image)
+        .then((blobName) =>
+          axios
+            .put(
+              `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorial.Id}`,
+              {
+                Name: memorial.Name,
+                Image: blobName,
+                TypeId: memorial.Type.Id,
+                Attributes: memorial.Type.Attributes,
+              }
+            )
+            .then(async () => {
+              saveLocalMemorial(memorial);
+            })
+            .catch((error) => {
+              openNotification(
+                "Unable to save memorial.",
+                error.message,
+                "error"
+              );
+              onFail();
+            })
+        );
+    } else {
+      axios
+        .post(
+          `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
+          memorial
+        )
+        .then(async (res) => {
+          const memorialId = res.data;
+          const blobName = await new BlobService().uploadMemorialImage(
+            memorialId,
+            image
+          );
+          axios
+            .put(
+              `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorialId}`,
+              { Image: blobName }
+            )
+            .then((res) => {
+              onSuccess();
+              saveLocalMemorial(memorial);
+            });
+        })
+        .catch((error) => {
+          openNotification("Unable to save memorial.", error.message, "error");
+          onFail();
+        });
+    }
   };
 
   const deleteLocalMemorial = (key) => {
@@ -188,13 +188,11 @@ const Memorials = () => {
     <Spin tip="Loading Memorials..." />
   ) : (
     <div className={styles.Memorials}>
-      {memorialModalVisible ? (
-        <MemorialModal
-          onCancel={() => setMemorialModalVisible(false)}
-          visible={memorialModalVisible}
-          saveMemorial={saveMemorial}
-        />
-      ) : null}
+      <MemorialModal
+        onCancel={() => setMemorialModalVisible(false)}
+        visible={memorialModalVisible}
+        saveMemorial={saveMemorial}
+      />
 
       {deletingMemorial ? (
         <DeleteMemorialModal
@@ -204,11 +202,7 @@ const Memorials = () => {
         />
       ) : null}
       <Space align="center" className={styles.memorialActions}>
-        <Button
-          className={styles.addMemorialButton}
-          type="primary"
-          onClick={() => setMemorialModalVisible(true)}
-        >
+        <Button type="primary" onClick={() => setMemorialModalVisible(true)}>
           Add Memorial
         </Button>
         <Divider>
@@ -220,12 +214,7 @@ const Memorials = () => {
             className={styles.tableViewRadio}
           >
             <Radio.Button value="approved">Approved</Radio.Button>
-            <Radio.Button
-              value="unapproved"
-              className={styles.unapprovedTableViewButton}
-            >
-              Unapproved
-            </Radio.Button>
+            <Radio.Button value="unapproved">Unapproved</Radio.Button>
           </Radio.Group>
         </Divider>
       </Space>

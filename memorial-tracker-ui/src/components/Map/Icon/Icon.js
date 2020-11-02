@@ -18,21 +18,23 @@ const icon = (props) => {
   }
 
   return (
-    <div className={styles.icon}>
+    <div>
       <img
         className={assignedStyles.join(" ")}
         src={props.Icon}
         alt="memorial icon"
         onClick={props.onIconClick}
       />
-      <InfoBubble
-        Type={props.Type}
-        Name={props.Name}
-        closeBubbleClick={props.closeBubbleClick}
-        hideBubble={props.hideBubble}
-        onDirectionsClick={() => onDirectionsClick(props.lat, props.lng)}
-        type={props.type}
-      />
+      {props.hideBubble ? null : (
+        <InfoBubble
+          Type={props.Type}
+          Name={props.Name}
+          closeBubbleClick={props.closeBubbleClick}
+          hideBubble={props.hideBubble}
+          onDirectionsClick={() => onDirectionsClick(props.lat, props.lng)}
+          type={props.type}
+        />
+      )}
     </div>
   );
 };

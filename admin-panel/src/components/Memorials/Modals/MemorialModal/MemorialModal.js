@@ -12,7 +12,7 @@ import {
   Upload,
   Button,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 import styles from "./MemorialModal.module.css";
@@ -30,29 +30,17 @@ const MemorialModal = ({
   const [form] = Form.useForm();
   const [selectedType, setSelectedType] = useState();
   const [changesMade, setChangesMade] = useState(false);
-  const [action, setAction] = useState();
+  const [action, setAction] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [memorialImage, setMemorialImage] = useState();
+  const [memorialImageUrl, setMemorialImageUrl] = useState("");
 
   useEffect(() => {
     if (loadingTypes) {
       axios
         .get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`)
         .then((res) => {
-          const types = res.data;
-          types.forEach((type) => {
-            const attributes = type.Attributes;
-            const sortedAttributes = [];
-            for (let i = attributes.length - 1; i > -1; i--) {
-              const attribute = attributes[i];
-              const attributeName = attribute.Name.toLowerCase();
-              attributeName === "latitude" || attributeName === "longitude"
-                ? sortedAttributes.unshift(attribute)
-                : sortedAttributes.push(attribute);
-            }
-            type.Attributes = sortedAttributes;
-          });
-          setTypes(types);
+          setTypes(res.data);
           setAction("create");
           setLoadingTypes(false);
         });
@@ -69,10 +57,13 @@ const MemorialModal = ({
         { name: "TypeId", value: memorial.Type.Id },
         ...memorial.Type.Attributes.map((attribute) => ({
           name: attribute.Id,
-          value: attribute.Value,
+          value: attribute.Value.Value,
         })),
       ]);
       setAction("edit");
+      setMemorialImageUrl(
+        `https://${process.env.REACT_APP_AZURE_BLOB_ACCOUNT_NAME}.blob.core.windows.net/${process.env.REACT_APP_AZURE_BLOB_MEMORIAL_IMAGE_CONTAINER_NAME}/${memorial.Image}`
+      );
     }
   }, [memorial, form, loadingTypes, types]);
 
@@ -87,23 +78,26 @@ const MemorialModal = ({
   };
 
   const resetModal = () => {
-    setSelectedType(null);
-    setChangesMade(false);
-    setAction(null);
-    form.resetFields();
+    if (!isSaving) {
+      setSelectedType(null);
+      setChangesMade(false);
+      setAction(null);
+      setIsSaving(false);
+      form.resetFields();
+    }
   };
 
   const onOkClick = async () => {
+    setIsSaving(true);
     const data = await form.validateFields();
     if (action === "edit") {
       memorial.Name = data.Name;
       memorial.Type.Attributes.forEach((attribute) => {
-        attribute.Value = data[attribute.Id];
+        attribute.Value.Value = data[attribute.Id];
       });
     } else {
       memorial = {
         Name: data.Name,
-        Image: memorialImage,
         TypeId: data.TypeId,
         Attributes: selectedType.Attributes.map((attribute) => ({
           ...attribute,
@@ -111,11 +105,11 @@ const MemorialModal = ({
         })),
       };
     }
-    saveMemorial(memorial, memorialImage, resetModal);
+    saveMemorial(memorial, memorialImage, resetModal, () => setIsSaving(false));
   };
 
   const onCancelClick = () => {
-    setIsSaving(true);
+    resetModal();
     onCancel();
   };
 
@@ -172,10 +166,24 @@ const MemorialModal = ({
   const uploadButtonProps = {
     name: "memorialImage",
     beforeUpload: (file) => {
+      setChangesMade(true);
       setMemorialImage(file);
       return false;
     },
-    onRemove: () => setMemorialImage(null),
+    onRemove: () => {
+      setMemorialImage(null);
+      setMemorialImageUrl(null);
+    },
+    fileList: memorialImageUrl
+      ? [
+          {
+            url: memorialImageUrl,
+            thumbUrl: memorialImageUrl,
+            uid: "-1",
+          },
+        ]
+      : null,
+    listType: "picture-card",
   };
 
   return (
@@ -183,8 +191,9 @@ const MemorialModal = ({
       visible={visible}
       onCancel={onCancelClick}
       onOk={onOkClick}
+      maskClosable={false}
       okButtonProps={{
-        disabled: action === ("edit" && !changesMade) || isSaving,
+        disabled: (action === "edit" && !changesMade) || isSaving,
       }}
       okText={action === "edit" ? "Save" : "Create"}
       destroyOnClose={true}
@@ -245,9 +254,12 @@ const MemorialModal = ({
                 )}
               <Divider dashed />
               <Upload {...uploadButtonProps}>
-                <Button disabled={memorialImage} icon={<UploadOutlined />}>
-                  Click to Upload
-                </Button>
+                {memorialImageUrl || memorialImage ? null : (
+                  <div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>Upload</div>
+                  </div>
+                )}
               </Upload>
             </Form>
           </Card>

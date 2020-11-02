@@ -12,6 +12,7 @@ const {
 
 class Error {
   static errorHandler(err, res) {
+    console.log(err);
     if (err instanceof ValidationError) {
       switch (err.type) {
         case "ModelValidation":
