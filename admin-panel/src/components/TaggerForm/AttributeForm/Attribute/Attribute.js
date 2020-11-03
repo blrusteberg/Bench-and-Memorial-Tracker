@@ -1,8 +1,9 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import cx from "classnames";
 
 import styles from "./Attribute.module.css";
 import { Input } from "antd";
+import ValueInput from "../../../../common/ValueInput/ValueInput";
 
 class Attribute extends React.Component {
   state = {
@@ -17,26 +18,9 @@ class Attribute extends React.Component {
     }
   }
 
-  validateInput = (value) => {
-    if (this.props.ValueType === "Yes/No") {
-      return this.validateYesNo(value);
-    }
-
-    return this[`validate${this.props.ValueType}`](value);
-  };
-
-  validateNumber = (inputValue) => /^(\d|-)?(\d|,)*\.?\d*$/.test(inputValue);
-
-  validateWords = (inputValue) => true;
-
-  validateDate = (inputValue) =>
-    /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/.test(inputValue);
-
-  validateYesNo = (inputValue) => true;
-
-  onValueChange = (event) => {
-    const value = event.target.value;
-    const isValid = this.validateInput(value.trim());
+  onValueChange = (value) => {
+    console.log("Value:", value);
+    const isValid = value.trim();
     this.setState({
       inputFocus: true,
       isValid: isValid,
@@ -83,32 +67,77 @@ class Attribute extends React.Component {
     }
   };
 
-  getInputField = () => {
-    return this.props.ValueType === "Yes/No" ? (
-      <select className={styles.yesNoInput} onChange={this.onValueChange}>
-        {this.state.Value === "" ? <option>Select a value</option> : null}
-        <option value={true}>Yes</option>
-        <option value={false}>No</option>
-      </select>
-    ) : (
-      <Input
-        className={cx(styles.valueInput, {
-          [styles.valueInputDisabled]: this.isInputDisabled(),
-          [styles.valueInputInvalid]:
-            !this.state.isValid && !this.state.inputFocus,
-        })}
-        type="text"
-        name="attributeTextBox"
-        id={this.props.Id}
-        value={this.state.Value}
-        readOnly={this.props.readOnly}
-        onChange={this.onValueChange}
-        onBlur={this.onValueInputBlur}
-        maxLength={248}
-        placeholder={this.props.ValueType === "Date" ? "MM/DD/YYYY" : ""}
-      />
-    );
-  };
+  // switch (this.props.ValueType) {
+  //   case "Words":
+  //     return (
+  //       <Input
+  //         className={cx(styles.valueInput, {
+  //           [styles.valueInputDisabled]: this.isInputDisabled(),
+  //           [styles.valueInputInvalid]:
+  //             !this.state.isValid && !this.state.inputFocus,
+  //         })}
+  //         type="text"
+  //         name="attributeTextBox"
+  //         id={this.props.Id}
+  //         value={this.state.Value}
+  //         readOnly={this.props.readOnly}
+  //         onChange={(event) => this.onValueChange(event.target.value)}
+  //         onBlur={this.onValueInputBlur}
+  //         maxLength={248}
+  //       />
+  //     );
+
+  //   case "Number":
+  //     return (
+  //       <Input
+  //         className={cx(styles.valueInput, {
+  //           [styles.valueInputDisabled]: this.isInputDisabled(),
+  //           [styles.valueInputInvalid]:
+  //             !this.state.isValid && !this.state.inputFocus,
+  //         })}
+  //         type="text"
+  //         name="attributeTextBox"
+  //         id={this.props.Id}
+  //         value={this.state.Value}
+  //         readOnly={this.props.readOnly}
+  //         onChange={(event) => this.onValueChange(event.target.value)}
+  //         onBlur={this.onValueInputBlur}
+  //         maxLength={248}
+  //       />
+  //     );
+
+  //   case "Date":
+  //     return (
+  //       <DatePicker
+  //         format={"MM/DD/YYYY"}
+  //         className={cx(styles.valueInput, {
+  //           [styles.valueInputDisabled]: this.isInputDisabled(),
+  //           [styles.valueInputInvalid]:
+  //             !this.state.isValid && !this.state.inputFocus,
+  //         })}
+  //         type="text"
+  //         name="attributeTextBox"
+  //         id={this.props.Id}
+  //         value={this.state.Value}
+  //         readOnly={this.props.readOnly}
+  //         onChange={(value) => this.onValueChange(value.format("MM/DD/YYYY"))}
+  //         onBlur={this.onValueInputBlur}
+  //         maxLength={248}
+  //         placeholder={"MM/DD/YYYY"}
+  //       />
+  //     );
+
+  //   case "Yes/No":
+  //     return (
+  //       <select
+  //         className={styles.yesNoInput}
+  //         onChange={(event) => this.onValueChange(event.target.value)}
+  //       >
+  //         {this.state.Value === "" ? <option>Select a value</option> : null}
+  //         <option value={true}>Yes</option>
+  //         <option value={false}>No</option>
+  //       </select>
+  //     );
 
   render() {
     return [

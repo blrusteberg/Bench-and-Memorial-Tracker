@@ -156,3 +156,9 @@
 .disabledButton {
   background-color: red;
 }
+
+.alert {
+  right: 0;
+  top: 0;
+  position: absolute;
+}

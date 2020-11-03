@@ -5,7 +5,8 @@ import cx from "classnames";
 
 import styles from "./TaggerForm.module.css";
 import AttributeForm from "./AttributeForm/AttributeForm";
-import { Input, Button } from "antd";
+import { Input, Button, Alert, message } from "antd";
+import moment from "moment"
 
 class TaggerForm extends React.Component {
   state = {
@@ -27,6 +28,7 @@ class TaggerForm extends React.Component {
     Memorial: {
       Name: "",
       TypeId: "",
+      DateCreated: "",
       Attributes: [
         {
           Id: "",
@@ -133,6 +135,7 @@ class TaggerForm extends React.Component {
   onSaveMemorialClick = () => {
     this.setState({
       isSaving: true,
+      DateCreated: moment().format("MM/DD/YYYY"),
     });
     let areCoordsValid = true;
     let isValid = true;
@@ -163,7 +166,10 @@ class TaggerForm extends React.Component {
         isSaving: false,
         isMemorialNameValid: isMemorialNameValid,
       });
-      alert("Please fix Errors before saving!");
+      message.error({
+        content: "Please fix errors",
+        style: {},
+      });
     }
   };
 
@@ -284,6 +290,7 @@ class TaggerForm extends React.Component {
                 )}
               </Button>
             </div>
+            <div className={styles.alert}></div>
           </div>
         )}
       </div>

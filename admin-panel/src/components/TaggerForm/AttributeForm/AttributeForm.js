@@ -1,50 +1,22 @@
 import React from "react";
 
 import styles from "./AttributeForm.module.css";
-import Attribute from "./Attribute/Attribute";
+import ValueInput from "../../../common/ValueInput/ValueInput";
 
-class AttributeForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isValid: true,
-      error: "Error",
-      latitude: "",
-      longitude: "",
-      sortedAttributes: [
-        {
-          Id: "",
-          Name: "",
-          ValueType: "",
-          Required: null,
-          Value: null,
-        },
-      ],
-    };
-  }
+const AttributeForm = ({ Attributes }) => {
+  return (
+    <table className={styles.attributeForm}>
+      <tbody>
+        <tr className={styles.tableHeader}>
+          <td></td>
+          <td className={styles.valueHeader}>Value</td>
+          <td className={styles.valueTypeHeader}>Value Type</td>
+        </tr>
+        {Attributes.map((attribute, index) => {
+          return <ValueInput valueType={attribute.ValueType} size="large" />;
 
-  componentDidMount() {
-    const sortedAttributes = [];
-    this.props.Attributes.forEach((attribute) => {
-      const name = attribute.Name.toLowerCase();
-      name === "latitude" || name === "longitude"
-        ? sortedAttributes.unshift(attribute)
-        : sortedAttributes.push(attribute);
-    });
-    this.setState({ sortedAttributes: sortedAttributes });
-  }
-
-  render() {
-    return (
-      <table className={styles.attributeForm}>
-        <tbody>
-          <tr className={styles.tableHeader}>
-            <td></td>
-            <td className={styles.valueHeader}>Value</td>
-            <td className={styles.valueTypeHeader}>Value Type</td>
-          </tr>
-          {this.state.sortedAttributes.map((attribute, index) => {
-            if (index === 0) {
+          {
+            /* if (index === 0) {
               return (
                 <Attribute
                   index={index}
@@ -85,12 +57,12 @@ class AttributeForm extends React.Component {
                 onValueChange={this.props.onValueChange}
                 Value={""}
               />
-            );
-          })}
-        </tbody>
-      </table>
-    );
-  }
-}
+            ); */
+          }
+        })}
+      </tbody>
+    </table>
+  );
+};
 
 export default AttributeForm;
