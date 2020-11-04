@@ -3,6 +3,11 @@ import { Modal } from 'antd';
 
 class Popup extends React.Component {
   render() {
+    let attributesString = ""
+    for(let i=0; i<this.props.deletedAttributes.length; i++){
+      attributesString += this.props.deletedAttributes[i] + ", ";
+    }
+    attributesString = attributesString.substring(0, attributesString.length - 2);
     return (
         <Modal
           onOk={this.props.saveAttributes}
@@ -17,11 +22,9 @@ class Popup extends React.Component {
           )}
           {this.props.deletedAttributeCount > 0 && (
             <p>
-              You are about to delete [{" "}
-              {Object.values(this.props.deletedAttributes).map(
-                (attribute) => attribute + " "
-              )}
-              ] attributes from "{this.props.oldTypeName}"
+              You are about to delete 
+              {" "}{attributesString}{" "}
+               attributes from "{this.props.oldTypeName}"
             </p>
           )}
           <p>Do you want to continue?</p>
