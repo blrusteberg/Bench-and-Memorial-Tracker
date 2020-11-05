@@ -85,6 +85,23 @@ class App extends React.Component {
     this.setState({ Memorials: memorials });
   };
 
+  typeHandler = (searchText) => {
+    const memorials = [...this.state.Memorials];
+    memorials.forEach((memorial) => {
+      let hideIcon = true;
+      if (
+        searchText.includes(memorial.Type.Name)
+      ) {
+        hideIcon = false;
+      }
+      memorial.hideIcon = hideIcon;
+      if (memorial.hideIcon) {
+        memorial.hideBubble = true;
+      }
+    });
+    this.setState({ Memorials: memorials });
+  };
+
   onIconClick = (id) => {
     const memorials = [...this.state.Memorials];
     memorials.forEach((memorial) => {
@@ -121,11 +138,6 @@ class App extends React.Component {
 
   updateMapCenter = (coordinates) => this.setState({ mapCenter: coordinates });
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
 
   handleOkOrCancel = (e) => {
     this.setState({
@@ -148,11 +160,6 @@ class App extends React.Component {
         <Layout>
           <Header>
             <Space split={<Divider type="vertical" />}>
-              <Typography.Link>
-                <Button type="primary" onClick={this.showModal}>
-                  Memorial Suggestion Form
-                </Button>
-              </Typography.Link>
               <Typography.Link>
                 <Button type="primary" onClick={this.showDrawer}>
                   {this.state.showSidebar ? "Close search" : "Open search"}
@@ -179,8 +186,10 @@ class App extends React.Component {
               <Sidebar
                 Memorials={this.state.Memorials}
                 searchHandler={this.searchHandler}
+                typeHandler={this.typeHandler}
                 onSidebarClick={this.updateMapCenter}
                 showSidebar={this.state.showSidebar}
+                showDrawer={this.showDrawer}
               />
               
             </MapCenterContext.Provider>
