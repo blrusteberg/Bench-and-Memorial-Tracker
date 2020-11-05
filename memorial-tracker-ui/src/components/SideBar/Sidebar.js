@@ -75,6 +75,8 @@ class Sidebar extends React.Component {
             size={"large"}
           />
           <Select
+            mode="multiple"
+            allowClear
             placeholder="Filter by type"
             className={styles.selectTypes}
             optionFilterProp="children"
