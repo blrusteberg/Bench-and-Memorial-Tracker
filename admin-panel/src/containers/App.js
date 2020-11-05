@@ -13,8 +13,8 @@ import Types from "../components/Types/Types";
 import TaggerForm from "../components/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
-import { Form, Input, Button } from 'antd';
-require('dotenv').config()
+import { Form, Input, Button } from "antd";
+require("dotenv").config();
 
 class App extends React.Component {
   state = {
@@ -25,11 +25,13 @@ class App extends React.Component {
     stayLoggedIn: false,
   };
 
-  componentDidMount(){
-    let isLoggedIn = localStorage.getItem('isLoggedIn') || sessionStorage.getItem('isLoggedIn');
+  componentDidMount() {
+    let isLoggedIn =
+      localStorage.getItem("isLoggedIn") ||
+      sessionStorage.getItem("isLoggedIn");
     this.setState({
-      isLoggedIn: isLoggedIn
-    })
+      isLoggedIn: isLoggedIn,
+    });
   }
 
   handleNavigationClick = (event) => {
@@ -66,12 +68,12 @@ class App extends React.Component {
   };
 
   handleLogout = () => {
-    delete localStorage.isLoggedIn
+    delete localStorage.isLoggedIn;
     delete sessionStorage.isLoggedIn;
     this.setState({
-      isLoggedIn: false
-    })
-  }
+      isLoggedIn: false,
+    });
+  };
 
   createFormForInitialLogin = () => {
     const layout = {
@@ -89,24 +91,26 @@ class App extends React.Component {
       },
     };
 
-  const onFinish = (values) => {
-    if(values.password.toLowerCase() === process.env.REACT_APP_PASSWORD){
-      this.state.stayLoggedIn ? localStorage.setItem('isLoggedIn', true) : sessionStorage.setItem('isLoggedIn', true);
+    const onFinish = (values) => {
+      if (values.password.toLowerCase() === process.env.REACT_APP_PASSWORD) {
+        this.state.stayLoggedIn
+          ? localStorage.setItem("isLoggedIn", true)
+          : sessionStorage.setItem("isLoggedIn", true);
+        this.setState({
+          isLoggedIn: true,
+        });
+      }
+    };
+
+    const onFinishFailed = (errorInfo) => {
+      console.log("Failed:", errorInfo);
+    };
+
+    const onChangeStayLoggedIn = () => {
       this.setState({
-        isLoggedIn: true
-      })
-    }
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  const onChangeStayLoggedIn = () => {
-    this.setState({
-      stayLoggedIn: !this.state.stayLoggedIn
-    })
-  }
+        stayLoggedIn: !this.state.stayLoggedIn,
+      });
+    };
 
     return (
       <div className={styles.formWrapper}>
@@ -125,7 +129,7 @@ class App extends React.Component {
             rules={[
               {
                 required: true,
-                message: 'Please input password to enter application!',
+                message: "Please input password to enter application!",
               },
             ]}
           >
@@ -137,72 +141,79 @@ class App extends React.Component {
             </Button>
           </Form.Item>
           <div className={styles.checkboxWrapper}>
-          <Checkbox onChange={onChangeStayLoggedIn}>Stay signed In</Checkbox>
+            <Checkbox onChange={onChangeStayLoggedIn}>Stay signed In</Checkbox>
           </div>
         </Form>
-        
       </div>
-    )
-  }
+    );
+  };
 
   render() {
     const { Header, Sider, Content } = Layout;
     return (
       <div className={styles.App}>
-      {this.state.isLoggedIn ? (
-        <Layout>
+        {this.state.isLoggedIn ? (
           <Layout>
-            <BrowserRouter>
-              {this.state.sideBarCollapse ? null : (
-                <Sider className={styles.SidebarWrapper}>
-                  <SideBar
-                    handleNavigationClick={this.handleNavigationClick}
-                    sideBarCollapseHandler={() =>
-                      this.sideBarCollapseHandler(true)
-                    }
-                    handlePermissionChange={this.handlePermissionChange}
-                    roles={this.state.roles}
-                    handleLogout={this.handleLogout}
-                  />
-                </Sider>
-              )}
-
-              <Content className={styles.dashWrapper}>
-                <Header className={styles.dashHeader}>
-                  {this.state.sideBarCollapse ? (
-                    <CaretRightOutlined
-                      className={styles.openSidePanelIcon}
-                      onClick={() => this.sideBarCollapseHandler(false)}
+            <Layout>
+              <BrowserRouter>
+                {this.state.sideBarCollapse ? null : (
+                  <Sider className={styles.SidebarWrapper}>
+                    <SideBar
+                      handleNavigationClick={this.handleNavigationClick}
+                      sideBarCollapseHandler={() =>
+                        this.sideBarCollapseHandler(true)
+                      }
+                      handlePermissionChange={this.handlePermissionChange}
+                      roles={this.state.roles}
+                      handleLogout={this.handleLogout}
                     />
-                  ) : null}
-                </Header>
-                <div className={styles.dashContent}>
-                  <Switch>
-                    {hasRole(this.state.roles, ["Admin"]) && (
-                      <Route exact path="/accounts" component={Accounts} />
-                    )}
-                    {hasRole(this.state.roles, ["Tagger", "Clerk"]) && (
-                      <Route exact path="/tagger-form" component={TaggerForm} />
-                    )}
-                    {hasRole(this.state.roles, ["Clerk"]) && (
-                      <Route exact path="/memorials" component={Memorials} />
-                    )}
-                    {hasRole(this.state.roles, ["Clerk"]) && (
-                      <Route exact path="/types" component={Types} />
-                    )}
-                    {hasRole(this.state.roles, ["Clerk"]) && (
-                      <Route exact path="/attributes" component={Attributes} />
-                    )}
-                  </Switch>
-                </div>
-              </Content>
-            </BrowserRouter>
+                  </Sider>
+                )}
+
+                <Content className={styles.dashWrapper}>
+                  <Header className={styles.dashHeader}>
+                    {this.state.sideBarCollapse ? (
+                      <CaretRightOutlined
+                        className={styles.openSidePanelIcon}
+                        onClick={() => this.sideBarCollapseHandler(false)}
+                      />
+                    ) : null}
+                  </Header>
+                  <div className={styles.dashContent}>
+                    <Switch>
+                      {hasRole(this.state.roles, ["Admin"]) && (
+                        <Route exact path="/accounts" component={Accounts} />
+                      )}
+                      {hasRole(this.state.roles, ["Tagger", "Clerk"]) && (
+                        <Route
+                          exact
+                          path="/tagger-form"
+                          component={TaggerForm}
+                        />
+                      )}
+                      {hasRole(this.state.roles, ["Clerk"]) && (
+                        <Route exact path="/memorials" component={Memorials} />
+                      )}
+                      {hasRole(this.state.roles, ["Clerk"]) && (
+                        <Route exact path="/types" component={Types} />
+                      )}
+                      {hasRole(this.state.roles, ["Clerk"]) && (
+                        <Route
+                          exact
+                          path="/attributes"
+                          component={Attributes}
+                        />
+                      )}
+                    </Switch>
+                  </div>
+                </Content>
+              </BrowserRouter>
+            </Layout>
           </Layout>
-        </Layout>)
-        :
-        this.createFormForInitialLogin()
-      }
-      </div> 
+        ) : (
+          this.createFormForInitialLogin()
+        )}
+      </div>
     );
   }
 }

@@ -16,7 +16,7 @@ class BlobService {
   }
 
   uploadMemorialImage = async (memorialId, image, currentImageName = "") => {
-    if (!image) {
+    if (!image || !image.file) {
       return;
     }
     const blobPromises = [];
@@ -25,11 +25,11 @@ class BlobService {
         this.imageContainerClient.getBlockBlobClient(currentImageName).delete()
       );
     }
-    const blobName = memorialId + image.name;
+    const blobName = memorialId + image.file.name;
     const blockBlobClient = this.imageContainerClient.getBlockBlobClient(
       blobName
     );
-    blobPromises.push(blockBlobClient.uploadBrowserData(image));
+    blobPromises.push(blockBlobClient.uploadBrowserData(image.file));
     await Promise.all(blobPromises);
     return blobName;
   };

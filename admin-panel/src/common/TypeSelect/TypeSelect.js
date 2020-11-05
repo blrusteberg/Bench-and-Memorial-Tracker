@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Select } from "antd";
 const { Option } = Select;
 
@@ -8,7 +8,6 @@ const TypeSelect = ({
   onTypeSelect = () => {},
   ...restProps
 }) => {
-  useEffect(() => {}, [Types]);
   return (
     <Select
       {...restProps}
@@ -21,14 +20,11 @@ const TypeSelect = ({
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     >
-      {Types.map((type) => {
-        console.log("type rendering");
-        return (
-          <Option value={type.Id} key={type.Id}>
-            {type.Name}
-          </Option>
-        );
-      })}
+      {Types.map((type) => (
+        <Option value={type.Id} key={type.Id}>
+          {type.Name}
+        </Option>
+      ))}
     </Select>
   );
 };

@@ -18,7 +18,7 @@ class Map extends React.Component {
               defaultZoom={14}
             >
               <Icon
-                Icon="https://memorialtrackerphotos.blob.core.windows.net/memorialicons/user-location.png"
+                Icon="https://memorialtrackrphotos.blob.core.windows.net/memorialicons/user-location.png"
                 onIconClick={() => {}}
                 closeBubbleClick={() => {}}
                 lat={this.props.userCoordinates.lat}

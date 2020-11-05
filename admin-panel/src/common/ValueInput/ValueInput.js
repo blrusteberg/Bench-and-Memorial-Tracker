@@ -4,9 +4,9 @@ import { Select, InputNumber, DatePicker, Input } from "antd";
 
 const { Option } = Select;
 
-const ValueInput = ({ valueType, size }) => {
+const ValueInput = ({ valueType, size, ...restProps }) => {
   const getInputNode = () => {
-    const props = { size: size };
+    const props = { size: size, ...restProps };
     let inputNode = null;
 
     switch (valueType) {

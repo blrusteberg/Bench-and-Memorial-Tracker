@@ -35,7 +35,6 @@ router.get("/types/attributes/values", async (req, res) => {
           );
         }
       });
-
     const formattedMemorials = [];
     for (let i = 0; i < memorials.length; i++) {
       const memorial = memorials[i];
@@ -152,12 +151,11 @@ router.put("/:id", async (req, res) => {
           Value.query().findById(attribute.Value.Id).patch(newValue)
         );
       });
-      Promise.all(valuePromises).then(() => {
-        res
-          .status(204)
-          .json({ message: `Updated ${numMemorialsUpdated} memorial` });
-      });
+      await Promise.all(valuePromises);
     }
+    res
+      .status(204)
+      .json({ message: `Updated ${numMemorialsUpdated} memorial` });
   } catch (err) {
     Error.errorHandler(err, res);
   }
