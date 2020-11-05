@@ -88,6 +88,7 @@ class App extends React.Component {
   typeHandler = (searchText) => {
     const memorials = [...this.state.Memorials];
     memorials.forEach((memorial) => {
+      let hideIcon = true;
       if (
         searchText.includes(memorial.Type.Name)
       ) {
