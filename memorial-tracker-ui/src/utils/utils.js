@@ -3,10 +3,10 @@ export const getCoordinatesOfMemorial = (memorial) => {
   let longitude = null;
   memorial.Type.Attributes.forEach((attribute) => {
     if (attribute.Name.toLowerCase() === "latitude") {
-      latitude = attribute.Value;
+      latitude = attribute.Value.Value;
     }
     if (attribute.Name.toLowerCase() === "longitude") {
-      longitude = attribute.Value;
+      longitude = attribute.Value.Value;
     }
   });
   return { lat: latitude, lng: longitude };

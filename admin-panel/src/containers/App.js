@@ -26,12 +26,13 @@ class App extends React.Component {
     userRoleColor: ""
   };
 
-  componentDidMount(){
-    this.handleTagColor();
-    let isLoggedIn = localStorage.getItem('isLoggedIn') || sessionStorage.getItem('isLoggedIn');
+  componentDidMount() {
+    let isLoggedIn =
+      localStorage.getItem("isLoggedIn") ||
+      sessionStorage.getItem("isLoggedIn");
     this.setState({
-      isLoggedIn: isLoggedIn
-    })
+      isLoggedIn: isLoggedIn,
+    });
   }
 
   handleNavigationClick = (event) => {
@@ -62,9 +63,9 @@ class App extends React.Component {
     delete sessionStorage.Role;
     delete sessionStorage.DeleteAccess
     this.setState({
-      isLoggedIn: false
-    })
-  }
+      isLoggedIn: false,
+    });
+  };
 
   handleTagColor = (role) => {
     const ROLE = localStorage.getItem("Role") || sessionStorage.getItem("Role");
@@ -144,15 +145,15 @@ class App extends React.Component {
         });
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+    const onFinishFailed = (errorInfo) => {
+      console.log("Failed:", errorInfo);
+    };
 
-  const onChangeStayLoggedIn = () => {
-    this.setState({
-      stayLoggedIn: !this.state.stayLoggedIn
-    })
-  }
+    const onChangeStayLoggedIn = () => {
+      this.setState({
+        stayLoggedIn: !this.state.stayLoggedIn,
+      });
+    };
 
   const errorMsg = () => {
     message.error('Username and Password combination is incorrect');
@@ -182,7 +183,7 @@ class App extends React.Component {
             rules={[
               {
                 required: true,
-                message: 'Please input password to enter application!',
+                message: "Please input password to enter application!",
               },
             ]}
           >
@@ -197,10 +198,9 @@ class App extends React.Component {
             <Checkbox onChange={onChangeStayLoggedIn}>Stay signed In</Checkbox>
           </div>
         </Form>
-        
       </div>
-    )
-  }
+    );
+  };
 
   render() {
     const { Header, Sider, Content } = Layout;
@@ -212,8 +212,7 @@ class App extends React.Component {
     }
     return (
       <div className={styles.App}>
-      {this.state.isLoggedIn ? (
-        <Layout>
+        {this.state.isLoggedIn ? (
           <Layout>
             <BrowserRouter>
               {this.state.sideBarCollapse ? null : (
@@ -267,11 +266,10 @@ class App extends React.Component {
               </Content>
             </BrowserRouter>
           </Layout>
-        </Layout>)
-        :
-        this.createFormForInitialLogin()
-      }
-      </div> 
+        ) : (
+          this.createFormForInitialLogin()
+        )}
+      </div>
     );
   }
 }

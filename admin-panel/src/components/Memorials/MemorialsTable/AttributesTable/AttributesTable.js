@@ -16,13 +16,13 @@ const AttributesTable = ({ Attributes }) => {
       title: "Value Type",
       dataIndex: "ValueType",
       key: "valueType",
-      align: "center",
+      align: "left",
     },
     {
       title: "Value",
-      dataIndex: "Value",
+      dataIndex: ["Value", "Value"],
       key: "value",
-      align: "center",
+      align: "left",
       render: (value) => {
         return typeof value !== "boolean" ? value : value ? "Yes" : "No";
       },

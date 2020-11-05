@@ -28,7 +28,7 @@ class Type extends Model {
   }
 
   static get relationMappings() {
-    const Memorial = require("./memorial");
+    const Memorial = require("./Memorial");
     const Attribute = require("./Attribute");
 
     return {

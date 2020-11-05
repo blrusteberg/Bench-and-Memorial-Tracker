@@ -4,8 +4,9 @@ import axios from "axios";
 import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
 import styles from "./App.module.css";
+import { getCoordinatesOfMemorial } from "../utils/utils";
 
-import { Modal, Button, Layout, Space, Typography, Divider  } from "antd";
+import { Modal, Button, Layout, Space, Typography, Divider } from "antd";
 import "antd/dist/antd.css";
 
 export const MapCenterContext = React.createContext();
@@ -22,9 +23,13 @@ class App extends React.Component {
             {
               Id: "",
               Name: "",
-              ValueType: "",
               Required: null,
-              Value: "",
+              Value: {
+                Id: "",
+                Value: "",
+                AttributeId: "",
+                MemorialId: "",
+              },
             },
           ],
           Icon: "",
@@ -34,6 +39,7 @@ class App extends React.Component {
     error: null,
     isLoading: true,
     mapCenter: { lat: 0, lng: 0 },
+    userCoordinates: { lat: 0, lng: 0 },
     visible: false,
     showSidebar: false,
   };
@@ -104,13 +110,15 @@ class App extends React.Component {
 
   onIconClick = (id) => {
     const memorials = [...this.state.Memorials];
+    let mapCenter = this.state.mapCenter;
     memorials.forEach((memorial) => {
       memorial.hideBubble = true;
       if (memorial.Id === id) {
         memorial.hideBubble = false;
+        mapCenter = getCoordinatesOfMemorial(memorial);
       }
     });
-    this.setState({ Memorials: memorials });
+    this.setState({ Memorials: memorials, mapCenter: mapCenter });
   };
 
   bubbleCloseClickHandler = () => {
@@ -126,6 +134,10 @@ class App extends React.Component {
       if (pos) {
         this.setState({
           mapCenter: {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          },
+          userCoordinates: {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
           },
@@ -150,7 +162,7 @@ class App extends React.Component {
       showSidebar: !this.state.showSidebar,
     });
   };
-  
+
   render() {
     const { Header, Content } = Layout;
     const content = this.state.error ? (
@@ -178,6 +190,7 @@ class App extends React.Component {
           <Content>
             <MapCenterContext.Provider value={this.state.mapCenter}>
               <Map
+                userCoordinates={this.state.userCoordinates}
                 Memorials={this.state.Memorials}
                 currentLocation={this.state.currentLocation}
                 onIconClick={this.onIconClick}
@@ -191,7 +204,6 @@ class App extends React.Component {
                 showSidebar={this.state.showSidebar}
                 showDrawer={this.showDrawer}
               />
-              
             </MapCenterContext.Provider>
           </Content>
         </Layout>
