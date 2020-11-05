@@ -5,7 +5,7 @@
 
 .SearchInput {
   width: 100%;
-  padding: 10px 10px;
+  margin-top: 50px;
 }
 
 .ScrollMenu {
@@ -17,4 +17,8 @@
   font-size: 2rem;
   float: right;
   color: black;
+}
+
+.selectTypes {
+  width: 100%;
 }

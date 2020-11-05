@@ -121,11 +121,6 @@ class App extends React.Component {
 
   updateMapCenter = (coordinates) => this.setState({ mapCenter: coordinates });
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
 
   handleOkOrCancel = (e) => {
     this.setState({
@@ -148,11 +143,6 @@ class App extends React.Component {
         <Layout>
           <Header>
             <Space split={<Divider type="vertical" />}>
-              <Typography.Link>
-                <Button type="primary" onClick={this.showModal}>
-                  Memorial Suggestion Form
-                </Button>
-              </Typography.Link>
               <Typography.Link>
                 <Button type="primary" onClick={this.showDrawer}>
                   {this.state.showSidebar ? "Close search" : "Open search"}
@@ -181,6 +171,7 @@ class App extends React.Component {
                 searchHandler={this.searchHandler}
                 onSidebarClick={this.updateMapCenter}
                 showSidebar={this.state.showSidebar}
+                showDrawer={this.showDrawer}
               />
               
             </MapCenterContext.Provider>

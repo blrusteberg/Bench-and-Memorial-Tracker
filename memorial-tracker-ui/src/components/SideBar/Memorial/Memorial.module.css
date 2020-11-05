@@ -8,6 +8,7 @@
 }
 .Memorial:hover {
   background-color: #dddddd;
+  cursor: pointer;
 }
 
 .hidden {
@@ -17,9 +18,8 @@
 .icon {
   margin: auto 0;
   display: block;
-  max-width: 64px;
-  max-height: 64px;
-  width: 3.5vw;
+  width: 20%;
+  height: auto;
   padding-left: 5px;
   padding-right: 5px;
 }
