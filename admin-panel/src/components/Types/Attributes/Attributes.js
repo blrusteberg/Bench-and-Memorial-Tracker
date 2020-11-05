@@ -193,7 +193,7 @@ class Attributes extends React.Component {
   };
 
   saveAttributes = () => {
-    if (this.props.typeName.trim().toLowerCase() === "") {
+    if (!this.props.typeName.trim()) {
       message.error('Type Name cannot be empty');
       return;
     }
