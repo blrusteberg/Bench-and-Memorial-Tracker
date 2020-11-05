@@ -70,10 +70,28 @@ class App extends React.Component {
 
   searchHandler = (searchText) => {
     const memorials = [...this.state.Memorials];
+    console.log(memorials);
     memorials.forEach((memorial) => {
       let hideIcon = true;
       if (
         memorial.Name.toLowerCase().includes(searchText.trim().toLowerCase())
+      ) {
+        hideIcon = false;
+      }
+      memorial.hideIcon = hideIcon;
+      if (memorial.hideIcon) {
+        memorial.hideBubble = true;
+      }
+    });
+    this.setState({ Memorials: memorials });
+  };
+
+  typeHandler = (searchText) => {
+    const memorials = [...this.state.Memorials];
+    memorials.forEach((memorial) => {
+      let hideIcon = true;
+      if (
+        searchText.includes(memorial.Type.Name)
       ) {
         hideIcon = false;
       }
@@ -169,6 +187,7 @@ class App extends React.Component {
               <Sidebar
                 Memorials={this.state.Memorials}
                 searchHandler={this.searchHandler}
+                typeHandler={this.typeHandler}
                 onSidebarClick={this.updateMapCenter}
                 showSidebar={this.state.showSidebar}
                 showDrawer={this.showDrawer}

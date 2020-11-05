@@ -46,11 +46,7 @@ class Sidebar extends React.Component {
     this.props.onSidebarClick(coordinates);
     this.props.showDrawer();
   };
-
-  onTypeChange = (value) => {
-    console.log(value);
-  };
-
+  
   onClose = () => {
     this.props.showDrawer();
   };
@@ -80,7 +76,7 @@ class Sidebar extends React.Component {
             placeholder="Filter by type"
             className={styles.selectTypes}
             optionFilterProp="children"
-            onChange={this.onTypeChange}
+            onChange={(event) => this.props.typeHandler(event)}
             showSearch={true}
             size={"large"}
             filterOption={(input, option) =>
