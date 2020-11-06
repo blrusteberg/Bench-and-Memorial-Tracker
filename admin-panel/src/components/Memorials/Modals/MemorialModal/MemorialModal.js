@@ -1,181 +1,120 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Spin,
-  Form,
-  Card,
-  Input,
-  Divider,
-  Select,
-  DatePicker,
-  InputNumber,
-  Upload,
-  Button,
-} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import axios from "axios";
+import { Modal, Spin, Form, Card, Input, Divider } from "antd";
 
 import styles from "./MemorialModal.module.css";
-
-const { Option } = Select;
+import API from "../../../../services/API/API";
+import MemorialImageUpload from "./MemorialImageUpload/MemorialImageUpload";
+import AttributesForm from "./AttributesForm/AttributesForm";
+import TypeSelect from "../../../../common/TypeSelect/TypeSelect";
 
 const MemorialModal = ({
   onCancel = () => {},
   visible = false,
-  memorial = null,
-  saveMemorial,
+  memorial,
+  saveMemorial = () => {},
 }) => {
-  const [types, setTypes] = useState();
-  const [loadingTypes, setLoadingTypes] = useState(true);
+  const [Types, setTypes] = useState();
+  const [loading, setLoading] = useState(true);
   const [form] = Form.useForm();
   const [selectedType, setSelectedType] = useState();
   const [changesMade, setChangesMade] = useState(false);
-  const [action, setAction] = useState();
+  const [selectedImage, setSelectedImage] = useState();
   const [isSaving, setIsSaving] = useState(false);
-  const [memorialImage, setMemorialImage] = useState();
 
   useEffect(() => {
-    if (loadingTypes) {
-      axios
-        .get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`)
-        .then((res) => {
-          const types = res.data;
-          types.forEach((type) => {
-            const attributes = type.Attributes;
-            const sortedAttributes = [];
-            for (let i = attributes.length - 1; i > -1; i--) {
-              const attribute = attributes[i];
-              const attributeName = attribute.Name.toLowerCase();
-              attributeName === "latitude" || attributeName === "longitude"
-                ? sortedAttributes.unshift(attribute)
-                : sortedAttributes.push(attribute);
-            }
-            type.Attributes = sortedAttributes;
-          });
-          setTypes(types);
-          setAction("create");
-          setLoadingTypes(false);
-        });
-    }
-    if (memorial) {
-      for (let i = 0; i < types.length; i++) {
-        if (types[i].Id === memorial.Type.Id) {
-          setSelectedType(types[i]);
-          break;
-        }
-      }
-      form.setFields([
-        { name: "Name", value: memorial.Name },
-        { name: "TypeId", value: memorial.Type.Id },
-        ...memorial.Type.Attributes.map((attribute) => ({
-          name: attribute.Id,
-          value: attribute.Value,
-        })),
-      ]);
-      setAction("edit");
-    }
-  }, [memorial, form, loadingTypes, types]);
-
-  const onTypeSelect = (typeId) => {
-    for (let i = 0; i < types.length; i++) {
-      const type = types[i];
-      if (type.Id === typeId) {
-        setSelectedType(type);
-        return;
-      }
-    }
-  };
-
-  const resetModal = () => {
-    setSelectedType(null);
-    setChangesMade(false);
-    setAction(null);
-    form.resetFields();
-  };
+    new API().Types.get(["attributes"]).then((res) => {
+      setTypes(res.data);
+      setLoading(false);
+    });
+  }, [memorial]);
 
   const onOkClick = async () => {
     const data = await form.validateFields();
-    if (action === "edit") {
-      memorial.Name = data.Name;
-      memorial.Type.Attributes.forEach((attribute) => {
-        attribute.Value = data[attribute.Id];
-      });
-    } else {
-      memorial = {
-        Name: data.Name,
-        Image: memorialImage,
-        TypeId: data.TypeId,
-        Attributes: selectedType.Attributes.map((attribute) => ({
-          ...attribute,
-          Value: data[attribute.Id],
-        })),
-      };
+    setIsSaving(true);
+    const action = memorial ? "put" : "post";
+    const formattedData =
+      action === "put"
+        ? formatFormDataForPut(data)
+        : formatFormDataForPost(data);
+    saveMemorial({ memorial: formattedData, action: action }, () => {
+      setIsSaving(false);
+      resetModalForm();
+    });
+  };
+
+  const formatFormDataForPut = (data) => {
+    const formattedMemorial = memorial;
+    for (let i = 0; i < memorial.Type.Attributes.length; i++) {
+      const attribute = memorial.Type.Attributes[i];
+      attribute.Value.Value = data.Type.Attributes[attribute.Value.Id];
+      formattedMemorial.Type.Attributes[i] = attribute;
     }
-    saveMemorial(memorial, memorialImage, resetModal);
+    return formattedMemorial;
+  };
+
+  const formatFormDataForPost = (data) => {
+    const formattedMemorial = {
+      Name: data.Name,
+      TypeId: data.Type.Id,
+      Image: data.Image,
+      Attributes: [],
+    };
+    Object.keys(data.Type.Attributes).forEach((key) => {
+      formattedMemorial.Attributes.push({
+        Value: data.Type.Attributes[key],
+        Id: key,
+      });
+    });
+    return formattedMemorial;
   };
 
   const onCancelClick = () => {
-    setIsSaving(true);
+    resetModalForm();
     onCancel();
   };
 
-  const getAttributeFormInput = (attribute) => {
-    let rules = [];
-    let inputNode = null;
-    let type = null;
-    switch (attribute.ValueType) {
-      case "Words":
-      default:
-        rules.push({ max: 248, type: "string" });
-        inputNode = <Input />;
-        type = "string";
-
-        break;
-
-      case "Number":
-        inputNode = <InputNumber style={{ width: "100%" }} />;
-        type = "number";
-        break;
-
-      case "Date":
-        inputNode = <DatePicker format={"MM/DD/YYYY"} />;
-        break;
-
-      case "Yes/No":
-        inputNode = (
-          <Select>
-            <Option key={"yes"} value={true}>
-              Yes
-            </Option>
-            <Option key={"no"} value={false}>
-              No
-            </Option>
-          </Select>
-        );
-        type = "boolean";
-        break;
-    }
-    return (
-      <Form.Item
-        key={attribute.Id}
-        type={type}
-        rules={rules}
-        label={attribute.Name}
-        name={attribute.Id}
-        initialValue={attribute.Value}
-      >
-        {inputNode}
-      </Form.Item>
-    );
+  const resetModalForm = () => {
+    form.resetFields();
+    setSelectedType(null);
+    setChangesMade(false);
+    setSelectedImage(null);
+    setIsSaving(false);
   };
 
-  const uploadButtonProps = {
-    name: "memorialImage",
-    beforeUpload: (file) => {
-      setMemorialImage(file);
-      return false;
-    },
-    onRemove: () => setMemorialImage(null),
+  const onTypeSelect = (typeId) => {
+    for (let i = 0; i < Types.length; i++)
+      if (Types[i].Id === typeId) {
+        form.setFieldsValue({
+          Type: {
+            Id: typeId,
+          },
+        });
+        setSelectedType(Types[i]);
+      }
+  };
+
+  const getInitialValues = () => {
+    if (memorial) {
+      const initialValues = {
+        ["Name"]: memorial.Name,
+        ["Image"]: memorial.Image,
+        ["Type"]: {
+          ["Id"]: memorial.Type.Id,
+          ["Attributes"]: {},
+        },
+      };
+      memorial.Type.Attributes.forEach((attribute) => {
+        initialValues["Type"]["Attributes"][attribute.Value.Id] =
+          attribute.Value.Value;
+      });
+      return initialValues;
+    }
+    return null;
+  };
+
+  const onImageSelect = (image) => {
+    setSelectedImage(image);
+    setChangesMade(true);
   };
 
   return (
@@ -183,73 +122,70 @@ const MemorialModal = ({
       visible={visible}
       onCancel={onCancelClick}
       onOk={onOkClick}
+      maskClosable={false}
       okButtonProps={{
-        disabled: action === ("edit" && !changesMade) || isSaving,
+        disabled: (memorial && !changesMade) || isSaving,
       }}
-      okText={action === "edit" ? "Save" : "Create"}
       destroyOnClose={true}
       width={550}
     >
       <div className={styles.modalBody}>
-        {loadingTypes ? (
+        {loading ? (
           <Spin tip="Loading memorial types..." />
         ) : (
           <Card size="large" style={{ margin: "14px", width: "100%" }}>
-            <Form
-              autoComplete="off"
-              form={form}
-              layout="vertical"
-              className={styles.newMemorialForm}
-              onValuesChange={() => setChangesMade(true)}
-            >
-              <Form.Item
-                style={{ fontWeight: "bold" }}
-                label="Memorial Name"
-                name="Name"
-                key="Name"
-                rules={[{ required: true, message: "Enter a memorial name" }]}
+            <Spin spinning={isSaving}>
+              <Form
+                autoComplete="off"
+                form={form}
+                layout="vertical"
+                className={styles.memorialForm}
+                onValuesChange={() => setChangesMade(true)}
+                initialValues={getInitialValues()}
               >
-                <Input />
-              </Form.Item>
-              <Divider />
-              <Form.Item
-                name="TypeId"
-                key="Type"
-                label="Type"
-                style={{ fontWeight: "bold" }}
-                rules={[{ required: true, message: "Select a type" }]}
-              >
-                <Select
-                  disabled={action === "edit"}
-                  style={{ fontWeight: "normal" }}
-                  showSearch
-                  placeholder="Select a type"
-                  onChange={onTypeSelect}
-                  filterOption={(input, option) =>
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
+                <Form.Item
+                  style={{ fontWeight: "bold" }}
+                  label="Memorial Name"
+                  name="Name"
+                  rules={[{ required: true, message: "Enter a memorial name" }]}
                 >
-                  {types.map((type) => (
-                    <Option value={type.Id} key={type.Id}>
-                      {type.Name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Divider dashed />
-              {selectedType &&
-                selectedType.Attributes.map((attribute) =>
-                  getAttributeFormInput(attribute)
-                )}
-              <Divider dashed />
-              <Upload {...uploadButtonProps}>
-                <Button disabled={memorialImage} icon={<UploadOutlined />}>
-                  Click to Upload
-                </Button>
-              </Upload>
-            </Form>
+                  <Input maxLength={50} />
+                </Form.Item>
+
+                <Form.Item
+                  name={["Type", "Id"]}
+                  label="Type"
+                  style={{ fontWeight: "bold" }}
+                  rules={[{ required: true, message: "Select a type" }]}
+                >
+                  <TypeSelect
+                    Types={Types}
+                    onTypeSelect={onTypeSelect}
+                    disabled={memorial}
+                  />
+                </Form.Item>
+
+                {selectedType || memorial ? (
+                  <>
+                    <Divider dashed />
+                    <AttributesForm
+                      Attributes={
+                        (memorial && memorial.Type.Attributes) ||
+                        selectedType.Attributes
+                      }
+                    />
+                  </>
+                ) : null}
+                <Divider dashed />
+                <Form.Item name="Image" label="Image">
+                  <MemorialImageUpload
+                    onFileSelect={onImageSelect}
+                    blobName={memorial && memorial.Image}
+                    onRemove={() => setSelectedImage(null)}
+                  />
+                </Form.Item>
+              </Form>
+            </Spin>
           </Card>
         )}
       </div>

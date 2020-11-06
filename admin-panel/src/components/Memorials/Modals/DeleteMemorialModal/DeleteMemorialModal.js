@@ -43,7 +43,7 @@ const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
               return (
                 <div className={styles.attribute}>
                   <div className={styles.attributeName}>{attribute.Name}:</div>
-                  <div>{attribute.Value}</div>
+                  <div>{attribute.Value.Value}</div>
                 </div>
               );
             })}
@@ -52,9 +52,7 @@ const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
             <img
               alt="memorial"
               className={styles.memorialImage}
-              src={`http://placekitten.com/${Math.floor(
-                Math.random() * (800 - 300) + 300
-              )}/${Math.floor(Math.random() * (800 - 300) + 300)}`}
+              src={`https://${process.env.REACT_APP_AZURE_BLOB_ACCOUNT_NAME}.blob.core.windows.net/${process.env.REACT_APP_AZURE_BLOB_MEMORIAL_IMAGE_CONTAINER_NAME}/${memorial.Image}`}
             />
           </div>
         </div>

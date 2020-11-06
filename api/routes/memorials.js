@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Error = require("../error/error");
 
-const Memorial = require("../models/memorial");
+const Memorial = require("../models/Memorial");
 const Value = require("../models/Value");
 
 router.get("/", async (req, res) => {
@@ -16,54 +16,66 @@ router.get("/", async (req, res) => {
 
 router.get("/types/attributes/values", async (req, res) => {
   try {
-    const memorials = await Memorial.query().withGraphFetched(
-      "[Type.[Attributes], Values]"
-    );
-    const statusFilters = req.query.statusFilters
-      ? JSON.parse(req.query.statusFilters)
-      : null;
+    const latLngFirst = req.query.latLngFirst
+      ? JSON.parse(req.query.latLngFirst)
+      : true;
+
+    const memorials = await Memorial.query()
+      .withGraphFetched("[Type(orderByName).[Attributes(orderByName).Values]]")
+      .modifiers({
+        orderByName: (queryBuilder) => {
+          queryBuilder.orderBy("Name");
+        },
+      })
+      .modify((queryBuilder) => {
+        if (req.query.statusFilters) {
+          queryBuilder.whereIn(
+            "Memorials.Status",
+            JSON.parse(req.query.statusFilters)
+          );
+        }
+      });
     const formattedMemorials = [];
     for (let i = 0; i < memorials.length; i++) {
       const memorial = memorials[i];
-      if (statusFilters && !statusFilters.includes(memorial.Status)) {
+      // The query above returns attributes with multiple values since there is a one-to-many relationship between
+      //    attributes and values. However, there is only one value in that array that belongs to the memorial. This
+      //    would be tons better if we actually knew how to implement that in the objection query, but this is the current
+      //    brute force implementation.
+      const attributesWithOneValue = memorial.Type.Attributes.map(
+        (attribute) => {
+          if (!attribute.Values || !attribute.Values.length) {
+            delete attribute.Values;
+            return attribute;
+          }
+          const value = attribute.Values.filter((value) => {
+            return value.MemorialId === memorial.Id;
+          })[0];
+          value.Value = JSON.parse(value.Value);
+          attribute.Value = value;
+          delete attribute.Values;
+          return attribute;
+        }
+      );
+      memorial.Type.Attributes = attributesWithOneValue;
+      if (!latLngFirst) {
+        formattedMemorials.push(memorial);
         continue;
       }
-      const formattedAttributes = [];
-      memorial.Type.Attributes.forEach((attribute) => {
-        let attributePushed = false;
-        memorial.Values.forEach((value) => {
-          if (value.AttributeId === attribute.Id) {
-            formattedAttributes.push({
-              Id: attribute.Id,
-              Name: attribute.Name,
-              ValueType: attribute.ValueType,
-              Required: attribute.Required,
-              Value: JSON.parse(value.Value),
-            });
-            attributePushed = true;
-          }
-        });
-        if (!attributePushed) {
-          formattedAttributes.push({
-            Id: attribute.Id,
-            Name: attribute.Name,
-            ValueType: attribute.ValueType,
-            Required: attribute.Required,
-            Value: "",
-          });
-        }
-      });
-      formattedMemorials.push({
-        Id: memorial.Id,
-        Name: memorial.Name,
-        Status: memorial.Status,
-        Type: {
-          Id: memorial.Type.Id,
-          Name: memorial.Type.Name,
-          Attributes: formattedAttributes,
-          Icon: memorial.Type.Icon,
-        },
-      });
+
+      // Loop back to front because if latLngFirst is true, then we need to put them at the front
+      //    of the array. Since attributes will be sorted by name, we will need unshift() Longitude first
+      //    and then unshift Latitude. Going front to back will result in Longitude first.
+      const sortedAttributes = [];
+      for (let i = attributesWithOneValue.length - 1; i > -1; i--) {
+        const attribute = attributesWithOneValue[i];
+        const attributeName = attribute.Name.toLowerCase();
+        attributeName === "latitude" || attributeName === "longitude"
+          ? sortedAttributes.unshift(attribute)
+          : sortedAttributes.push(attribute);
+      }
+      memorial.Type.Attributes = sortedAttributes;
+      formattedMemorials.push(memorial);
     }
     res.status(200).json(formattedMemorials);
   } catch (err) {
@@ -96,6 +108,7 @@ router.post("/values", async (req, res) => {
     const memorial = await Memorial.query().insert({
       Name: req.body.Name,
       TypeId: req.body.TypeId,
+      Image: req.body.Image,
     });
     const insertValuePromises = [];
     req.body.Attributes.forEach((attribute) => {
@@ -111,7 +124,7 @@ router.post("/values", async (req, res) => {
       insertValuePromises.push(insertValuePromise);
     });
     Promise.all(insertValuePromises).then((data) => {
-      res.status(201).json(data);
+      res.status(201).json(memorial.Id);
     });
   } catch (err) {
     Error.errorHandler(err, res);
@@ -120,12 +133,29 @@ router.post("/values", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const numUpdated = await Memorial.query().findById(req.params.id).patch({
-      Name: req.body.Name,
-      Status: req.body.Status,
-      Attributes: req.body.Attributes,
-    });
-    res.status(204).json({ message: `Updated ${numUpdated} memorial` });
+    const numMemorialsUpdated = await Memorial.query()
+      .findById(req.params.id)
+      .patch({
+        Name: req.body.Name,
+        Image: req.body.Image,
+        Status: req.body.Status,
+      });
+    if (req.body.Attributes) {
+      const valuePromises = [];
+      req.body.Attributes.forEach((attribute) => {
+        const newValue = {
+          ...attribute.Value,
+          Value: JSON.stringify(attribute.Value.Value),
+        };
+        valuePromises.push(
+          Value.query().findById(attribute.Value.Id).patch(newValue)
+        );
+      });
+      await Promise.all(valuePromises);
+    }
+    res
+      .status(204)
+      .json({ message: `Updated ${numMemorialsUpdated} memorial` });
   } catch (err) {
     Error.errorHandler(err, res);
   }

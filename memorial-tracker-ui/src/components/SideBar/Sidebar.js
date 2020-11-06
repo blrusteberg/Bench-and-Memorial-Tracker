@@ -1,10 +1,10 @@
 import React from "react";
-
+import axios from "axios";
 import { MapCenterContext } from "../../containers/App";
 import Memorial from "./Memorial/Memorial";
 import styles from "./Sidebar.module.css";
 import { getCoordinatesOfMemorial } from "../../utils/utils";
-import { Drawer } from 'antd';
+import { Drawer, DatePicker, Space, Select, Input} from "antd";
 
 class Sidebar extends React.Component {
   state = {
@@ -12,7 +12,26 @@ class Sidebar extends React.Component {
       lat: 0,
       lng: 0,
     },
+    types: [],
+    visible: false,
   };
+
+  componentDidMount() {
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/types`)
+      .then((response) => {
+        let memorialTypes = [];
+        if (response.data.length > 0) {
+          memorialTypes = response.data;
+        }
+        this.setState({
+          types: memorialTypes,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   onSidebarClick = (memorialId) => {
     let coordinates = { lat: 0, lng: 0 };
@@ -25,22 +44,55 @@ class Sidebar extends React.Component {
       }
     });
     this.props.onSidebarClick(coordinates);
+    this.props.showDrawer();
+  };
+  
+  onClose = () => {
+    this.props.showDrawer();
   };
 
   render() {
+    const { RangePicker } = DatePicker;
     return (
       <Drawer
+        bodyStyle={{ padding: 0 }}
         placement="right"
         closable={false}
         visible={this.props.showSidebar}
-        mask={false}
+        mask={true}
+        onClose={this.onClose}
       >
-        <input
-          onChange={(event) => this.props.searchHandler(event.target.value)}
-          className={styles.SearchInput}
-          type="text"
-          placeholder="What are you looking for?"
-        />
+        <Space direction="vertical" size={'middle'}>
+          <Input
+            onChange={(event) => this.props.searchHandler(event.target.value)}
+            className={styles.SearchInput}
+            type="text"
+            placeholder="Filter by name"
+            size={"large"}
+          />
+          <Select
+            mode="multiple"
+            allowClear
+            placeholder="Filter by type"
+            className={styles.selectTypes}
+            optionFilterProp="children"
+            onChange={(event) => this.props.typeHandler(event)}
+            showSearch={true}
+            size={"large"}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {this.state.types.map((type) => (
+              <Select.Option value={type.Name} key={type.Id}>
+                {type.Name}
+              </Select.Option>
+            ))}
+          </Select>
+          <Space direction="vertical" size={12}>
+            <RangePicker size={"large"} allowClear={true} />
+          </Space>
+        </Space>
         <MapCenterContext.Provider value={this.state.lastClickedCoordinates}>
           <div>
             {this.props.Memorials.map((memorial) => {

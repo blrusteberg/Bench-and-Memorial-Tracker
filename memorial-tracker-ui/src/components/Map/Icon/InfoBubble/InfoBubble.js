@@ -20,11 +20,17 @@ const infoBubble = (props) => {
       </div>
       <div className={styles.popUpText}>
         <div className={styles.memorialName}>{props.Name}</div>
-        {props.Type.Attributes.map((attribute) => (
-          <div className={styles.attributesClass} key={attribute.Id}>
-            {attribute.Name}: {attribute.Value}
-          </div>
-        ))}
+        {props.Type.Attributes.map((attribute) => {
+          const attributeName = attribute.Name.toLowerCase();
+          const attributeValue = attribute.Value && attribute.Value.Value;
+          return attributeName !== "latitude" &&
+            attributeName !== "longitude" &&
+            attributeValue ? (
+            <div className={styles.attributesClass} key={attribute.Id}>
+              {attributeName}: {attributeValue}
+            </div>
+          ) : null;
+        })}
         <button
           className={styles.directionsButton}
           onClick={props.onDirectionsClick}

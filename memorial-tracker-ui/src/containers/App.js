@@ -4,8 +4,9 @@ import axios from "axios";
 import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
 import styles from "./App.module.css";
+import { getCoordinatesOfMemorial } from "../utils/utils";
 
-import { Modal, Button, Layout, Space, Typography, Divider  } from "antd";
+import { Modal, Button, Layout, Space, Typography, Divider } from "antd";
 import "antd/dist/antd.css";
 
 export const MapCenterContext = React.createContext();
@@ -22,9 +23,13 @@ class App extends React.Component {
             {
               Id: "",
               Name: "",
-              ValueType: "",
               Required: null,
-              Value: "",
+              Value: {
+                Id: "",
+                Value: "",
+                AttributeId: "",
+                MemorialId: "",
+              },
             },
           ],
           Icon: "",
@@ -34,6 +39,7 @@ class App extends React.Component {
     error: null,
     isLoading: true,
     mapCenter: { lat: 0, lng: 0 },
+    userCoordinates: { lat: 0, lng: 0 },
     visible: false,
     showSidebar: false,
   };
@@ -85,15 +91,34 @@ class App extends React.Component {
     this.setState({ Memorials: memorials });
   };
 
+  typeHandler = (searchText) => {
+    const memorials = [...this.state.Memorials];
+    memorials.forEach((memorial) => {
+      let hideIcon = true;
+      if (
+        searchText.includes(memorial.Type.Name)
+      ) {
+        hideIcon = false;
+      }
+      memorial.hideIcon = hideIcon;
+      if (memorial.hideIcon) {
+        memorial.hideBubble = true;
+      }
+    });
+    this.setState({ Memorials: memorials });
+  };
+
   onIconClick = (id) => {
     const memorials = [...this.state.Memorials];
+    let mapCenter = this.state.mapCenter;
     memorials.forEach((memorial) => {
       memorial.hideBubble = true;
       if (memorial.Id === id) {
         memorial.hideBubble = false;
+        mapCenter = getCoordinatesOfMemorial(memorial);
       }
     });
-    this.setState({ Memorials: memorials });
+    this.setState({ Memorials: memorials, mapCenter: mapCenter });
   };
 
   bubbleCloseClickHandler = () => {
@@ -112,6 +137,10 @@ class App extends React.Component {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
           },
+          userCoordinates: {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          },
         });
       } else {
         alert("Unable to get geolocation..");
@@ -121,11 +150,6 @@ class App extends React.Component {
 
   updateMapCenter = (coordinates) => this.setState({ mapCenter: coordinates });
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
 
   handleOkOrCancel = (e) => {
     this.setState({
@@ -138,7 +162,7 @@ class App extends React.Component {
       showSidebar: !this.state.showSidebar,
     });
   };
-  
+
   render() {
     const { Header, Content } = Layout;
     const content = this.state.error ? (
@@ -148,11 +172,6 @@ class App extends React.Component {
         <Layout>
           <Header>
             <Space split={<Divider type="vertical" />}>
-              <Typography.Link>
-                <Button type="primary" onClick={this.showModal}>
-                  Memorial Suggestion Form
-                </Button>
-              </Typography.Link>
               <Typography.Link>
                 <Button type="primary" onClick={this.showDrawer}>
                   {this.state.showSidebar ? "Close search" : "Open search"}
@@ -171,6 +190,7 @@ class App extends React.Component {
           <Content>
             <MapCenterContext.Provider value={this.state.mapCenter}>
               <Map
+                userCoordinates={this.state.userCoordinates}
                 Memorials={this.state.Memorials}
                 currentLocation={this.state.currentLocation}
                 onIconClick={this.onIconClick}
@@ -179,10 +199,11 @@ class App extends React.Component {
               <Sidebar
                 Memorials={this.state.Memorials}
                 searchHandler={this.searchHandler}
+                typeHandler={this.typeHandler}
                 onSidebarClick={this.updateMapCenter}
                 showSidebar={this.state.showSidebar}
+                showDrawer={this.showDrawer}
               />
-              
             </MapCenterContext.Provider>
           </Content>
         </Layout>

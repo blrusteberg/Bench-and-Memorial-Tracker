@@ -5,7 +5,7 @@ import styles from "./Attributes.module.css";
 import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
-import { Input, Button, Modal, Select } from "antd";
+import { Input, Button, Modal, Select, message } from "antd";
 
 const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png"
 
@@ -193,8 +193,8 @@ class Attributes extends React.Component {
   };
 
   saveAttributes = () => {
-    if (this.props.typeName.toLowerCase() === "") {
-      alert("Type Name cannot be empty");
+    if (!this.props.typeName.trim()) {
+      message.error('Type Name cannot be empty');
       return;
     }
 
@@ -204,7 +204,7 @@ class Attributes extends React.Component {
 
     if (this.props.selectedTypeId) {
       if (this.props.typeName !== this.props.oldTypeName || this.props.oldUrl !== this.state.currentUrl) {
-        const newTypeName = { Name: this.props.typeName, Icon: this.state.currentUrl };
+        const newTypeName = { Name: this.props.typeName.trim(), Icon: this.state.currentUrl };
         axios
           .put(
             process.env.REACT_APP_API_BASE_URL +
@@ -233,7 +233,7 @@ class Attributes extends React.Component {
         });
     } else {
       const newMemorialTypesObject = {
-        Type: { Name: this.props.typeName, Icon: this.state.currentUrl },
+        Type: { Name: this.props.typeName.trim(), Icon: this.state.currentUrl },
         Attributes: this.state.selectedAttributes,
       };
       axios
@@ -529,7 +529,7 @@ class Attributes extends React.Component {
             deletedAttributeCount={this.state.deletedAttributeCount}
             deletedAttributes={this.state.deletedAttributes}
             oldTypeName={this.props.oldTypeName}
-            newTypeName={this.props.typeName}
+            newTypeName={this.props.typeName.trim()}
             closePopup={this.togglePopup}
             visible={showPopup}
           />
