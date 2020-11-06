@@ -8,6 +8,15 @@
   font-size: 1.2rem;
 }
 
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1%;
+  margin-bottom: 2%;
+}
+
 .title {
   font-size: 1.5rem;
   margin: 2%;
@@ -76,7 +85,7 @@
 }
 
 .memorialNameInput {
-  width: 65%;
+  width: 100%;
 }
 
 .noMemorialNameError {
@@ -89,15 +98,6 @@
   font-size: 1.2rem;
   text-align: center;
   padding: 2%;
-}
-
-.buttonsWrapper {
-  display: flex;
-  flex-direction: row;
-  align-content: space-between;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 5%;
 }
 
 .fillCoordinatesButtonWrapper {
@@ -133,12 +133,13 @@
 
 .saveButtonWrapper {
   text-align: center;
+  margin: 10px;
 }
 
 .saveMemorialButton {
   background-color: #4caf50;
-  font-size: 2rem;
-  width: 50%;
+  font-size: 1.5rem;
+  width: 100%;
   height: 100%;
   margin-bottom: 10%;
 }
