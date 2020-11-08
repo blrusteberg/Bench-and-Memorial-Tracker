@@ -5,6 +5,7 @@ import Map from "../components/Map/Map";
 import Sidebar from "../components/SideBar/Sidebar";
 import styles from "./App.module.css";
 import { getCoordinatesOfMemorial } from "../utils/utils";
+import moment from 'moment';
 
 import { Modal, Button, Layout, Space, Typography, Divider } from "antd";
 import "antd/dist/antd.css";
@@ -42,6 +43,10 @@ class App extends React.Component {
     userCoordinates: { lat: 0, lng: 0 },
     visible: false,
     showSidebar: false,
+    memorialTypes: [],
+    nameFilter: "",
+    typeFilter: [],
+    dateFilter: null
   };
 
   componentDidMount() {
@@ -72,31 +77,70 @@ class App extends React.Component {
           });
         }
       );
+
+      axios
+        .get(
+          `${
+            process.env.REACT_APP_API_BASE_URL
+          }/types/attributes?statusFilters=${JSON.stringify([
+            "live",
+          ])}`
+        )
+        .then(
+          (result) => {
+            let memorialTypes = [];
+            if (result.data.length > 0) {
+              memorialTypes = result.data.map(type => type.Name)
+            }
+            this.setState({
+              memorialTypes: memorialTypes,
+              isLoading: false,
+            })
+          },
+          (error) => {
+            this.setState({
+              isLoading: false,
+              error: error,
+            });
+          }
+        );
   }
 
-  searchHandler = (searchText) => {
-    const memorials = [...this.state.Memorials];
-    memorials.forEach((memorial) => {
-      let hideIcon = true;
-      if (
-        memorial.Name.toLowerCase().includes(searchText.trim().toLowerCase())
-      ) {
-        hideIcon = false;
-      }
-      memorial.hideIcon = hideIcon;
-      if (memorial.hideIcon) {
-        memorial.hideBubble = true;
-      }
-    });
-    this.setState({ Memorials: memorials });
-  };
+  filterHandler = (filter, typeOfFilter) => {
+    if(typeOfFilter === "NAME"){
+      this.setState({
+        nameFilter: filter
+      }, () => {
+        this.searchHandler();
+      });
+    } else if(typeOfFilter === "TYPE"){
+      this.setState({
+        typeFilter: filter
+      }, () => {
+        this.searchHandler();
+      });
+    } else if(typeOfFilter === "DATE"){
+      this.setState({
+        dateFilter: filter
+      }, () => {
+        this.searchHandler();
+      });
+    }
+  }
 
-  typeHandler = (searchText) => {
+  searchHandler = () => {
     const memorials = [...this.state.Memorials];
+    let typeFilter = this.state.typeFilter.length === 0 ? this.state.memorialTypes : this.state.typeFilter;
+    let startDate = moment("01/01/0001", "MM/DD/YYYY");
+    let endDate   = moment("01/01/9999", "MM/DD/YYYY");
+    let dateFilter = this.state.dateFilter === null ? [startDate, endDate] : this.state.dateFilter;
     memorials.forEach((memorial) => {
       let hideIcon = true;
+      let memorialDate = moment(memorial.DateRecorded, "MM/DD/YYYY")
       if (
-        searchText.includes(memorial.Type.Name)
+        memorial.Name.toLowerCase().includes(this.state.nameFilter.trim().toLowerCase())
+        && typeFilter.includes(memorial.Type.Name)
+        && memorialDate.isBetween(dateFilter[0], dateFilter[1])
       ) {
         hideIcon = false;
       }
@@ -198,8 +242,7 @@ class App extends React.Component {
               />
               <Sidebar
                 Memorials={this.state.Memorials}
-                searchHandler={this.searchHandler}
-                typeHandler={this.typeHandler}
+                searchHandler={this.filterHandler}
                 onSidebarClick={this.updateMapCenter}
                 showSidebar={this.state.showSidebar}
                 showDrawer={this.showDrawer}
