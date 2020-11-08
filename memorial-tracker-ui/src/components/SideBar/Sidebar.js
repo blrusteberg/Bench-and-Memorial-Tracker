@@ -64,7 +64,7 @@ class Sidebar extends React.Component {
       >
         <Space direction="vertical" size={'middle'}>
           <Input
-            onChange={(event) => this.props.searchHandler(event.target.value)}
+            onChange={(event) => this.props.searchHandler(event.target.value, "NAME")}
             className={styles.SearchInput}
             type="text"
             placeholder="Filter by name"
@@ -76,7 +76,7 @@ class Sidebar extends React.Component {
             placeholder="Filter by type"
             className={styles.selectTypes}
             optionFilterProp="children"
-            onChange={(event) => this.props.typeHandler(event)}
+            onChange={(event) => this.props.searchHandler(event, "TYPE")}
             showSearch={true}
             size={"large"}
             filterOption={(input, option) =>
@@ -90,7 +90,11 @@ class Sidebar extends React.Component {
             ))}
           </Select>
           <Space direction="vertical" size={12}>
-            <RangePicker size={"large"} allowClear={true} />
+            <RangePicker 
+              size={"large"} 
+              allowClear={true} 
+              onChange={(event) => this.props.searchHandler(event, "DATE")}
+            />
           </Space>
         </Space>
         <MapCenterContext.Provider value={this.state.lastClickedCoordinates}>
