@@ -1,9 +1,8 @@
 import React from "react";
 import "antd/dist/antd.css";
 
-import styles from "./AttributeForm.module.css";
 import ValueInput from "../../../common/ValueInput/ValueInput";
-import { Input, Form } from "antd";
+import { Form } from "antd";
 
 const AttributeForm = ({
   Attributes,
@@ -13,43 +12,27 @@ const AttributeForm = ({
   areCoordsValid,
   ...restProps
 }) => {
-  return (
-    <div className={styles.attributesDiv}>
-      {Attributes.map((attribute, index) => {
-        return (
-          <Form.Item
-            label={attribute.Name}
-            name={[
-              "Type",
-              "Attributes",
-              (attribute.Value && attribute.Value.Id) || attribute.Id,
-            ]}
-            {...restProps}
-          >
-            {attribute.Name.toLowerCase() === "latitude" ||
-            attribute.Name.toLowerCase() === "longitude" ? (
-              <Input
-                value={
-                  areCoordsValid && attribute.Name.toLowerCase() === "latitude"
-                    ? latitude
-                    : longitude
-                }
-                size="large"
-                style={{ width: 200 }}
-              ></Input>
-            ) : (
-              <ValueInput
-                valueType={attribute.ValueType}
-                style={{ width: 200 }}
-                label={attribute.Name}
-                size="large"
-              />
-            )}
-          </Form.Item>
-        );
-      })}
-    </div>
-  );
+  return Attributes.map((attribute, index) => {
+    return (
+      <Form.Item
+        label={attribute.Name}
+        key={index}
+        name={[
+          "Type",
+          "Attributes",
+          (attribute.Value && attribute.Value.Id) || attribute.Id,
+        ]}
+        {...restProps}
+      >
+        <ValueInput
+          valueType={attribute.ValueType}
+          style={{ maxWidth: 600, width: "100%" }}
+          size="large"
+          rules=""
+        />
+      </Form.Item>
+    );
+  });
 };
 
 export default AttributeForm;
