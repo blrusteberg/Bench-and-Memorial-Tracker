@@ -15,9 +15,7 @@ const ValueInput = ({ valueType, size, ...restProps }) => {
         break;
 
       case "Number":
-        inputNode = (
-          <InputNumber style={{ width: "100%" }} maxLength={248} {...props} />
-        );
+        inputNode = <InputNumber maxLength={248} {...props} />;
         break;
 
       case "Date":

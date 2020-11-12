@@ -1,96 +1,38 @@
 import React from "react";
+import "antd/dist/antd.css";
 
-import styles from "./AttributeForm.module.css";
-import Attribute from "./Attribute/Attribute";
+import ValueInput from "../../../common/ValueInput/ValueInput";
+import { Form } from "antd";
 
-class AttributeForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isValid: true,
-      error: "Error",
-      latitude: "",
-      longitude: "",
-      sortedAttributes: [
-        {
-          Id: "",
-          Name: "",
-          ValueType: "",
-          Required: null,
-          Value: null,
-        },
-      ],
-    };
-  }
-
-  componentDidMount() {
-    const sortedAttributes = [];
-    this.props.Attributes.forEach((attribute) => {
-      const name = attribute.Name.toLowerCase();
-      name === "latitude" || name === "longitude"
-        ? sortedAttributes.unshift(attribute)
-        : sortedAttributes.push(attribute);
-    });
-    this.setState({ sortedAttributes: sortedAttributes });
-  }
-
-  render() {
+const AttributeForm = ({
+  Attributes,
+  latitude,
+  longitude,
+  memorialName,
+  areCoordsValid,
+  ...restProps
+}) => {
+  return Attributes.map((attribute, index) => {
     return (
-      <table className={styles.attributeForm}>
-        <tbody>
-          <tr className={styles.tableHeader}>
-            <td></td>
-            <td className={styles.valueHeader}>Value</td>
-            <td className={styles.valueTypeHeader}>Value Type</td>
-          </tr>
-          {this.state.sortedAttributes.map((attribute, index) => {
-            if (index === 0) {
-              return (
-                <Attribute
-                  index={index}
-                  key={attribute.Id}
-                  Id={attribute.Id}
-                  Name={attribute.Name}
-                  ValueType={attribute.ValueType}
-                  Required={attribute.Required}
-                  onValueChange={this.props.onValueChange}
-                  readOnly={true}
-                  Value={this.props.latitude}
-                />
-              );
-            }
-            if (index === 1) {
-              return (
-                <Attribute
-                  index={index}
-                  key={attribute.Id}
-                  Id={attribute.Id}
-                  Name={attribute.Name}
-                  ValueType={attribute.ValueType}
-                  Required={attribute.Required}
-                  onValueChange={this.props.onValueChange}
-                  readOnly={true}
-                  Value={this.props.longitude}
-                />
-              );
-            }
-            return (
-              <Attribute
-                index={index}
-                key={attribute.Id}
-                Id={attribute.Id}
-                Name={attribute.Name}
-                ValueType={attribute.ValueType}
-                Required={attribute.Required}
-                onValueChange={this.props.onValueChange}
-                Value={""}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+      <Form.Item
+        label={attribute.Name}
+        key={index}
+        name={[
+          "Type",
+          "Attributes",
+          (attribute.Value && attribute.Value.Id) || attribute.Id,
+        ]}
+        {...restProps}
+      >
+        <ValueInput
+          valueType={attribute.ValueType}
+          style={{ maxWidth: 600, width: "100%" }}
+          size="large"
+          rules=""
+        />
+      </Form.Item>
     );
-  }
-}
+  });
+};
 
 export default AttributeForm;

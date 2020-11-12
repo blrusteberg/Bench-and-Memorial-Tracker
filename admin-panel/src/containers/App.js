@@ -14,8 +14,8 @@ import Types from "../components/Types/Types";
 import TaggerForm from "../components/TaggerForm/TaggerForm";
 import { hasRole } from "../services/auth";
 
-import { Form, Input, Button, message, Tag } from 'antd';
-require('dotenv').config()
+import { Form, Input, Button, message, Tag } from "antd";
+require("dotenv").config();
 
 class App extends React.Component {
   state = {
@@ -23,10 +23,11 @@ class App extends React.Component {
     sideBarCollapse: false,
     isLoggedIn: false,
     stayLoggedIn: false,
-    userRoleColor: ""
+    userRoleColor: "",
   };
 
   componentDidMount() {
+    this.handleTagColor();
     let isLoggedIn =
       localStorage.getItem("isLoggedIn") ||
       sessionStorage.getItem("isLoggedIn");
@@ -57,17 +58,17 @@ class App extends React.Component {
     delete localStorage.isLoggedIn;
     delete localStorage.Username;
     delete localStorage.Role;
-    delete localStorage.DeleteAccess
+    delete localStorage.DeleteAccess;
     delete sessionStorage.isLoggedIn;
     delete sessionStorage.Username;
     delete sessionStorage.Role;
-    delete sessionStorage.DeleteAccess
+    delete sessionStorage.DeleteAccess;
     this.setState({
       isLoggedIn: false,
     });
   };
 
-  handleTagColor = (role) => {
+  handleTagColor = () => {
     const ROLE = localStorage.getItem("Role") || sessionStorage.getItem("Role");
     let userRoleColor = null;
     switch (ROLE) {
@@ -83,11 +84,11 @@ class App extends React.Component {
       default:
         userRoleColor = "##8c8c8c";
         break;
-    } 
+    }
     this.setState({
-      userRoleColor: userRoleColor
-    })
-  }
+      userRoleColor: userRoleColor,
+    });
+  };
 
   createFormForInitialLogin = () => {
     const layout = {
@@ -105,45 +106,40 @@ class App extends React.Component {
       },
     };
 
-   
+    const handleRedirectOnLogin = (role) => {
+      if (role === "admin" || role === "clerk") window.location = "/memorials";
+      else if (role === "tagger") window.location = "/tagger-form";
+    };
 
-  const handleRedirectOnLogin = (role) => {
-    if(role === 'admin' || role === 'clerk') window.location = "/memorials";
-    else if (role === 'tagger') window.location = "/tagger-form";
-  }
-
-  const onFinish = (values) => {
-    const account = {Username: values.username, Password: values.password};
-    axios
-        .post(
-          `${process.env.REACT_APP_API_BASE_URL}/accounts/login`,
-          account
-        )
+    const onFinish = (values) => {
+      const account = { Username: values.username, Password: values.password };
+      axios
+        .post(`${process.env.REACT_APP_API_BASE_URL}/accounts/login`, account)
         .then((res) => {
-          if(this.state.stayLoggedIn){
-            localStorage.setItem('isLoggedIn', true);
-            localStorage.setItem('Username', values.username);
-            localStorage.setItem('Role', res.data.role);
-            localStorage.setItem('DeleteAccess', res.data.deleteAccess);
+          if (this.state.stayLoggedIn) {
+            localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("Username", values.username);
+            localStorage.setItem("Role", res.data.role);
+            localStorage.setItem("DeleteAccess", res.data.deleteAccess);
             handleRedirectOnLogin(res.data.role);
           } else {
-            sessionStorage.setItem('isLoggedIn', true);
-            sessionStorage.setItem('Username', values.username);
-            sessionStorage.setItem('Role', res.data.role);
-            sessionStorage.setItem('DeleteAccess', res.data.deleteAccess);
+            sessionStorage.setItem("isLoggedIn", true);
+            sessionStorage.setItem("Username", values.username);
+            sessionStorage.setItem("Role", res.data.role);
+            sessionStorage.setItem("DeleteAccess", res.data.deleteAccess);
             handleRedirectOnLogin(res.data.role);
           }
           this.setState({
             isLoggedIn: true,
-          })
+          });
         })
         .catch((error) => {
           if (error.response.status === 401) {
             errorMsg();
-           }
+          }
           console.log(error);
         });
-  };
+    };
 
     const onFinishFailed = (errorInfo) => {
       console.log("Failed:", errorInfo);
@@ -155,9 +151,9 @@ class App extends React.Component {
       });
     };
 
-  const errorMsg = () => {
-    message.error('Username and Password combination is incorrect');
-  };
+    const errorMsg = () => {
+      message.error("Username and Password combination is incorrect");
+    };
 
     return (
       <div className={styles.formWrapper}>
@@ -170,10 +166,10 @@ class App extends React.Component {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
-            <Form.Item
+          <Form.Item
             label="Username"
             name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: "Please input your username!" }]}
           >
             <Input />
           </Form.Item>
@@ -205,7 +201,8 @@ class App extends React.Component {
   render() {
     const { Header, Sider, Content } = Layout;
     const ROLE = localStorage.getItem("Role") || sessionStorage.getItem("Role");
-    const USERNAME = localStorage.getItem("Username") || sessionStorage.getItem("Username");
+    const USERNAME =
+      localStorage.getItem("Username") || sessionStorage.getItem("Username");
     if (ROLE === null || USERNAME === null) {
       delete localStorage.clear();
       delete sessionStorage.clear();
@@ -241,7 +238,9 @@ class App extends React.Component {
                     <Tag color={this.state.userRoleColor} key={ROLE}>
                       {ROLE.toUpperCase()}
                     </Tag>
-                    <Button type="primary" onClick={this.handleLogout}>Logout</Button>
+                    <Button type="primary" onClick={this.handleLogout}>
+                      Logout
+                    </Button>
                   </div>
                 </Header>
                 <div className={styles.dashContent}>

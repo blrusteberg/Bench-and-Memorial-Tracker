@@ -1,13 +1,18 @@
-.tableHeader {
+.AttributeName {
   font-size: 1.2rem;
-  text-align: center;
+  margin-bottom: 1%;
+  margin-top: 5%;
 }
 
-.tableHeaderDiv {
-  text-align: center;
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1%;
+  margin-bottom: 2%;
 }
 
 .autoGenerateButton {
   margin-top: 15px;
 }
-

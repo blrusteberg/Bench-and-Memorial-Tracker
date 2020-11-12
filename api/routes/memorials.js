@@ -109,6 +109,7 @@ router.post("/values", async (req, res) => {
       Name: req.body.Name,
       TypeId: req.body.TypeId,
       Image: req.body.Image,
+      DateRecorded: req.body.DateRecorded,
     });
     const insertValuePromises = [];
     req.body.Attributes.forEach((attribute) => {
