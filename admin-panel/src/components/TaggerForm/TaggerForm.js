@@ -20,6 +20,7 @@ const TaggerForm = () => {
   const [form] = Form.useForm();
   const [changesMade, setChangesMade] = useState(false);
   const [selectedImage, setSelectedImage] = useState();
+  const [error, setError] = useState();
 
   const [selectedType, setSelectedType] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,8 @@ const TaggerForm = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        setIsLoading(true);
+        setIsLoading(false);
+        setError(error);
       });
   }, []);
 
@@ -158,6 +160,8 @@ const TaggerForm = () => {
 
   return isLoading ? (
     <div className={styles.loadingTitle}>Loading...</div>
+  ) : error ? (
+    <div>{error.message}</div>
   ) : (
     <div className={styles.container}>
       <Form
