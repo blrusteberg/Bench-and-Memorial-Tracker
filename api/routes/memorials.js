@@ -43,15 +43,25 @@ router.get("/types/attributes/values", async (req, res) => {
       //    would be tons better if we actually knew how to implement that in the objection query, but this is the current
       //    brute force implementation.
       const attributesWithOneValue = memorial.Type.Attributes.map(
-        (attribute) => {
-          if (!attribute.Values || !attribute.Values.length) {
-            delete attribute.Values;
-            return attribute;
+        (attribute, index) => {
+          let value = {
+            Value: null,
+            AttributeId: attribute.Id,
+            MemorialId: memorial.Id,
+          };
+          if (attribute.Value) {
+            value = attribute.Value;
+          } else if (attribute.Values) {
+            value = attribute.Values.filter((value) => {
+              return value.MemorialId === memorial.Id;
+            })[0];
           }
-          const value = attribute.Values.filter((value) => {
-            return value.MemorialId === memorial.Id;
-          })[0];
-          value.Value = JSON.parse(value.Value);
+          try {
+            value.Value = JSON.parse(value.Value);
+          } catch (e) {
+            value.Value = value.Value;
+          }
+
           attribute.Value = value;
           delete attribute.Values;
           return attribute;
@@ -137,7 +147,7 @@ router.put("/:id", async (req, res) => {
       .findById(req.params.id)
       .patch({
         Name: req.body.Name,
-        Image: req.body.Image,
+        Image: req.body.Image || "",
         Status: req.body.Status,
       });
     if (req.body.Attributes) {
@@ -148,7 +158,9 @@ router.put("/:id", async (req, res) => {
           Value: JSON.stringify(attribute.Value.Value),
         };
         valuePromises.push(
-          Value.query().findById(attribute.Value.Id).patch(newValue)
+          attribute.Value.Id
+            ? Value.query().findById(attribute.Value.Id).patch(newValue)
+            : Value.query().insert(newValue)
         );
       });
       await Promise.all(valuePromises);

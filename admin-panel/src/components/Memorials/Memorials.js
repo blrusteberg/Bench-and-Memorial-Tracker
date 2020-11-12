@@ -17,8 +17,8 @@ import MemorialModal from "./Modals/MemorialModal/MemorialModal";
 import BlobService from "../../services/BlobService";
 
 const Memorials = () => {
-  const [memorials, setMemorials] = useState();
-  const [unapprovedMemorials, setUnapprovedMemorials] = useState();
+  const [memorials, setMemorials] = useState([]);
+  const [unapprovedMemorials, setUnapprovedMemorials] = useState([]);
   const [tableView, setTableView] = useState("approved");
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
@@ -49,57 +49,42 @@ const Memorials = () => {
       .catch((error) => setError(error));
   }, []);
 
-  const saveMemorial = (data, onSuccess = () => {}, onFail = () => {}) => {
+  const saveMemorial = async (data) => {
+    if (data.image) {
+      const blobName = await new BlobService().uploadMemorialImage(
+        data.image,
+        data.Memorial.Image
+      );
+      data.Memorial.Image = blobName;
+    }
     if (data.action === "put") {
-      if (data.memorial.Image) {
-        new BlobService()
-          .uploadMemorialImage(data.memorial.Id, data.memorial.Image)
-          .then((blobName) => {
-            axios
-              .put(
-                `${process.env.REACT_APP_API_BASE_URL}/memorials/${data.memorial.Id}`
-              )
-              .then(() => {
-                onSuccess();
-                saveLocalMemorial(data.memorial);
-              })
-              .catch((error) => {
-                openNotification(
-                  "Unable to save memorial.",
-                  error.message,
-                  "error"
-                );
-                onFail();
-              });
-          });
-      }
-    } else if (data.action === "post") {
-      const imageFile = data.memorial.Image;
-      delete data.memorial.Image;
-      axios
-        .post(
-          `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
-          data.memorial
+      return axios
+        .put(
+          `${process.env.REACT_APP_API_BASE_URL}/memorials/${data.Memorial.Id}`,
+          {
+            Image: data.Memorial.Image,
+            Name: data.Memorial.Name,
+            Status: data.Memorial.Status,
+            Attributes: data.Memorial.Type.Attributes,
+          }
         )
-        .then(async (res) => {
-          const memorialId = res.data;
-          const blobName = await new BlobService().uploadMemorialImage(
-            memorialId,
-            imageFile
-          );
-          axios
-            .put(
-              `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorialId}`,
-              { Image: blobName }
-            )
-            .then((res) => {
-              onSuccess();
-              saveLocalMemorial(data.memorial);
-            });
+        .then(() => {
+          saveLocalMemorial(data.memorial);
         })
         .catch((error) => {
           openNotification("Unable to save memorial.", error.message, "error");
-          onFail();
+        });
+    } else if (data.action === "post") {
+      return axios
+        .post(
+          `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
+          data.Memorial
+        )
+        .then((res) => {
+          saveLocalMemorial();
+        })
+        .catch((error) => {
+          openNotification("Unable to save memorial.", error.message, "error");
         });
     } else {
       throw new Error("Action not valid");

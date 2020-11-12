@@ -10,9 +10,9 @@ router.post("/", async (req, res) => {
     req.body.values.forEach((value) => {
       createPromises.push(
         Value.query().insert({
-          Value: JSON.stringify(value.value),
-          AttributeId: value.attributeId,
-          MemorialId: value.memorialId,
+          Value: JSON.stringify(value.Value),
+          AttributeId: value.AttributeId,
+          MemorialId: value.MemorialId,
         })
       );
     });
