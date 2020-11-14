@@ -11,3 +11,7 @@ export const getCoordinateIds = (attributes) => {
   });
   return { latitudeId: latId, longitudeId: lngId };
 };
+
+export const getDeleteAccess = () => {
+  return ((localStorage.getItem("DeleteAccess") || sessionStorage.getItem("DeleteAccess") === "true") ? true : false)
+}

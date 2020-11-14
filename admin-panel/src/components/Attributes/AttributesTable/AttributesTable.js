@@ -4,6 +4,8 @@ import { Table, Space, Form } from "antd";
 import styles from "./AttributesTable.module.css";
 import EditableCell from "../Components/EditableCell";
 
+import { getDeleteAccess } from "../../../utils/utils";
+
 const AttributesTable = ({
   attributes,
   saveAttribute,
@@ -13,6 +15,8 @@ const AttributesTable = ({
   const [editingKey, setEditingKey] = useState("");
   const [form] = Form.useForm();
   const [saving, setSaving] = useState(false);
+
+  const hasDeleteAccess = getDeleteAccess();
 
   const isEditing = (record) => editingKey === record.key;
 
@@ -102,13 +106,13 @@ const AttributesTable = ({
             >
               Edit
             </button>
-            <button
+            {hasDeleteAccess && <button
               type="button"
               className={styles.linkButton}
               onClick={() => onDeleteClick(record)}
             >
               Delete
-            </button>
+            </button>}
           </Space>
         );
       },

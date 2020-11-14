@@ -6,6 +6,7 @@ import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
 import { Input, Button, Modal, Select, message } from "antd";
+import { getDeleteAccess } from "../../../utils/utils";
 
 const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png"
 
@@ -85,7 +86,6 @@ class Attributes extends React.Component {
               });
             })
             .catch((error) => {
-              console.log(error);
             });
         } else {
           const longitudeAttribute = res.data.find(
@@ -117,7 +117,6 @@ class Attributes extends React.Component {
         }
       })
       .catch((error) => {
-        console.log(error);
       });
 
       let imageArray = urlArray.map((item, index) => {
@@ -214,7 +213,6 @@ class Attributes extends React.Component {
           )
           .then((res) => {})
           .catch((error) => {
-            console.log(error);
           });
       }
       const newMemorialTypesObject = {
@@ -229,7 +227,6 @@ class Attributes extends React.Component {
           window.location = "/types";
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       const newMemorialTypesObject = {
@@ -245,7 +242,6 @@ class Attributes extends React.Component {
           window.location = "/types";
         })
         .catch((error) => {
-          console.log(error);
         });
     }
   };
@@ -276,7 +272,6 @@ class Attributes extends React.Component {
           window.location = "/types";
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       this.setState({
@@ -358,6 +353,8 @@ class Attributes extends React.Component {
     );
 
     let currentUrl = this.state.currentUrl;
+
+    const hasDeleteAccess = getDeleteAccess();
 
     return (
       <div className={styles.attributes}>
@@ -510,7 +507,7 @@ class Attributes extends React.Component {
             </div>
           )}
           <div className={styles.deleteButtonWrapper}>
-            {isExistingType ? (
+            {isExistingType && hasDeleteAccess && (
               <Button
                 type="danger"
                 onClick={() => this.toggleDeleteTypeModal()}
@@ -519,7 +516,7 @@ class Attributes extends React.Component {
               >
                 Delete Type
               </Button>
-            ) : null}
+            )}
           </div>
         </div>
         {showPopup && (
