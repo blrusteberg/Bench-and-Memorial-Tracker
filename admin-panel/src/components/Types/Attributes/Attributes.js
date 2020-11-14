@@ -6,6 +6,7 @@ import deleteAttributeButton from "../../../assets/deleteAttribute.png";
 import "antd/dist/antd.css";
 import Popup from "./Popup/Popup";
 import { Input, Button, Modal, Select, message } from "antd";
+import { getDeleteAccess } from "../../../utils/utils";
 
 const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png"
 
@@ -359,14 +360,7 @@ class Attributes extends React.Component {
 
     let currentUrl = this.state.currentUrl;
 
-    let HAS_DELETE_ACCESS = ""
-    if(localStorage.getItem("DeleteAccess") || sessionStorage.getItem("DeleteAccess") === "true"){
-      HAS_DELETE_ACCESS = true
-    } else {
-      HAS_DELETE_ACCESS = false
-    }
-    // const HAS_DELETE_ACCESS = localStorage.getItem("DeleteAccess") || sessionStorage.getItem("DeleteAccess");
-    // console.log(localStorage.getItem("DeleteAccess"), sessionStorage.getItem("DeleteAccess"));
+    const HAS_DELETE_ACCESS = getDeleteAccess();
 
     return (
       <div className={styles.attributes}>
@@ -526,7 +520,6 @@ class Attributes extends React.Component {
                 disabled={isSaving}
                 block
               >
-                {console.log(HAS_DELETE_ACCESS)}
                 Delete Type
               </Button>
             )}

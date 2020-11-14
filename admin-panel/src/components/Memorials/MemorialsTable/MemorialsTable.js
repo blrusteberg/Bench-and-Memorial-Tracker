@@ -4,6 +4,7 @@ import { Table, Space, Badge } from "antd";
 import styles from "./MemorialsTable.module.css";
 import AttributesTable from "./AttributesTable/AttributesTable";
 import MemorialModal from "../Modals/MemorialModal/MemorialModal";
+import { getDeleteAccess } from "../../../utils/utils";
 
 const MemorialsTable = ({
   memorials,
@@ -12,6 +13,8 @@ const MemorialsTable = ({
   saveMemorial,
 }) => {
   const [editingMemorial, setEditingMemorial] = useState();
+
+  const HAS_DELETE_ACCESS = getDeleteAccess();
 
   const getChangeStatusAction = (record) => {
     switch (record.Status) {
@@ -117,13 +120,13 @@ const MemorialsTable = ({
           >
             Edit
           </button>
-          <button
+          {HAS_DELETE_ACCESS && <button
             type="button"
             className={styles.linkButton}
             onClick={() => onDeleteClick(record)}
           >
             Delete
-          </button>
+          </button>}
         </Space>
       ),
     },

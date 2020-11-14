@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Table, Space, Form, Switch, Tag, Button } from "antd";
 import { DeleteOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import styles from "./AccountsTable.module.css";
+import { getDeleteAccess } from "../../../utils/utils";
 
 const AccountsTable = ({ accounts, onDeleteClick }) => {
   const [form] = Form.useForm();
   const [passVisible, setPassVisible] = useState(true);
+
+  const HAS_DELETE_ACCESS = getDeleteAccess();
 
   const columns = [
     {
@@ -72,13 +75,13 @@ const AccountsTable = ({ accounts, onDeleteClick }) => {
       align: "center",
       render: (text, record) => (
         <Space size="middle">
-          <a
+          {HAS_DELETE_ACCESS && <a
             className={styles.deleteButton}
             onClick={() => onDeleteClick(record)}
           >
             {" "}
             Delete
-          </a>
+          </a>}
         </Space>
       ),
     },
