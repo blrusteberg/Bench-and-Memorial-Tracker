@@ -359,6 +359,15 @@ class Attributes extends React.Component {
 
     let currentUrl = this.state.currentUrl;
 
+    let HAS_DELETE_ACCESS = ""
+    if(localStorage.getItem("DeleteAccess") || sessionStorage.getItem("DeleteAccess") === "true"){
+      HAS_DELETE_ACCESS = true
+    } else {
+      HAS_DELETE_ACCESS = false
+    }
+    // const HAS_DELETE_ACCESS = localStorage.getItem("DeleteAccess") || sessionStorage.getItem("DeleteAccess");
+    // console.log(localStorage.getItem("DeleteAccess"), sessionStorage.getItem("DeleteAccess"));
+
     return (
       <div className={styles.attributes}>
         <div className={styles.iconWrapper}>
@@ -510,16 +519,17 @@ class Attributes extends React.Component {
             </div>
           )}
           <div className={styles.deleteButtonWrapper}>
-            {isExistingType ? (
+            {isExistingType && HAS_DELETE_ACCESS && (
               <Button
                 type="danger"
                 onClick={() => this.toggleDeleteTypeModal()}
                 disabled={isSaving}
                 block
               >
+                {console.log(HAS_DELETE_ACCESS)}
                 Delete Type
               </Button>
-            ) : null}
+            )}
           </div>
         </div>
         {showPopup && (
