@@ -14,7 +14,7 @@ const MemorialsTable = ({
 }) => {
   const [editingMemorial, setEditingMemorial] = useState();
 
-  const HAS_DELETE_ACCESS = getDeleteAccess();
+  const hasDeleteAccess = getDeleteAccess();
 
   const getChangeStatusAction = (record) => {
     switch (record.Status) {
@@ -120,7 +120,7 @@ const MemorialsTable = ({
           >
             Edit
           </button>
-          {HAS_DELETE_ACCESS && <button
+          {hasDeleteAccess && <button
             type="button"
             className={styles.linkButton}
             onClick={() => onDeleteClick(record)}

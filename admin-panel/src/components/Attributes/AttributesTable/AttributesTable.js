@@ -16,7 +16,7 @@ const AttributesTable = ({
   const [form] = Form.useForm();
   const [saving, setSaving] = useState(false);
 
-  const HAS_DELETE_ACCESS = getDeleteAccess();
+  const hasDeleteAccess = getDeleteAccess();
 
   const isEditing = (record) => editingKey === record.key;
 
@@ -106,7 +106,7 @@ const AttributesTable = ({
             >
               Edit
             </button>
-            {HAS_DELETE_ACCESS && <button
+            {hasDeleteAccess && <button
               type="button"
               className={styles.linkButton}
               onClick={() => onDeleteClick(record)}

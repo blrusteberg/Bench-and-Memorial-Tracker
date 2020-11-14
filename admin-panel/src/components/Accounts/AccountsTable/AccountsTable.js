@@ -8,7 +8,7 @@ const AccountsTable = ({ accounts, onDeleteClick }) => {
   const [form] = Form.useForm();
   const [passVisible, setPassVisible] = useState(true);
 
-  const HAS_DELETE_ACCESS = getDeleteAccess();
+  const hasDeleteAccess = getDeleteAccess();
 
   const columns = [
     {
@@ -75,7 +75,7 @@ const AccountsTable = ({ accounts, onDeleteClick }) => {
       align: "center",
       render: (text, record) => (
         <Space size="middle">
-          {HAS_DELETE_ACCESS && <a
+          {hasDeleteAccess && <a
             className={styles.deleteButton}
             onClick={() => onDeleteClick(record)}
           >

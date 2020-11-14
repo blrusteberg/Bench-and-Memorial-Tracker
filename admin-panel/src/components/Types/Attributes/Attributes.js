@@ -360,7 +360,7 @@ class Attributes extends React.Component {
 
     let currentUrl = this.state.currentUrl;
 
-    const HAS_DELETE_ACCESS = getDeleteAccess();
+    const hasDeleteAccess = getDeleteAccess();
 
     return (
       <div className={styles.attributes}>
@@ -513,7 +513,7 @@ class Attributes extends React.Component {
             </div>
           )}
           <div className={styles.deleteButtonWrapper}>
-            {isExistingType && HAS_DELETE_ACCESS && (
+            {isExistingType && hasDeleteAccess && (
               <Button
                 type="danger"
                 onClick={() => this.toggleDeleteTypeModal()}
