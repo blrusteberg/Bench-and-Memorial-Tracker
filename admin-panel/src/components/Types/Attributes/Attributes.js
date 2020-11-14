@@ -86,7 +86,6 @@ class Attributes extends React.Component {
               });
             })
             .catch((error) => {
-              console.log(error);
             });
         } else {
           const longitudeAttribute = res.data.find(
@@ -118,7 +117,6 @@ class Attributes extends React.Component {
         }
       })
       .catch((error) => {
-        console.log(error);
       });
 
       let imageArray = urlArray.map((item, index) => {
@@ -215,7 +213,6 @@ class Attributes extends React.Component {
           )
           .then((res) => {})
           .catch((error) => {
-            console.log(error);
           });
       }
       const newMemorialTypesObject = {
@@ -230,7 +227,6 @@ class Attributes extends React.Component {
           window.location = "/types";
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       const newMemorialTypesObject = {
@@ -246,7 +242,6 @@ class Attributes extends React.Component {
           window.location = "/types";
         })
         .catch((error) => {
-          console.log(error);
         });
     }
   };
@@ -277,7 +272,6 @@ class Attributes extends React.Component {
           window.location = "/types";
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       this.setState({
