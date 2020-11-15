@@ -2,7 +2,6 @@ import React from "react";
 import "antd/dist/antd.css";
 
 import ValueInput from "../../../common/ValueInput/ValueInput";
-import styles from "./AttributeForm.module.css";
 import { Form } from "antd";
 
 const AttributeForm = ({
