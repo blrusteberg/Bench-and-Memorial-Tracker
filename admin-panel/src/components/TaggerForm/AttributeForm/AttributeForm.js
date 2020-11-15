@@ -2,6 +2,7 @@ import React from "react";
 import "antd/dist/antd.css";
 
 import ValueInput from "../../../common/ValueInput/ValueInput";
+import styles from "./AttributeForm.module.css";
 import { Form } from "antd";
 
 const AttributeForm = ({
@@ -26,7 +27,7 @@ const AttributeForm = ({
       >
         <ValueInput
           valueType={attribute.ValueType}
-          style={{ maxWidth: 600, width: "100%" }}
+          style={{ width: "100%", fontSize: "1.3rem" }}
           size="large"
           rules=""
         />
