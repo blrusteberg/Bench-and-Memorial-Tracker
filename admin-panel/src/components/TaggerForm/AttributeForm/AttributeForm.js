@@ -26,7 +26,7 @@ const AttributeForm = ({
       >
         <ValueInput
           valueType={attribute.ValueType}
-          style={{ maxWidth: 600, width: "100%" }}
+          style={{ width: "100%", fontSize: "1.3rem" }}
           size="large"
           rules=""
         />

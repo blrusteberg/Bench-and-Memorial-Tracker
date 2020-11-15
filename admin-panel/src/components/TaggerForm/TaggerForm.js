@@ -5,6 +5,7 @@ import axios from "axios";
 import { Input, Button, Form, notification } from "antd";
 import moment from "moment";
 import styles from "./TaggerForm.module.css";
+import "./TaggerForm.css";
 import AttributeForm from "./AttributeForm/AttributeForm";
 import TypeSelect from "../../common/TypeSelect/TypeSelect";
 import API from "../../services/API/API";
@@ -167,27 +168,30 @@ const TaggerForm = () => {
       <Form
         form={form}
         layout="vertical"
-        className={styles.formWrapper}
         onValuesChange={() => setChangesMade(true)}
       >
-        <Form.Item
-          name={["Type", "Id"]}
-          label="Memorial Type"
-          style={{ fontWeight: "bold" }}
-          rules={[{ required: true, message: "Select a type" }]}
-        >
-          <TypeSelect
-            Types={Types}
-            onTypeSelect={onTypeSelect}
-            disabled={Memorial}
-            styles
-          />
-        </Form.Item>
-
+        <div className={styles.typeWrapper}>
+          <Form.Item
+            name={["Type", "Id"]}
+            label="Memorial Type"
+            style={{
+              fontWeight: "bold",
+              fontSize: "1.5rem",
+              width: "50%",
+            }}
+            rules={[{ required: true, message: "Select a type" }]}
+          >
+            <TypeSelect
+              Types={Types}
+              onTypeSelect={onTypeSelect}
+              disabled={Memorial}
+            />
+          </Form.Item>
+        </div>
         {!selectedType ? (
           ""
         ) : (
-          <div className={styles.formWrapper}>
+          <>
             <Form.Item
               label="Memorial Name"
               name="Name"
@@ -195,38 +199,33 @@ const TaggerForm = () => {
               rules={[{ required: true, message: "Enter a memorial name" }]}
             >
               <Input
-                className={styles.memorialNameInput}
                 label="Memorial Name"
-                maxLength={50}
-                style={{ width: "100%" }}
                 size="large"
+                style={{ width: "100%", fontSize: "1.3rem" }}
               />
             </Form.Item>
-            <div className={styles.attributesWrapper}>
-              <AttributeForm
-                key={selectedType.Id}
-                Attributes={selectedType.Attributes}
-                latitude={latitude}
-                longitude={longitude}
-              />
-            </div>
 
-            <div className={styles.uploadButtonWrapper}>
-              <Form.Item name="Image" label="Image">
-                <MemorialImageUpload
-                  onFileSelect={onImageSelect}
-                  blobName={Memorial && Memorial.Image}
-                  onRemove={() => setSelectedImage(null)}
-                />
-              </Form.Item>
-            </div>
+            <AttributeForm
+              key={selectedType.Id}
+              Attributes={selectedType.Attributes}
+              latitude={latitude}
+              longitude={longitude}
+            />
+            <div className={styles.imageLabel}>Image</div>
+            <Form.Item name="Image">
+              <MemorialImageUpload
+                onFileSelect={onImageSelect}
+                blobName={Memorial && Memorial.Image}
+                onRemove={() => setSelectedImage(null)}
+              />
+            </Form.Item>
 
             <Button
               type="primary"
               className={styles.fillCoordinatesButton}
               onClick={onFillCoordinatesClick}
               size="large"
-              style={{ width: "100%", margin: "8%" }}
+              style={{ width: "75%", height: "5%", marginBottom: "5%" }}
             >
               Fill Coordinates
             </Button>
@@ -235,7 +234,8 @@ const TaggerForm = () => {
               type="primary"
               size="large"
               style={{
-                width: "100%",
+                width: "75%",
+                height: "5%",
                 marginBottom: "25%",
                 background: "#237804",
                 border: "#237804",
@@ -247,7 +247,7 @@ const TaggerForm = () => {
             >
               {isSaving ? <div>Saving... </div> : <div>Save Memorial</div>}
             </Button>
-          </div>
+          </>
         )}
       </Form>
     </div>
