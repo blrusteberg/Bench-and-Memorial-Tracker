@@ -8,7 +8,7 @@ import Popup from "./Popup/Popup";
 import { Input, Button, Modal, Select, message } from "antd";
 import { getDeleteAccess } from "../../../utils/utils";
 
-const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png"
+const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/monument.png"
 
 const urlArray = [
   'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/art.png',
