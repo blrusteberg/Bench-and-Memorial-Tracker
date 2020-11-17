@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import cx from "classnames";
 import axios from "axios";
-
 import { Input, Button, Form, notification } from "antd";
 import moment from "moment";
+
 import styles from "./TaggerForm.module.css";
 import "./TaggerForm.css";
 import AttributeForm from "./AttributeForm/AttributeForm";
 import TypeSelect from "../../common/TypeSelect/TypeSelect";
-import API from "../../services/API/API";
 import BlobService from "../../services/BlobService";
 import MemorialImageUpload from ".././Memorials/Modals/MemorialModal/MemorialImageUpload/MemorialImageUpload";
 import { getCoordinateIds } from "../../utils/utils";
@@ -29,9 +28,10 @@ const TaggerForm = () => {
   const [selectedFile, setSelectedFile] = useState();
 
   useEffect(() => {
-    new API().Types.get(["attributes"])
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`)
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         setTypes(res.data);
         setIsLoading(false);
       })

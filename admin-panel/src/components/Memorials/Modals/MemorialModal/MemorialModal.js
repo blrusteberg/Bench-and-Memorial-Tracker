@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Spin, Form, Card, Input, Divider } from "antd";
+import axios from "axios";
 
 import styles from "./MemorialModal.module.css";
-import API from "../../../../services/API/API";
 import MemorialImageUpload from "./MemorialImageUpload/MemorialImageUpload";
 import AttributesForm from "./AttributesForm/AttributesForm";
 import TypeSelect from "../../../../common/TypeSelect/TypeSelect";
@@ -22,10 +22,12 @@ const MemorialModal = ({
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    new API().Types.get(["attributes"]).then((res) => {
-      setTypes(res.data);
-      setLoading(false);
-    });
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`)
+      .then((res) => {
+        setTypes(res.data);
+        setLoading(false);
+      });
   }, [memorial]);
 
   const onOkClick = async () => {

@@ -15,7 +15,7 @@ class Types extends React.Component {
     newTypeName: "",
     isTypeNameChanged: false,
     isLoading: true,
-    currentUrl: ""
+    currentUrl: "",
   };
 
   componentDidMount() {
@@ -93,7 +93,6 @@ class Types extends React.Component {
                 placeholder="Enter a name..."
                 onChange={this.handleNewTypeNameChange}
                 maxLength={50}
-                
               />
             </div>
             <div className={styles.attributesWrapper}>
