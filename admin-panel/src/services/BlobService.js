@@ -15,24 +15,29 @@ class BlobService {
     );
   }
 
-  uploadMemorialImage = async (memorialId, image, currentImageName = "") => {
-    if (!image || !image.file) {
+  uploadMemorialImage = async (image, currentImageName = "") => {
+    if (!image) {
       return;
     }
-    const blobPromises = [];
-    if (currentImageName) {
-      blobPromises.push(
-        this.imageContainerClient.getBlockBlobClient(currentImageName).delete()
-      );
-    }
-    const blobName = memorialId + image.file.name;
-    const blockBlobClient = this.imageContainerClient.getBlockBlobClient(
+    await this.deleteImageBlob(currentImageName);
+    const blobName = this.getBlobNameFromImage(image);
+    const blockBlobClient = await this.imageContainerClient.getBlockBlobClient(
       blobName
     );
-    blobPromises.push(blockBlobClient.uploadBrowserData(image.file));
-    await Promise.all(blobPromises);
+    await blockBlobClient.uploadBrowserData(image);
     return blobName;
   };
+
+  deleteImageBlob = async (blobName) => {
+    if (!blobName) {
+      return;
+    }
+    return this.imageContainerClient.getBlockBlobClient(blobName).delete();
+  };
+
+  getBlobNameFromImage(image) {
+    return `${image.uid}.${image.name.split(".").pop()}`;
+  }
 }
 
 export default BlobService;

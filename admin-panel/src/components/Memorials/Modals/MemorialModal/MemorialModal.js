@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Spin, Form, Card, Input, Divider } from "antd";
 import axios from "axios";
+import moment from "moment";
 
 import styles from "./MemorialModal.module.css";
 import MemorialImageUpload from "./MemorialImageUpload/MemorialImageUpload";
 import AttributesForm from "./AttributesForm/AttributesForm";
 import TypeSelect from "../../../../common/TypeSelect/TypeSelect";
+import axios from "axios";
 
 const MemorialModal = ({
   onCancel = () => {},
@@ -18,8 +20,8 @@ const MemorialModal = ({
   const [form] = Form.useForm();
   const [selectedType, setSelectedType] = useState();
   const [changesMade, setChangesMade] = useState(false);
-  const [selectedImage, setSelectedImage] = useState();
   const [isSaving, setIsSaving] = useState(false);
+  const [selectedImage, setSelectedImage] = useState();
 
   useEffect(() => {
     axios
@@ -32,15 +34,23 @@ const MemorialModal = ({
 
   const onOkClick = async () => {
     const data = await form.validateFields();
+    Object.keys(data.Type.Attributes).forEach((key) => {
+      if (moment.isMoment(data.Type.Attributes[key])) {
+        data.Type.Attributes[key] = data.Type.Attributes[key].format(
+          "MM/DD/YYYY"
+        );
+      }
+    });
     setIsSaving(true);
     const action = memorial ? "put" : "post";
     const formattedData =
       action === "put"
         ? formatFormDataForPut(data)
         : formatFormDataForPost(data);
-    saveMemorial({ memorial: formattedData, action: action }, () => {
-      setIsSaving(false);
-      resetModalForm();
+    saveMemorial({
+      Memorial: formattedData,
+      action: action,
+      image: selectedImage,
     });
   };
 
@@ -48,7 +58,10 @@ const MemorialModal = ({
     const formattedMemorial = memorial;
     for (let i = 0; i < memorial.Type.Attributes.length; i++) {
       const attribute = memorial.Type.Attributes[i];
-      attribute.Value.Value = data.Type.Attributes[attribute.Value.Id];
+      attribute.Value.Value =
+        data.Type.Attributes[
+          (attribute.Value && attribute.Value.Id) || attribute.Id
+        ];
       formattedMemorial.Type.Attributes[i] = attribute;
     }
     return formattedMemorial;
@@ -58,7 +71,6 @@ const MemorialModal = ({
     const formattedMemorial = {
       Name: data.Name,
       TypeId: data.Type.Id,
-      Image: data.Image,
       Attributes: [],
     };
     Object.keys(data.Type.Attributes).forEach((key) => {
@@ -79,7 +91,6 @@ const MemorialModal = ({
     form.resetFields();
     setSelectedType(null);
     setChangesMade(false);
-    setSelectedImage(null);
     setIsSaving(false);
   };
 
@@ -98,20 +109,28 @@ const MemorialModal = ({
   const getInitialValues = () => {
     if (memorial) {
       const initialValues = {
-        ["Name"]: memorial.Name,
-        ["Image"]: memorial.Image,
-        ["Type"]: {
-          ["Id"]: memorial.Type.Id,
-          ["Attributes"]: {},
+        Name: memorial.Name,
+        Image: memorial.Image,
+        Type: {
+          Id: memorial.Type.Id,
+          Attributes: {},
         },
       };
       memorial.Type.Attributes.forEach((attribute) => {
-        initialValues["Type"]["Attributes"][attribute.Value.Id] =
-          attribute.Value.Value;
+        if (attribute.Value) {
+          if (
+            moment.isDate(attribute.Value.Value) &&
+            attribute.ValueType === "Date"
+          ) {
+            console.log("FORMATTING AS DATE");
+            attribute.Value.Value = moment(attribute.Value.Value);
+          }
+          initialValues["Type"]["Attributes"][attribute.Value.Id] =
+            attribute.Value.Value;
+        }
       });
       return initialValues;
     }
-    return null;
   };
 
   const onImageSelect = (image) => {
@@ -183,7 +202,6 @@ const MemorialModal = ({
                   <MemorialImageUpload
                     onFileSelect={onImageSelect}
                     blobName={memorial && memorial.Image}
-                    onRemove={() => setSelectedImage(null)}
                   />
                 </Form.Item>
               </Form>
