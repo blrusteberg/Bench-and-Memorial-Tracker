@@ -117,6 +117,13 @@ const MemorialModal = ({
       };
       memorial.Type.Attributes.forEach((attribute) => {
         if (attribute.Value) {
+          if (
+            moment.isDate(attribute.Value.Value) &&
+            attribute.ValueType === "Date"
+          ) {
+            console.log("FORMATTING AS DATE");
+            attribute.Value.Value = moment(attribute.Value.Value);
+          }
           initialValues["Type"]["Attributes"][attribute.Value.Id] =
             attribute.Value.Value;
         }

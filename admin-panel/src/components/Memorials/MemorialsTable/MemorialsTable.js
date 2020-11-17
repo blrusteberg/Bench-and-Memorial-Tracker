@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Table, Space, Badge } from "antd";
 
 import styles from "./MemorialsTable.module.css";

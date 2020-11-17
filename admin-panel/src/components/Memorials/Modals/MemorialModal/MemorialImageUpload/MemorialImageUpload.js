@@ -13,7 +13,7 @@ const UploadImageButton = ({
     if (blobName) {
       setFileList(getFileList());
     }
-  }, []);
+  });
 
   const getBlobUrl = () =>
     blobName

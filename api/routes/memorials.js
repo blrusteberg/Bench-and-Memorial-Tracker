@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Error = require("../error/error");
 
+const MemorialController = require("../controllers/memorial.controller");
+// WORK TO REMOVE THESE
 const Memorial = require("../models/Memorial");
 const Value = require("../models/Value");
+
+const memorialController = new MemorialController();
 
 router.get("/", async (req, res) => {
   try {
@@ -15,82 +19,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/types/attributes/values", async (req, res) => {
-  try {
-    const latLngFirst = req.query.latLngFirst
-      ? JSON.parse(req.query.latLngFirst)
-      : true;
-
-    const memorials = await Memorial.query()
-      .withGraphFetched("[Type(orderByName).[Attributes(orderByName).Values]]")
-      .modifiers({
-        orderByName: (queryBuilder) => {
-          queryBuilder.orderBy("Name");
-        },
-      })
-      .modify((queryBuilder) => {
-        if (req.query.statusFilters) {
-          queryBuilder.whereIn(
-            "Memorials.Status",
-            JSON.parse(req.query.statusFilters)
-          );
-        }
-      });
-    const formattedMemorials = [];
-    for (let i = 0; i < memorials.length; i++) {
-      const memorial = memorials[i];
-      // The query above returns attributes with multiple values since there is a one-to-many relationship between
-      //    attributes and values. However, there is only one value in that array that belongs to the memorial. This
-      //    would be tons better if we actually knew how to implement that in the objection query, but this is the current
-      //    brute force implementation.
-      const attributesWithOneValue = memorial.Type.Attributes.map(
-        (attribute, index) => {
-          let value = {
-            Value: null,
-            AttributeId: attribute.Id,
-            MemorialId: memorial.Id,
-          };
-          if (attribute.Value) {
-            value = attribute.Value;
-          } else if (attribute.Values) {
-            value = attribute.Values.filter((value) => {
-              return value.MemorialId === memorial.Id;
-            })[0];
-          }
-          try {
-            value.Value = JSON.parse(value.Value);
-          } catch (e) {
-            value.Value = value.Value;
-          }
-
-          attribute.Value = value;
-          delete attribute.Values;
-          return attribute;
-        }
-      );
-      memorial.Type.Attributes = attributesWithOneValue;
-      if (!latLngFirst) {
-        formattedMemorials.push(memorial);
-        continue;
-      }
-
-      // Loop back to front because if latLngFirst is true, then we need to put them at the front
-      //    of the array. Since attributes will be sorted by name, we will need unshift() Longitude first
-      //    and then unshift Latitude. Going front to back will result in Longitude first.
-      const sortedAttributes = [];
-      for (let i = attributesWithOneValue.length - 1; i > -1; i--) {
-        const attribute = attributesWithOneValue[i];
-        const attributeName = attribute.Name.toLowerCase();
-        attributeName === "latitude" || attributeName === "longitude"
-          ? sortedAttributes.unshift(attribute)
-          : sortedAttributes.push(attribute);
-      }
-      memorial.Type.Attributes = sortedAttributes;
-      formattedMemorials.push(memorial);
-    }
-    res.status(200).json(formattedMemorials);
-  } catch (err) {
-    Error.errorHandler(err, res);
-  }
+  memorialController.getMemorialsWithTypeWithAttributesWithValues(req, res);
 });
 
 router.get("/:id/types", async (req, res) => {
