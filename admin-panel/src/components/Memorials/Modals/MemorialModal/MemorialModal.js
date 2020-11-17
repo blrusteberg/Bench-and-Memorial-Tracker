@@ -7,7 +7,6 @@ import styles from "./MemorialModal.module.css";
 import MemorialImageUpload from "./MemorialImageUpload/MemorialImageUpload";
 import AttributesForm from "./AttributesForm/AttributesForm";
 import TypeSelect from "../../../../common/TypeSelect/TypeSelect";
-import axios from "axios";
 
 const MemorialModal = ({
   onCancel = () => {},
