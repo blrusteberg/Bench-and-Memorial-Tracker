@@ -1,294 +1,257 @@
-import React from "react";
-import axios from "axios";
-import lodash from "lodash";
+import React, { useState, useEffect } from "react";
 import cx from "classnames";
+import axios from "axios";
 
+import { Input, Button, Form, notification } from "antd";
+import moment from "moment";
 import styles from "./TaggerForm.module.css";
+import "./TaggerForm.css";
 import AttributeForm from "./AttributeForm/AttributeForm";
-import { Input, Button } from "antd";
+import TypeSelect from "../../common/TypeSelect/TypeSelect";
+import API from "../../services/API/API";
+import BlobService from "../../services/BlobService";
+import MemorialImageUpload from ".././Memorials/Modals/MemorialModal/MemorialImageUpload/MemorialImageUpload";
+import { getCoordinateIds } from "../../utils/utils";
 
-class TaggerForm extends React.Component {
-  state = {
-    Types: [
-      {
-        Id: "",
-        Name: "",
-        Attributes: [
-          {
-            Id: "",
-            Name: "",
-            ValueType: "",
-            Required: null,
-            Value: "",
+const TaggerForm = () => {
+  const [Types, setTypes] = useState();
+  const [Memorial, setMemorial] = useState();
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  const [form] = Form.useForm();
+  const [changesMade, setChangesMade] = useState(false);
+  const [selectedImage, setSelectedImage] = useState();
+  const [error, setError] = useState();
+
+  const [selectedType, setSelectedType] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
+
+  useEffect(() => {
+    new API().Types.get(["attributes"])
+      .then((res) => {
+        console.log(res.data);
+        setTypes(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
+  }, []);
+
+  const onSaveMemorialClick = async () => {
+    const data = await form.validateFields();
+    setIsSaving(true);
+    saveMemorial({ memorial: formatFormDataForPost(data), action: "post" });
+  };
+
+  const saveMemorial = (data) => {
+    const imageFile = data.memorial.Image;
+    delete data.memorial.Image;
+    console.log(data);
+    axios
+      .post(
+        `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
+        data.memorial
+      )
+      .then(async (res) => {
+        const memorialId = res.data;
+        const blobName = await new BlobService().uploadMemorialImage(
+          memorialId,
+          imageFile
+        );
+        axios
+          .put(
+            `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorialId}`,
+            { Image: blobName }
+          )
+          .then((res) => {
+            resetForm();
+          });
+      })
+      .catch((error) => {
+        openNotification("Unable to save memorial.", error.message, "error");
+      });
+  };
+
+  const onImageSelect = (image) => {
+    setSelectedImage(image);
+    setChangesMade(true);
+  };
+
+  const openNotification = (
+    message,
+    description,
+    type = null,
+    onClick = () => {},
+    onClose = () => {}
+  ) =>
+    notification.open({
+      message: message,
+      description: description,
+      type: type,
+      onClick: () => onClick(),
+      onClose: () => onClose(),
+    });
+
+  const formatFormDataForPost = (data) => {
+    const formattedMemorial = {
+      Name: data.Name,
+      TypeId: data.Type.Id,
+      Image: data.Image,
+      DateRecorded: moment().format("MM/DD/YYYY"),
+      Attributes: [],
+    };
+
+    Object.keys(data.Type.Attributes).forEach((key) => {
+      if (moment.isMoment(data.Type.Attributes[key])) {
+        data.Type.Attributes[key] = data.Type.Attributes[key].format(
+          "MM/DD/YYYY"
+        );
+      }
+      formattedMemorial.Attributes.push({
+        Value: data.Type.Attributes[key],
+        Id: key,
+      });
+    });
+
+    return formattedMemorial;
+  };
+
+  const onTypeSelect = (typeId) => {
+    for (let i = 0; i < Types.length; i++)
+      if (Types[i].Id === typeId) {
+        form.setFieldsValue({
+          Type: {
+            Id: typeId,
           },
-        ],
-      },
-    ],
-    Memorial: {
-      Name: "",
-      TypeId: "",
-      Attributes: [
-        {
-          Id: "",
-          Name: "",
-          ValueType: "",
-          Required: null,
-          Value: "",
-          isValid: true,
-        },
-      ],
-    },
-    typeSelectedIndex: null,
-    error: null,
-    isLoading: true,
-    isSaving: false,
-    areCoordsValid: true,
-    isMemorialNameValid: true,
-    selectedFile: null,
-    fillCoordsClicked: false,
-  };
-
-  componentDidMount() {
-    axios.get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`).then(
-      (res) => {
-        this.setState({
-          Types: res.data,
-          isLoading: false,
         });
-      },
-      (error) => {
-        this.setState({
-          isLoaded: true,
-          error: false,
-        });
+        setSelectedType(Types[i]);
+
+        setLatitude("");
+        setLongitude("");
       }
-    );
-  }
-
-  onTypeSelect = (typeIndex) => {
-    const attributes = lodash.cloneDeep(this.state.Types[typeIndex].Attributes);
-    attributes.forEach((attribute) => (attribute.Value = ""));
-    this.setState({
-      Memorial: {
-        Name: "",
-        TypeId: this.state.Types[typeIndex].Id,
-        Attributes: attributes,
-      },
-      typeSelectedIndex: typeIndex,
-      latitude: "",
-      longitude: "",
-    });
   };
 
-  onMemorialNameChange = (event) => {
-    const memorial = { ...this.state.Memorial };
-    memorial.Name = event.target.value;
-
-    this.setState({
-      Memorial: memorial,
-      isMemorialNameValid: true,
-    });
+  const resetForm = () => {
+    form.resetFields();
+    setSelectedType(null);
+    setChangesMade(false);
+    setSelectedImage(null);
+    setIsSaving(false);
   };
 
-  onValueChange = (attributeId, value, isValid) => {
-    const memorial = { ...this.state.Memorial };
-    memorial.Attributes.forEach((attribute) => {
-      if (attribute.Id === attributeId) {
-        attribute.Value = value;
-        attribute.isValid = isValid;
-      }
-    });
-    this.setState({
-      Memorial: memorial,
-    });
-  };
-
-  onFillCoordinatesClick = () => {
+  const onFillCoordinatesClick = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
       if (pos) {
-        const latitude = pos.coords.latitude;
-        const longitude = pos.coords.longitude;
-        const memorial = { ...this.state.Memorial };
-        memorial.Attributes.forEach((attribute) => {
-          if (attribute.Name.toLowerCase() === "latitude") {
-            attribute.Value = latitude;
-          }
-          if (attribute.Name.toLowerCase() === "longitude") {
-            attribute.Value = longitude;
-          }
-
-          this.setState({
-            latitude: latitude,
-            longitude: longitude,
-            Memorial: memorial,
-            areCoordsValid: true,
-          });
+        const coordinateIds = getCoordinateIds(selectedType.Attributes);
+        form.setFieldsValue({
+          Type: {
+            Attributes: {
+              [coordinateIds.latitudeId]: pos.coords.latitude,
+              [coordinateIds.longitudeId]: pos.coords.longitude,
+            },
+          },
         });
-      } else {
-        alert("Unable to get geolocation..");
       }
     });
   };
 
-  onSaveMemorialClick = () => {
-    this.setState({
-      isSaving: true,
-    });
-    let areCoordsValid = true;
-    let isValid = true;
-    let isMemorialNameValid = this.state.Memorial.Name;
-
-    this.state.Memorial.Attributes.forEach((attribute) => {
-      if (attribute.isValid === false) {
-        isValid = false;
-      }
-      if (attribute.Name.toLowerCase() === "latitude" && !attribute.Value) {
-        areCoordsValid = false;
-      }
-      if (attribute.Name.toLowerCase() === "longitude" && !attribute.Value) {
-        areCoordsValid = false;
-      }
-    });
-
-    if (isValid && areCoordsValid && isMemorialNameValid) {
-      axios
-        .post(
-          `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
-          this.state.Memorial
-        )
-        .then(() => (window.location = "/tagger-form"));
-    } else {
-      this.setState({
-        areCoordsValid: areCoordsValid,
-        isSaving: false,
-        isMemorialNameValid: isMemorialNameValid,
-      });
-      alert("Please fix Errors before saving!");
-    }
-  };
-
-  imageButtonHandler = (event) => {
-    this.setState({
-      selectedFile: event.target.files[0],
-    });
-  };
-
-  fileUploadHandler = () => {};
-
-  render() {
-    return this.state.isLoading ? (
-      <div className={styles.loadingTitle}>Loading...</div>
-    ) : (
-      <div className={styles.container}>
-        <div className={styles.dropDownWrapper}>
-          <div className={styles.dropDownHeader}>Memorial Type</div>
-          <select
-            name="Memorial-Types"
-            id="Memorial-Types"
-            onChange={(event) => this.onTypeSelect(event.target.value)}
+  return isLoading ? (
+    <div className={styles.loadingTitle}>Loading...</div>
+  ) : error ? (
+    <div>{error.message}</div>
+  ) : (
+    <div className={styles.container}>
+      <Form
+        form={form}
+        layout="vertical"
+        onValuesChange={() => setChangesMade(true)}
+      >
+        <div className={styles.typeWrapper}>
+          <Form.Item
+            name={["Type", "Id"]}
+            label="Memorial Type"
+            style={{
+              fontWeight: "bold",
+              fontSize: "1.5rem",
+              width: "50%",
+            }}
+            rules={[{ required: true, message: "Select a type" }]}
           >
-            {!this.state.typeSelectedIndex ? (
-              <option>Select a type</option>
-            ) : (
-              ""
-            )}
-            {this.state.Types.map((type, n) => (
-              <option key={type.Id} value={n}>
-                {type.Name}
-              </option>
-            ))}
-          </select>
+            <TypeSelect
+              Types={Types}
+              onTypeSelect={onTypeSelect}
+              disabled={Memorial}
+            />
+          </Form.Item>
         </div>
-        {!this.state.typeSelectedIndex ? (
+        {!selectedType ? (
           ""
         ) : (
-          <div>
-            <div className={styles.memorialNameWrapper}>
-              <div className={styles.memorialName}>Memorial Name</div>
+          <>
+            <Form.Item
+              label="Memorial Name"
+              name="Name"
+              style={{ fontWeight: "bold" }}
+              rules={[{ required: true, message: "Enter a memorial name" }]}
+            >
               <Input
-                className={styles.memorialNameInput}
-                type="text"
-                onChange={this.onMemorialNameChange}
-                maxLength={50}
+                label="Memorial Name"
+                size="large"
+                style={{ width: "100%", fontSize: "1.3rem" }}
               />
-              {this.state.isMemorialNameValid ? null : (
-                <div
-                  className={
-                    this.state.isMemorialNameValid
-                      ? styles.noMemorialNameError
-                      : styles.memorialNameError
-                  }
-                >
-                  Memorial Name can't be empty.
-                </div>
-              )}
-            </div>
-            <div className={styles.attributesWrapper}>
-              <AttributeForm
-                key={this.state.Types[this.state.typeSelectedIndex].Id}
-                Attributes={
-                  this.state.Types[this.state.typeSelectedIndex].Attributes
-                }
-                onValueChange={this.onValueChange}
-                latitude={this.state.latitude}
-                longitude={this.state.longitude}
-                memorialName={this.state.Memorial.Name}
-              />
-            </div>
-            {this.state.areCoordsValid ? null : (
-              <div
-                className={
-                  this.state.areCoordsValid
-                    ? styles.noCoordsError
-                    : styles.coordsError
-                }
-              >
-                Coordinates can't be empty.
-              </div>
-            )}
-            <div className={styles.buttonsWrapper}>
-              <div className={styles.fillCoordinatesButtonWrapper}>
-                <Button
-                  type="primary"
-                  className={styles.fillCoordinatesButton}
-                  onClick={this.onFillCoordinatesClick}
-                >
-                  Fill Coordinates
-                </Button>
-              </div>
-              <div className={styles.uploadButtonWrapper}>
-                <input style={{ display: "none" }} type="file" />
-                <Button
-                  type="primary"
-                  onClick={() => this.fileUploadHandler}
-                  className={styles.uploadButton}
-                >
-                  Upload/Capture Image
-                </Button>
-              </div>
-            </div>
+            </Form.Item>
 
-            <div className={styles.saveButtonWrapper}>
-              <Button
-                type="primary"
-                style={{ background: "green", border: "green" }}
-                className={cx(styles.saveMemorialButton, {
-                  [styles.disabledButton]: this.state.isSaving,
-                })}
-                onClick={this.onSaveMemorialClick}
-              >
-                {this.state.isSaving ? (
-                  <div>Saving... </div>
-                ) : (
-                  <div>Save Memorial</div>
-                )}
-              </Button>
-            </div>
-          </div>
+            <AttributeForm
+              key={selectedType.Id}
+              Attributes={selectedType.Attributes}
+              latitude={latitude}
+              longitude={longitude}
+            />
+            <div className={styles.imageLabel}>Image</div>
+            <Form.Item name="Image">
+              <MemorialImageUpload
+                onFileSelect={onImageSelect}
+                blobName={Memorial && Memorial.Image}
+                onRemove={() => setSelectedImage(null)}
+              />
+            </Form.Item>
+
+            <Button
+              type="primary"
+              className={styles.fillCoordinatesButton}
+              onClick={onFillCoordinatesClick}
+              size="large"
+              style={{ width: "75%", height: "5%", marginBottom: "5%" }}
+            >
+              Fill Coordinates
+            </Button>
+
+            <Button
+              type="primary"
+              size="large"
+              style={{
+                width: "75%",
+                height: "5%",
+                marginBottom: "25%",
+                background: "#237804",
+                border: "#237804",
+              }}
+              className={cx(styles.saveMemorialButton, {
+                [styles.disabledButton]: isSaving,
+              })}
+              onClick={onSaveMemorialClick}
+            >
+              {isSaving ? <div>Saving... </div> : <div>Save Memorial</div>}
+            </Button>
+          </>
         )}
-      </div>
-    );
-  }
-}
+      </Form>
+    </div>
+  );
+};
 
 export default TaggerForm;

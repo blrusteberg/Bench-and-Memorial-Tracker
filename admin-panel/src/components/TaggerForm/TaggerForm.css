@@ -1,0 +1,10 @@
+.ant-form {
+  max-width: 550px;
+  width: 90%;
+  text-align: center;
+}
+
+.ant-select-selector {
+  text-align: left;
+  width: 50%;
+}
