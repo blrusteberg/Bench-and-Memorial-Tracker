@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "antd/dist/antd.css";
 
@@ -11,9 +11,7 @@ const DeleteAccountModal = ({ account, deleteSuccess, onCancelClick }) => {
 
   const onDeleteClick = () => {
     axios
-      .delete(
-        `${process.env.REACT_APP_API_BASE_URL}/accounts/${account.Id}`
-      )
+      .delete(`${process.env.REACT_APP_API_BASE_URL}/accounts/${account.Id}`)
       .then((res) => {
         setIsDeleting(false);
         deleteSuccess();
@@ -35,8 +33,7 @@ const DeleteAccountModal = ({ account, deleteSuccess, onCancelClick }) => {
         onCancelClick();
         setVisible(false);
       }}
-    >
-    </Modal>
+    ></Modal>
   );
 };
 

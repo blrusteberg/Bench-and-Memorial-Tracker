@@ -41,7 +41,7 @@ const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
           <div className={styles.attributes}>
             {memorial.Type.Attributes.map((attribute) => {
               return (
-                <div className={styles.attribute}>
+                <div key={attribute.Id} className={styles.attribute}>
                   <div className={styles.attributeName}>{attribute.Name}:</div>
                   <div>{attribute.Value.Value}</div>
                 </div>

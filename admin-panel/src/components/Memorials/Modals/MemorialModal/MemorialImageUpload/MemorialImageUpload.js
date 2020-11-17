@@ -10,11 +10,10 @@ const UploadImageButton = ({
 }) => {
   const [fileList, setFileList] = useState([]);
   useEffect(() => {
-    console.log("useEffect [MemorialImageUpload.js]");
     if (blobName) {
       setFileList(getFileList());
     }
-  }, []);
+  });
 
   const getBlobUrl = () =>
     blobName

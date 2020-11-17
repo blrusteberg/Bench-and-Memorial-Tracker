@@ -17,16 +17,16 @@ class Accounts extends Model {
       type: "object",
       properties: {
         Id: { type: "string" },
-        Username: {type: "string"},
-        Password: {type: "string"},
+        Username: { type: "string" },
+        Password: { type: "string" },
         AccountType: {
-            type: "string",
-            enum: ["tagger", "clerk", "admin"]
-          },
+          type: "string",
+          enum: ["tagger", "clerk", "admin"],
+        },
         DelAccess: {
           type: "bit",
-          default: 0
-        }
+          default: 0,
+        },
       },
     };
   }
