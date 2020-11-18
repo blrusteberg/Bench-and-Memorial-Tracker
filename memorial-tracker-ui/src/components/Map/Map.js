@@ -8,12 +8,18 @@ import styles from "./Map.module.css";
 
 class Map extends React.Component {
   render() {
+    console.log(
+      "Google Cloud API Key",
+      process.env.REACT_APP_GOOGLE_CLOUD_API_KEY
+    );
     return (
       <div className={styles.Map}>
         <MapCenterContext.Consumer>
           {(mapCenter) => (
             <GoogleMap
-              bootstrapURLKeys={{ key: "" }}
+              bootstrapURLKeys={{
+                key: process.env.REACT_APP_GOOGLE_CLOUD_API_KEY,
+              }}
               center={mapCenter}
               defaultZoom={14}
             >
