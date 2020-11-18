@@ -25,6 +25,12 @@
 }
 
 .memorialInfo {
+  flex: 1;
   margin: auto;
   text-align: center;
+}
+
+.wordWrapper {
+  margin: 0 auto;
+  max-width: 50%;
 }

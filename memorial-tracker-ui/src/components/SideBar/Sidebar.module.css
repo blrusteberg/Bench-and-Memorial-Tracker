@@ -21,3 +21,9 @@
 .selectTypes {
   width: 100%;
 }
+
+.memorialWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+}

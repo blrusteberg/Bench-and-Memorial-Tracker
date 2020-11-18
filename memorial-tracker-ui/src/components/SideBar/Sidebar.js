@@ -98,7 +98,7 @@ class Sidebar extends React.Component {
           </Space>
         </Space>
         <MapCenterContext.Provider value={this.state.lastClickedCoordinates}>
-          <div>
+          <div className={styles.memorialWrapper}>
             {this.props.Memorials.map((memorial) => {
               return (
                 <Memorial

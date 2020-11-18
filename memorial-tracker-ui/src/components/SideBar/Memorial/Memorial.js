@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Memorial.module.css";
-import { Space } from "antd";
 
 const memorial = (props) => {
   const assignedStyles = [];
@@ -11,7 +10,7 @@ const memorial = (props) => {
   }
 
   return (
-    <Space type="vertical">
+    <div>
       <div
         className={assignedStyles.join(" ")}
         onClick={() => props.onSidebarClick(props.Id)}
@@ -22,10 +21,10 @@ const memorial = (props) => {
           alt="memorial type icon"
         />
         <div className={styles.memorialInfo}>
-          <div>{props.Name}</div>
+          <div className={styles.wordWrapper}>{props.Name}</div>
         </div>
       </div>
-    </Space>
+    </div>
   );
 };
 
