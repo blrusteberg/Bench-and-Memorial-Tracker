@@ -6,15 +6,12 @@ const TypeSelect = ({
   Types,
   disabled = false,
   onTypeSelect = () => {},
-  styles,
   ...restProps
 }) => {
   return (
     <Select
       {...restProps}
-      styles
       disabled={disabled}
-      style={{ fontWeight: "normal" }}
       showSearch
       placeholder="Select a type"
       onChange={onTypeSelect}

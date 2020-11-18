@@ -5,15 +5,19 @@ import "antd/dist/antd.css";
 import { Modal, Card } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import styles from "./DeleteMemorialModal.module.css";
+import BlobService from "../../../../services/BlobService";
 
 const DeleteMemorialModal = ({ memorial, deleteSuccess, onCancelClick }) => {
   const [visible, setVisible] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const blobService = new BlobService();
+
   const onDeleteClick = () => {
     axios
       .delete(`${process.env.REACT_APP_API_BASE_URL}/memorials/${memorial.Id}`)
-      .then((res) => {
+      .then(async (res) => {
+        await blobService.deleteImageBlob(memorial.Image);
         setIsDeleting(false);
         deleteSuccess();
         setVisible(false);

@@ -116,17 +116,11 @@ const MemorialModal = ({
         },
       };
       memorial.Type.Attributes.forEach((attribute) => {
-        if (attribute.Value) {
-          if (
-            moment.isDate(attribute.Value.Value) &&
-            attribute.ValueType === "Date"
-          ) {
-            console.log("FORMATTING AS DATE");
-            attribute.Value.Value = moment(attribute.Value.Value);
-          }
-          initialValues["Type"]["Attributes"][attribute.Value.Id] =
-            attribute.Value.Value;
+        if (attribute.ValueType === "Date") {
+          attribute.Value.Value = moment(attribute.Value.Value, "MM/DD/YYYY");
         }
+        initialValues["Type"]["Attributes"][attribute.Value.Id] =
+          attribute.Value.Value;
       });
       return initialValues;
     }
@@ -190,8 +184,7 @@ const MemorialModal = ({
                     <Divider dashed />
                     <AttributesForm
                       Attributes={
-                        (memorial && memorial.Type.Attributes) ||
-                        selectedType.Attributes
+                        memorial?.Type?.Attributes || selectedType.Attributes
                       }
                     />
                   </>
@@ -200,7 +193,7 @@ const MemorialModal = ({
                 <Form.Item name="Image" label="Image">
                   <MemorialImageUpload
                     onFileSelect={onImageSelect}
-                    blobName={memorial && memorial.Image}
+                    blobName={memorial?.Image}
                   />
                 </Form.Item>
               </Form>

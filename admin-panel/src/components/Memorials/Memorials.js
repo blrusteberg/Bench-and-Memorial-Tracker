@@ -25,6 +25,8 @@ const Memorials = () => {
   const [deletingMemorial, setDeletingMemorial] = useState();
   const [memorialModalVisible, setMemorialModalVisible] = useState(false);
 
+  const blobService = new BlobService();
+
   useEffect(() => {
     axios
       .get(
@@ -51,7 +53,7 @@ const Memorials = () => {
 
   const saveMemorial = async (data) => {
     if (data.image) {
-      const blobName = await new BlobService().uploadMemorialImage(
+      const blobName = await blobService.uploadMemorialImage(
         data.image,
         data.Memorial.Image
       );

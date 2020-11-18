@@ -23,7 +23,7 @@ class Memorial extends Model {
           type: "string",
           enum: ["unapproved", "approved", "on hold", "live"],
         },
-        Image: { type: "string" },
+        Image: { type: ["string", "null"] },
         DateRecorded: { type: "string" },
       },
     };

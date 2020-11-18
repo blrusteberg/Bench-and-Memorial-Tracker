@@ -54,6 +54,7 @@ const MemorialsTable = ({
   };
 
   const onEditClick = (record) => {
+    console.log("onEditClick", record);
     setEditingMemorial(record);
   };
 
@@ -120,13 +121,15 @@ const MemorialsTable = ({
           >
             Edit
           </button>
-          {hasDeleteAccess && <button
-            type="button"
-            className={styles.linkButton}
-            onClick={() => onDeleteClick(record)}
-          >
-            Delete
-          </button>}
+          {hasDeleteAccess && (
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={() => onDeleteClick(record)}
+            >
+              Delete
+            </button>
+          )}
         </Space>
       ),
     },
