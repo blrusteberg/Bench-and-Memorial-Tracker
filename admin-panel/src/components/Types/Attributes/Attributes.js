@@ -8,25 +8,20 @@ import Popup from "./Popup/Popup";
 import { Input, Button, Modal, Select, message } from "antd";
 import { getDeleteAccess } from "../../../utils/utils";
 
-const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png"
+const DEFAULT_URL = "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/monument.png"
 
 const urlArray = [
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/artist.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bank.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bench.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/building.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bus-stop.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/hamburger.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/headstone.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/history-book.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/hospital.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/mausoleum.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorial.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/memorials.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/statue-of-liberty.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/statue.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/tree.png",
-  "https://memorialtrackerphotos.blob.core.windows.net/memorialicons/waving-flag.png",
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/art.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bench.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/bus.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/flag.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/food.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/fountain.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/headstone.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/monument.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/museum.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/playground.png',
+  'https://memorialtrackerphotos.blob.core.windows.net/memorialicons/tree.png'
 ];
 
 class Attributes extends React.Component {
