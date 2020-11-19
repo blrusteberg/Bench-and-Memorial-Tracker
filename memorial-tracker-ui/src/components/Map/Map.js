@@ -29,13 +29,14 @@ class Map extends React.Component {
                 closeBubbleClick={() => {}}
                 lat={this.props.userCoordinates.lat}
                 lng={this.props.userCoordinates.lng}
-                hideBubble={true}
+                hideModal={true}
               />
 
               {this.props.Memorials.map((memorial) => {
                 const coordinates = getCoordinatesOfMemorial(memorial);
                 return (
                   <Icon
+                    memorial={memorial}
                     key={memorial.Id}
                     lat={coordinates.lat}
                     lng={coordinates.lng}
@@ -44,7 +45,7 @@ class Map extends React.Component {
                     Type={memorial.Type}
                     Name={memorial.Name}
                     hideIcon={memorial.hideIcon}
-                    hideBubble={memorial.hideBubble}
+                    hideModal={memorial.hideModal}
                     onIconClick={() => this.props.onIconClick(memorial.Id)}
                     closeBubbleClick={() => this.props.bubbleCloseClick()}
                   />

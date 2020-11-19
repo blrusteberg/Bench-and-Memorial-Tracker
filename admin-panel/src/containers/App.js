@@ -24,6 +24,7 @@ class App extends React.Component {
     isLoggedIn: false,
     stayLoggedIn: false,
     userRoleColor: "",
+    pageHeaderName: "",
   };
 
   componentDidMount() {
@@ -41,9 +42,31 @@ class App extends React.Component {
   };
 
   changePage = (newPage) => {
+    let headerName = "";
     if (newPage !== this.state.page) {
+      switch (newPage) {
+        case "accounts":
+          headerName = "Accounts";
+          break;
+        case "memorials":
+          headerName = "Memorials";
+          break;
+        case "types":
+          headerName = "Types";
+          break;
+        case "attributes":
+          headerName = "Attributes";
+          break;
+        case "taggerForm":
+          headerName = "Tagger Form";
+          break;
+        default:
+          headerName = "";
+      }
+
       this.setState({
         page: newPage,
+        pageHeaderName: headerName,
       });
     }
   };
@@ -233,6 +256,7 @@ class App extends React.Component {
                       onClick={() => this.sideBarCollapseHandler(false)}
                     />
                   ) : null}
+
                   <div className={styles.buttonWrapper}>
                     {USERNAME} &nbsp;
                     <Tag color={this.state.userRoleColor} key={ROLE}>

@@ -63,7 +63,7 @@ class App extends React.Component {
           this.setState({
             Memorials: result.data.map((memorial) => {
               memorial.hideIcon = false;
-              memorial.hideBubble = true;
+              memorial.hideModal = true;
               return memorial;
             }),
             isLoading: false,
@@ -146,7 +146,7 @@ class App extends React.Component {
       }
       memorial.hideIcon = hideIcon;
       if (memorial.hideIcon) {
-        memorial.hideBubble = true;
+        memorial.hideModal = true;
       }
     });
     this.setState({ Memorials: memorials });
@@ -156,9 +156,9 @@ class App extends React.Component {
     const memorials = [...this.state.Memorials];
     let mapCenter = this.state.mapCenter;
     memorials.forEach((memorial) => {
-      memorial.hideBubble = true;
+      memorial.hideModal = true;
       if (memorial.Id === id) {
-        memorial.hideBubble = false;
+        memorial.hideModal = false;
         mapCenter = getCoordinatesOfMemorial(memorial);
       }
     });
@@ -168,7 +168,7 @@ class App extends React.Component {
   bubbleCloseClickHandler = () => {
     const memorials = [...this.state.Memorials];
     memorials.map((memorial) => {
-      return { ...memorial, hideBubble: true };
+      return { ...memorial, hideModal: true };
     });
     this.setState({ Memorials: memorials });
   };

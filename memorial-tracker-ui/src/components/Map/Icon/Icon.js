@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Icon.module.css";
-import InfoBubble from "./InfoBubble/InfoBubble";
+import InfoModal from "./InfoModal/InfoModal";
 
 const onDirectionsClick = (lat, lng) => {
   const url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${lat},${lng}&travelmode=driving`;
@@ -25,12 +25,12 @@ const icon = (props) => {
         alt="memorial icon"
         onClick={props.onIconClick}
       />
-      {props.hideBubble ? null : (
-        <InfoBubble
-          Type={props.Type}
+      {props.hideModal ? null : (
+        <InfoModal
+          memorial={props.memorial}
           Name={props.Name}
           closeBubbleClick={props.closeBubbleClick}
-          hideBubble={props.hideBubble}
+          hideModal={props.hideModal}
           onDirectionsClick={() => onDirectionsClick(props.lat, props.lng)}
           type={props.type}
         />
