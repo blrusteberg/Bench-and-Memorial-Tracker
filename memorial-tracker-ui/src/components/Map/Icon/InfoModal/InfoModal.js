@@ -16,29 +16,30 @@ const InfoModal = ({
 }) => {
   const [visible, setVisible] = useState(true);
 
-  console.log(visible);
   return (
     <div>
       <Modal
         visible={visible}
         content="Add row details here..."
-        cancelText="Cancel"
+        cancelText="Close"
         onCancel={() => {
           setVisible(false);
         }}
+        okText="Take me here"
+        onOk={onDirectionsClick}
       >
         <Card title={memorial.Name} size="large">
           <div className={styles.cardBody}>
             <div className={styles.attributes}>
               {memorial.Type.Attributes.map((attribute) => {
-                return (
+                return attribute.Value?.Value !== null ? (
                   <div key={attribute.Id} className={styles.attribute}>
                     <div className={styles.attributeName}>
                       {attribute.Name}:
                     </div>
                     <div>{attribute.Value.Value}</div>
                   </div>
-                );
+                ) : null;
               })}
             </div>
             <div className={styles.imageWrapper}>
