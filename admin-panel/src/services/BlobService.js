@@ -19,7 +19,9 @@ class BlobService {
     if (!image) {
       return;
     }
-    await this.deleteImageBlob(currentImageName);
+    if (currentImageName) {
+      await this.deleteImageBlob(currentImageName);
+    }
     const blobName = this.getBlobNameFromImage(image);
     const blockBlobClient = await this.imageContainerClient.getBlockBlobClient(
       blobName
@@ -36,7 +38,7 @@ class BlobService {
   };
 
   getBlobNameFromImage(image) {
-    return `${image.uid}.${image.name.split(".").pop()}`;
+    return image ? `${image.uid}.${image.name.split(".").pop()}` : null;
   }
 }
 
