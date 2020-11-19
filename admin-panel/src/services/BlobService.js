@@ -16,6 +16,8 @@ class BlobService {
   }
 
   uploadMemorialImage = async (image, currentImageName = "") => {
+    console.log("IMAGEL ", image);
+    console.log("CURRENTIMAGENAME", currentImageName);
     if (!image) {
       return;
     }
@@ -38,6 +40,7 @@ class BlobService {
   };
 
   getBlobNameFromImage(image) {
+    console.log("GET BLOB NAME IMAGE: ", image);
     return image ? `${image.uid}.${image.name.split(".").pop()}` : null;
   }
 }

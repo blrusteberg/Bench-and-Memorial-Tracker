@@ -31,7 +31,6 @@ const TaggerForm = () => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/types/attributes`)
       .then((res) => {
-        console.log(res);
         setTypes(res.data);
         setIsLoading(false);
       })
@@ -48,9 +47,8 @@ const TaggerForm = () => {
   };
 
   const saveMemorial = (data) => {
-    const imageFile = data.memorial.Image;
+    const imageFile = data.memorial.Image.file;
     delete data.memorial.Image;
-    console.log(data);
     axios
       .post(
         `${process.env.REACT_APP_API_BASE_URL}/memorials/values`,
@@ -58,10 +56,7 @@ const TaggerForm = () => {
       )
       .then(async (res) => {
         const memorialId = res.data;
-        const blobName = await new BlobService().uploadMemorialImage(
-          memorialId,
-          imageFile
-        );
+        const blobName = await new BlobService().uploadMemorialImage(imageFile);
         axios
           .put(
             `${process.env.REACT_APP_API_BASE_URL}/memorials/${memorialId}`,
