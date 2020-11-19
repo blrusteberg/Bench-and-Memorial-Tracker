@@ -16,8 +16,6 @@ class BlobService {
   }
 
   uploadMemorialImage = async (image, currentImageName = "") => {
-    console.log("IMAGEL ", image);
-    console.log("CURRENTIMAGENAME", currentImageName);
     if (!image) {
       return;
     }

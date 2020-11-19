@@ -47,7 +47,7 @@ const TaggerForm = () => {
   };
 
   const saveMemorial = (data) => {
-    const imageFile = data.memorial.Image.file;
+    const imageFile = data.memorial.Image?.file;
     delete data.memorial.Image;
     axios
       .post(
