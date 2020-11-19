@@ -45,7 +45,11 @@ const InfoModal = ({
               <img
                 alt="memorial"
                 className={styles.memorialImage}
-                src={`https://${process.env.REACT_APP_AZURE_BLOB_ACCOUNT_NAME}.blob.core.windows.net/${process.env.REACT_APP_AZURE_BLOB_MEMORIAL_IMAGE_CONTAINER_NAME}/${memorial.Image}`}
+                src={
+                  memorial.Image
+                    ? `https://${process.env.REACT_APP_AZURE_BLOB_ACCOUNT_NAME}.blob.core.windows.net/${process.env.REACT_APP_AZURE_BLOB_MEMORIAL_IMAGE_CONTAINER_NAME}/${memorial.Image}`
+                    : "https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
+                }
               />
             </div>
           </div>
